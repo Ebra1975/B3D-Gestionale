@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Commesse - Gestionale B3D Lab{% endblock %}
+{% block heading %}Commesse{% endblock %}
+{% block eyebrow %}Lavori accettati{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Elenco commesse</h2>
+    </div>
+    {% if jobs %}
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Numero</th>
+            <th>Cliente</th>
+            <th>Preventivo</th>
+            <th>Configurazione</th>
+            <th>Stato</th>
+            <th>Consegna prevista</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for job in jobs %}
+            <tr>
+              <td>{{ job.number }}</td>
+              <td>{{ job.customer.name }}</td>
+              <td>{{ job.estimate.number }}</td>
+              <td>{{ job.selected_configuration.name }}</td>
+              <td><span class="badge">{{ job.get_status_display }}</span></td>
+              <td>{{ job.expected_delivery|default:"-" }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="empty-state">
+        <p>Nessuna commessa presente. Le commesse nasceranno dai preventivi accettati.</p>
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}

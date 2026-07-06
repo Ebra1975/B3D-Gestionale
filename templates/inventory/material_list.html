@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Materiali - Gestionale B3D Lab{% endblock %}
+{% block heading %}Materiali{% endblock %}
+{% block eyebrow %}Archivio tecnico{% endblock %}
+
+{% block actions %}
+  <a class="button" href="{% url 'inventory:material_create' %}">Nuovo materiale</a>
+{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Elenco materiali</h2>
+    </div>
+    {% if materials %}
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Marca</th>
+            <th>Colore</th>
+            <th>Costo</th>
+            <th>UV</th>
+            <th>Stato</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for material in materials %}
+            <tr>
+              <td><a href="{% url 'inventory:material_update' material.pk %}">{{ material.name }}</a></td>
+              <td>{{ material.material_type|default:"-" }}</td>
+              <td>{{ material.brand|default:"-" }}</td>
+              <td>{{ material.color|default:"-" }}</td>
+              <td>{{ material.cost_per_unit|floatformat:2 }} EUR</td>
+              <td>{{ material.uv_resistance|default:"-" }}</td>
+              <td><span class="badge">{{ material.available|yesno:"Disponibile,Non disponibile" }}</span></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="empty-state">
+        <p>Nessun materiale inserito.</p>
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}

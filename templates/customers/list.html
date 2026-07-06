@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Clienti - Gestionale B3D Lab{% endblock %}
+{% block heading %}Clienti{% endblock %}
+{% block eyebrow %}Archivio clienti{% endblock %}
+
+{% block actions %}
+  <a class="button" href="{% url 'customers:create' %}">Nuovo cliente</a>
+{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Elenco clienti</h2>
+    </div>
+    {% if customers %}
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Referente</th>
+            <th>Email</th>
+            <th>Telefono</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for customer in customers %}
+            <tr>
+              <td><a href="{% url 'customers:update' customer.pk %}">{{ customer.name }}</a></td>
+              <td>{{ customer.get_customer_type_display }}</td>
+              <td>{{ customer.contact_person|default:"-" }}</td>
+              <td>{{ customer.email|default:"-" }}</td>
+              <td>{{ customer.phone|default:"-" }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="empty-state">
+        <p>Nessun cliente inserito. Puoi aggiungerlo dal pannello Admin.</p>
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}

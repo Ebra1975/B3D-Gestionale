@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Gestionale B3D Lab{% endblock %}
+{% block heading %}Dashboard{% endblock %}
+{% block eyebrow %}Situazione generale{% endblock %}
+
+{% block actions %}
+  <a class="button" href="{% url 'estimates:list' %}">Preventivi</a>
+{% endblock %}
+
+{% block content %}
+  <section class="metric-grid">
+    <article class="metric-card">
+      <span class="metric-label">Preventivi aperti</span>
+      <strong class="metric-value">{{ open_estimates_count }}</strong>
+    </article>
+    <article class="metric-card">
+      <span class="metric-label">Commesse in corso</span>
+      <strong class="metric-value">{{ active_jobs_count }}</strong>
+    </article>
+    <article class="metric-card">
+      <span class="metric-label">Documenti generati</span>
+      <strong class="metric-value">{{ generated_documents_count }}</strong>
+    </article>
+    <article class="metric-card">
+      <span class="metric-label">Prototipi da validare</span>
+      <strong class="metric-value">{{ pending_prototypes_count }}</strong>
+    </article>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Azioni rapide</h2>
+    </div>
+    <div class="quick-actions">
+      <a class="button" href="{% url 'customers:create' %}">Nuovo cliente</a>
+      <a class="button" href="{% url 'estimates:create' %}">Nuovo preventivo</a>
+      <a class="button secondary" href="{% url 'inventory:material_create' %}">Nuovo materiale</a>
+      <a class="button secondary" href="{% url 'inventory:printer_create' %}">Nuova stampante</a>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Ultimi preventivi</h2>
+    </div>
+    {% if latest_estimates %}
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Numero</th>
+            <th>Cliente</th>
+            <th>Oggetto</th>
+            <th>Stato</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for estimate in latest_estimates %}
+            <tr>
+              <td><a href="{% url 'estimates:detail' estimate.pk %}">{{ estimate.number }}</a></td>
+              <td>{{ estimate.customer.name }}</td>
+              <td>{{ estimate.subject }}</td>
+              <td><span class="badge">{{ estimate.get_status_display }}</span></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="empty-state">
+        <p>Nessun preventivo inserito.</p>
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}

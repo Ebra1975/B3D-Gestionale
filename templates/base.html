@@ -1,0 +1,52 @@
+{% load static %}
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Gestionale B3D Lab{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">B3D</span>
+        <span class="brand-name">Gestionale</span>
+      </div>
+      <nav class="nav">
+        <a href="{% url 'core:dashboard' %}">Dashboard</a>
+        <a href="{% url 'customers:list' %}">Clienti</a>
+        <a href="{% url 'estimates:list' %}">Preventivi</a>
+        <a href="{% url 'jobs:list' %}">Commesse</a>
+        <a href="{% url 'inventory:materials' %}">Materiali</a>
+        <a href="{% url 'inventory:printers' %}">Stampanti</a>
+        <a href="{% url 'documents:list' %}">Documenti</a>
+        <a href="/admin/">Admin</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="page-header">
+        <div>
+          <p class="eyebrow">{% block eyebrow %}B3D Lab{% endblock %}</p>
+          <h1>{% block heading %}Gestionale{% endblock %}</h1>
+        </div>
+        <div class="page-actions">
+          {% block actions %}{% endblock %}
+        </div>
+      </header>
+
+      {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
+            <div class="message">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</body>
+</html>

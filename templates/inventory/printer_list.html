@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Stampanti - Gestionale B3D Lab{% endblock %}
+{% block heading %}Stampanti{% endblock %}
+{% block eyebrow %}Strumentazione{% endblock %}
+
+{% block actions %}
+  <a class="button" href="{% url 'inventory:printer_create' %}">Nuova stampante</a>
+{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Elenco stampanti</h2>
+    </div>
+    {% if printers %}
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Modello</th>
+            <th>Proprieta</th>
+            <th>Volume</th>
+            <th>Camera</th>
+            <th>Costo orario</th>
+            <th>Stato</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for printer in printers %}
+            <tr>
+              <td><a href="{% url 'inventory:printer_update' printer.pk %}">{{ printer.name }}</a></td>
+              <td>{{ printer.model|default:"-" }}</td>
+              <td>{{ printer.get_ownership_display }}</td>
+              <td>{{ printer.build_volume|default:"-" }}</td>
+              <td>{{ printer.enclosed_chamber|yesno:"Chiusa,Aperta" }}</td>
+              <td>{{ printer.hourly_cost|floatformat:2 }} EUR/h</td>
+              <td><span class="badge">{{ printer.active|yesno:"Attiva,Non attiva" }}</span></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="empty-state">
+        <p>Nessuna stampante inserita.</p>
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}

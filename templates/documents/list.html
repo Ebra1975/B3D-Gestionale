@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Documenti - Gestionale B3D Lab{% endblock %}
+{% block heading %}Documenti{% endblock %}
+{% block eyebrow %}Template e PDF generati{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Template DOCX</h2>
+    </div>
+    {% if templates %}
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Versione</th>
+            <th>Stato</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for template in templates %}
+            <tr>
+              <td>{{ template.name }}</td>
+              <td>{{ template.get_document_type_display }}</td>
+              <td>{{ template.template_version }}</td>
+              <td><span class="badge">{{ template.active|yesno:"Attivo,Non attivo" }}</span></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="empty-state">
+        <p>Nessun template caricato. I template DOCX saranno gestiti da questa sezione.</p>
+      </div>
+    {% endif %}
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Documenti generati</h2>
+    </div>
+    {% if generated_documents %}
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Preventivo</th>
+            <th>Tipo</th>
+            <th>Versione</th>
+            <th>Generato il</th>
+            <th>File</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for document in generated_documents %}
+            <tr>
+              <td>{{ document.estimate.number }}</td>
+              <td>{{ document.get_document_type_display }}</td>
+              <td>v{{ document.version }}</td>
+              <td>{{ document.generated_at }}</td>
+              <td>
+                {% if document.docx_file %}
+                  <a href="{{ document.docx_file.url }}">DOCX</a>
+                {% else %}
+                  -
+                {% endif %}
+                {% if document.pdf_file %}
+                  · <a href="{{ document.pdf_file.url }}">PDF</a>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="empty-state">
+        <p>Nessun documento generato.</p>
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}

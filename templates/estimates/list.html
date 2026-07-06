@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Preventivi - Gestionale B3D Lab{% endblock %}
+{% block heading %}Preventivi{% endblock %}
+{% block eyebrow %}Proposte e costi interni{% endblock %}
+
+{% block actions %}
+  <a class="button" href="{% url 'estimates:create' %}">Nuovo preventivo</a>
+{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Elenco preventivi</h2>
+    </div>
+    {% if estimates %}
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Numero</th>
+            <th>Cliente</th>
+            <th>Oggetto</th>
+            <th>Data</th>
+            <th>Stato</th>
+            <th>Profilo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for estimate in estimates %}
+            <tr>
+              <td><a href="{% url 'estimates:detail' estimate.pk %}">{{ estimate.number }}</a></td>
+              <td>{{ estimate.customer.name }}</td>
+              <td>{{ estimate.subject }}</td>
+              <td>{{ estimate.date }}</td>
+              <td><span class="badge">{{ estimate.get_status_display }}</span></td>
+              <td>{{ estimate.get_preferred_document_profile_display }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="empty-state">
+        <p>Nessun preventivo inserito. La prossima funzione sara la creazione guidata.</p>
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}
