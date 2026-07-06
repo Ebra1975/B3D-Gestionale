@@ -3,6 +3,7 @@ from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
+from apps.documents.models import GeneratedDocument
 from apps.documents.services import generate_consulting_estimate_docx
 
 from .forms import CostItemForm, EstimateConfigurationForm, EstimateForm
@@ -34,6 +35,54 @@ def estimate_list(request):
     return render(request, "estimates/list.html", {"estimates": estimates})
 
 
+def build_estimate_readiness(estimate):
+    configurations = list(estimate.configurations.all())
+    selected_configuration = next((configuration for configuration in configurations if configuration.is_selected), None)
+    if not selected_configuration and configurations:
+        selected_configuration = configurations[0]
+
+    missing_items = []
+    warnings = []
+
+    if not configurations:
+        missing_items.append("Aggiungere almeno una configurazione tecnica.")
+    if configurations and not any(configuration.is_selected for configuration in configurations):
+        warnings.append("Nessuna configurazione marcata come scelta: per ora viene usata la prima.")
+    if not estimate.description:
+        missing_items.append("Inserire una descrizione della richiesta cliente.")
+    if not estimate.valid_until:
+        warnings.append("Inserire una data di validita della proposta.")
+
+    if selected_configuration:
+        if not selected_configuration.cost_items.exists():
+            missing_items.append("Inserire o generare almeno una voce di costo.")
+        if not selected_configuration.total:
+            missing_items.append("Completare gli importi: il totale della configurazione e ancora zero.")
+        if not selected_configuration.description:
+            warnings.append("Aggiungere una descrizione alla configurazione scelta.")
+        if not selected_configuration.material:
+            warnings.append("Indicare il materiale o la tecnologia prevista.")
+    else:
+        missing_items.append("Scegliere i dati tecnici prima di generare il documento.")
+
+    latest_document = next(
+        (
+            document
+            for document in estimate.generated_documents.all()
+            if document.document_type == GeneratedDocument.DocumentType.CONSULTING
+        ),
+        None,
+    )
+
+    return {
+        "selected_configuration": selected_configuration,
+        "missing_items": missing_items,
+        "warnings": warnings,
+        "latest_document": latest_document,
+        "can_generate": bool(configurations) and not missing_items,
+    }
+
+
 def estimate_detail(request, pk):
     estimate = get_object_or_404(
         Estimate.objects.select_related("customer").prefetch_related(
@@ -42,7 +91,11 @@ def estimate_detail(request, pk):
         ),
         pk=pk,
     )
-    return render(request, "estimates/detail.html", {"estimate": estimate})
+    return render(
+        request,
+        "estimates/detail.html",
+        {"estimate": estimate, "readiness": build_estimate_readiness(estimate)},
+    )
 
 
 def estimate_create(request):

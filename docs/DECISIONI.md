@@ -40,6 +40,7 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-06 | Documenti | Se non esiste un template consulenza caricato, il gestionale crea un template base DOCX. | Evita di bloccare il flusso su un layout definitivo ancora da progettare. |
 | 2026-07-06 | Documenti | La conversione PDF usa LibreOffice headless quando disponibile; su Windows viene preferito `soffice.com`. | `soffice.com` restituisce messaggi affidabili da terminale e funziona meglio per conversioni automatiche rispetto all'avvio grafico di Writer. |
 | 2026-07-06 | Versionamento | Il progetto viene inizializzato come repository Git locale dopo il primo flusso DOCX/PDF funzionante. | Salva un punto stabile dello Sprint 02 prima di proseguire con nuove funzioni e future sincronizzazioni GitHub/BMAX. |
+| 2026-07-06 | Preventivi | Il dettaglio preventivo mostra uno stato operativo con configurazione usata, totale, ultimo documento e controlli mancanti. | Aiuta a capire se la proposta consulenza e pronta senza cercare le informazioni in piu punti della pagina. |
 
 ## Decisioni Da Prendere
 

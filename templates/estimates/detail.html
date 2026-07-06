@@ -14,6 +14,83 @@
 {% endblock %}
 
 {% block content %}
+  <section class="readiness-grid">
+    <article class="panel readiness-main">
+      <div class="panel-header split-header">
+        <h2>Stato preventivo</h2>
+        {% if readiness.can_generate %}
+          <span class="badge success">Pronto per DOCX</span>
+        {% else %}
+          <span class="badge warning">Da completare</span>
+        {% endif %}
+      </div>
+      <div class="readiness-body">
+        {% if readiness.selected_configuration %}
+          <div class="price-summary">
+            <div>
+              <span class="metric-label">Configurazione usata</span>
+              <strong>{{ readiness.selected_configuration.name }}</strong>
+            </div>
+            <div>
+              <span class="metric-label">Totale proposta</span>
+              <strong>{{ readiness.selected_configuration.total|floatformat:2 }} EUR</strong>
+            </div>
+            <div>
+              <span class="metric-label">Prezzo unitario</span>
+              <strong>{{ readiness.selected_configuration.unit_price|floatformat:2 }} EUR</strong>
+            </div>
+          </div>
+        {% else %}
+          <p class="muted-text">Aggiungi una configurazione tecnica per calcolare il totale e generare la proposta.</p>
+        {% endif %}
+
+        {% if readiness.missing_items %}
+          <div class="check-block critical">
+            <h3>Da fare prima della proposta</h3>
+            <ul class="check-list">
+              {% for item in readiness.missing_items %}
+                <li>{{ item }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        {% if readiness.warnings %}
+          <div class="check-block">
+            <h3>Da controllare</h3>
+            <ul class="check-list">
+              {% for item in readiness.warnings %}
+                <li>{{ item }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      </div>
+    </article>
+
+    <article class="panel readiness-side">
+      <div class="panel-header">
+        <h2>Ultimo documento</h2>
+      </div>
+      <div class="document-summary">
+        {% if readiness.latest_document %}
+          <p><strong>Consulenza v{{ readiness.latest_document.version }}</strong></p>
+          <p>{{ readiness.latest_document.generated_at }}</p>
+          <div class="file-links">
+            {% if readiness.latest_document.docx_file %}
+              <a href="{{ readiness.latest_document.docx_file.url }}">DOCX</a>
+            {% endif %}
+            {% if readiness.latest_document.pdf_file %}
+              <a href="{{ readiness.latest_document.pdf_file.url }}">PDF</a>
+            {% endif %}
+          </div>
+        {% else %}
+          <p class="muted-text">Nessun documento consulenza generato.</p>
+        {% endif %}
+      </div>
+    </article>
+  </section>
+
   <section class="detail-grid">
     <article class="panel detail-panel">
       <div class="panel-header">
