@@ -47,7 +47,7 @@
         <tbody>
           {% for job in jobs %}
             <tr>
-              <td>{{ job.number }}</td>
+              <td><a href="{% url 'jobs:detail' job.pk %}">{{ job.number }}</a></td>
               <td>{{ job.customer.name }}</td>
               <td><a href="{% url 'estimates:detail' job.estimate.pk %}">{{ job.estimate.number }}</a></td>
               <td>{{ job.selected_configuration.name }}</td>

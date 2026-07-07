@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import MaterialForm, PrinterForm
@@ -6,8 +7,19 @@ from .models import Material, Printer
 
 
 def material_list(request):
+    query = request.GET.get("q", "").strip()
     materials = Material.objects.all()
-    return render(request, "inventory/material_list.html", {"materials": materials})
+    if query:
+        materials = materials.filter(
+            Q(name__icontains=query)
+            | Q(material_type__icontains=query)
+            | Q(brand__icontains=query)
+            | Q(color__icontains=query)
+            | Q(supplier__icontains=query)
+            | Q(technical_notes__icontains=query)
+            | Q(uv_resistance__icontains=query)
+        )
+    return render(request, "inventory/material_list.html", {"materials": materials, "query": query})
 
 
 def material_create(request):
@@ -30,8 +42,17 @@ def material_update(request, pk):
 
 
 def printer_list(request):
+    query = request.GET.get("q", "").strip()
     printers = Printer.objects.all()
-    return render(request, "inventory/printer_list.html", {"printers": printers})
+    if query:
+        printers = printers.filter(
+            Q(name__icontains=query)
+            | Q(model__icontains=query)
+            | Q(build_volume__icontains=query)
+            | Q(supported_materials__icontains=query)
+            | Q(notes__icontains=query)
+        )
+    return render(request, "inventory/printer_list.html", {"printers": printers, "query": query})
 
 
 def printer_create(request):

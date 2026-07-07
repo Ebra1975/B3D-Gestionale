@@ -179,6 +179,36 @@
             <div><dt>Unitario</dt><dd>{{ configuration.unit_price|floatformat:2 }} EUR</dd></div>
           </dl>
 
+          <div class="pricing-box">
+            <div class="pricing-summary">
+              <div>
+                <span class="metric-label">Costo interno</span>
+                <strong>{{ configuration.base_cost|floatformat:2 }} EUR</strong>
+              </div>
+              <div>
+                <span class="metric-label">Margine</span>
+                <strong>{{ configuration.margin_total|floatformat:2 }} EUR</strong>
+                <small>{{ configuration.margin_percentage|floatformat:2 }}%</small>
+              </div>
+              <div>
+                <span class="metric-label">Totale proposta</span>
+                <strong>{{ configuration.total|floatformat:2 }} EUR</strong>
+              </div>
+            </div>
+            <form class="pricing-form" method="post" action="{% url 'estimates:apply_pricing_rule' configuration.pk %}">
+              {% csrf_token %}
+              <div class="form-field">
+                <label for="margin-{{ configuration.pk }}">Margine %</label>
+                <input id="margin-{{ configuration.pk }}" type="number" name="margin_percentage" min="0" step="0.01" value="30">
+              </div>
+              <div class="form-field">
+                <label for="rounding-{{ configuration.pk }}">Arrotonda a EUR</label>
+                <input id="rounding-{{ configuration.pk }}" type="number" name="rounding_step" min="0" step="0.01" value="5">
+              </div>
+              <button class="button secondary compact" type="submit">Applica prezzo</button>
+            </form>
+          </div>
+
           <div class="quick-actions cost-actions">
             <form method="post" action="{% url 'estimates:add_material_cost' configuration.pk %}">
               {% csrf_token %}

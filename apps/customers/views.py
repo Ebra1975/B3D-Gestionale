@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import CustomerForm
@@ -6,8 +7,18 @@ from .models import Customer
 
 
 def customer_list(request):
+    query = request.GET.get("q", "").strip()
     customers = Customer.objects.all()
-    return render(request, "customers/list.html", {"customers": customers})
+    if query:
+        customers = customers.filter(
+            Q(name__icontains=query)
+            | Q(contact_person__icontains=query)
+            | Q(email__icontains=query)
+            | Q(phone__icontains=query)
+            | Q(tax_code__icontains=query)
+            | Q(notes__icontains=query)
+        )
+    return render(request, "customers/list.html", {"customers": customers, "query": query})
 
 
 def customer_create(request):

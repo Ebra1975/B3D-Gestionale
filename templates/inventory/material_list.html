@@ -9,6 +9,19 @@
 {% endblock %}
 
 {% block content %}
+  <section class="panel filter-panel">
+    <form class="filter-form" method="get">
+      <div class="form-field">
+        <label for="material-search">Cerca</label>
+        <input id="material-search" type="search" name="q" value="{{ query }}" placeholder="Materiale, marca, colore, fornitore">
+      </div>
+      <div class="filter-actions">
+        <button class="button" type="submit">Cerca</button>
+        <a class="button secondary" href="{% url 'inventory:materials' %}">Pulisci</a>
+      </div>
+    </form>
+  </section>
+
   <section class="panel">
     <div class="panel-header">
       <h2>Elenco materiali</h2>

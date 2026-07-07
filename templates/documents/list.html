@@ -5,6 +5,19 @@
 {% block eyebrow %}Template e PDF generati{% endblock %}
 
 {% block content %}
+  <section class="panel filter-panel">
+    <form class="filter-form" method="get">
+      <div class="form-field">
+        <label for="document-search">Cerca</label>
+        <input id="document-search" type="search" name="q" value="{{ query }}" placeholder="Template, preventivo, cliente, oggetto">
+      </div>
+      <div class="filter-actions">
+        <button class="button" type="submit">Cerca</button>
+        <a class="button secondary" href="{% url 'documents:list' %}">Pulisci</a>
+      </div>
+    </form>
+  </section>
+
   <section class="panel">
     <div class="panel-header">
       <h2>Template DOCX</h2>

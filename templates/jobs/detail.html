@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}{{ job.number }} - Gestionale B3D Lab{% endblock %}
+{% block heading %}{{ job.number }}{% endblock %}
+{% block eyebrow %}Commessa{% endblock %}
+
+{% block actions %}
+  <a class="button secondary" href="{% url 'jobs:list' %}">Torna alle commesse</a>
+  <a class="button" href="{% url 'jobs:update' job.pk %}">Aggiorna commessa</a>
+{% endblock %}
+
+{% block content %}
+  <section class="readiness-grid">
+    <article class="panel readiness-main">
+      <div class="panel-header split-header">
+        <h2>Stato lavoro</h2>
+        <span class="badge">{{ job.get_status_display }}</span>
+      </div>
+      <div class="readiness-body">
+        <div class="price-summary">
+          <div>
+            <span class="metric-label">Cliente</span>
+            <strong>{{ job.customer.name }}</strong>
+          </div>
+          <div>
+            <span class="metric-label">Totale previsto</span>
+            <strong>{{ job.selected_configuration.total|floatformat:2 }} EUR</strong>
+          </div>
+          <div>
+            <span class="metric-label">Consegna prevista</span>
+            <strong>{{ job.expected_delivery|default:"-" }}</strong>
+          </div>
+        </div>
+
+        <div class="job-timeline">
+          <div>
+            <span class="metric-label">Avvio</span>
+            <strong>{{ job.start_date|default:"-" }}</strong>
+          </div>
+          <div>
+            <span class="metric-label">Consegna</span>
+            <strong>{{ job.delivered_at|default:"-" }}</strong>
+          </div>
+          <div>
+            <span class="metric-label">Preventivo origine</span>
+            <strong><a href="{% url 'estimates:detail' job.estimate.pk %}">{{ job.estimate.number }}</a></strong>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="panel readiness-side">
+      <div class="panel-header">
+        <h2>Azioni rapide</h2>
+      </div>
+      <div class="document-summary">
+        <p class="muted-text">Aggiorna stato, date e note operative mentre il lavoro avanza.</p>
+        <a class="button" href="{% url 'jobs:update' job.pk %}">Modifica dati operativi</a>
+      </div>
+    </article>
+  </section>
+
+  <section class="detail-grid">
+    <article class="panel detail-panel">
+      <div class="panel-header">
+        <h2>Dati commessa</h2>
+      </div>
+      <dl class="definition-list">
+        <div><dt>Cliente</dt><dd>{{ job.customer.name }}</dd></div>
+        <div><dt>Preventivo</dt><dd><a href="{% url 'estimates:detail' job.estimate.pk %}">{{ job.estimate.number }}</a></dd></div>
+        <div><dt>Oggetto</dt><dd>{{ job.estimate.subject }}</dd></div>
+        <div><dt>Configurazione scelta</dt><dd>{{ job.selected_configuration.name }}</dd></div>
+        <div><dt>Creata il</dt><dd>{{ job.created_at }}</dd></div>
+        <div><dt>Aggiornata il</dt><dd>{{ job.updated_at }}</dd></div>
+      </dl>
+    </article>
+
+    <article class="panel detail-panel">
+      <div class="panel-header">
+        <h2>Note operative</h2>
+      </div>
+      <div class="prose">
+        <p>{{ job.operational_notes|default:"Nessuna nota operativa inserita." }}</p>
+        {% if job.final_notes %}
+          <h3>Note finali</h3>
+          <p>{{ job.final_notes }}</p>
+        {% endif %}
+      </div>
+    </article>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header split-header">
+      <h2>Configurazione confermata</h2>
+      <a class="button secondary compact" href="{% url 'estimates:configuration_update' job.selected_configuration.pk %}">Apri configurazione</a>
+    </div>
+    <dl class="definition-list inline">
+      <div><dt>Materiale</dt><dd>{{ job.selected_configuration.material|default:"-" }}</dd></div>
+      <div><dt>Stampante</dt><dd>{{ job.selected_configuration.printer|default:"-" }}</dd></div>
+      <div><dt>Processo</dt><dd>{{ job.selected_configuration.process|default:"-" }}</dd></div>
+      <div><dt>Trattamento</dt><dd>{{ job.selected_configuration.treatment|default:"-" }}</dd></div>
+      <div><dt>Durata attesa</dt><dd>{{ job.selected_configuration.expected_duration|default:"-" }}</dd></div>
+      <div><dt>Quantita</dt><dd>{{ job.selected_configuration.quantity }}</dd></div>
+    </dl>
+    <div class="prose">
+      <p>{{ job.selected_configuration.description|default:"Nessuna descrizione configurazione inserita." }}</p>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Costi previsti interni</h2>
+    </div>
+    {% if job.selected_configuration.cost_items.all %}
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Categoria</th>
+            <th>Descrizione</th>
+            <th>Quantita</th>
+            <th>Costo unitario</th>
+            <th>Totale</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in job.selected_configuration.cost_items.all %}
+            <tr>
+              <td>{{ item.get_category_display }}</td>
+              <td>{{ item.description }}</td>
+              <td>{{ item.quantity }} {{ item.unit }}</td>
+              <td>{{ item.unit_cost|floatformat:2 }} EUR</td>
+              <td>{{ item.total|floatformat:2 }} EUR</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="empty-state compact-empty">
+        <p>Nessuna voce di costo prevista sulla configurazione confermata.</p>
+      </div>
+    {% endif %}
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Documenti collegati al preventivo</h2>
+    </div>
+    {% if job.estimate.generated_documents.all %}
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Versione</th>
+            <th>Generato il</th>
+            <th>File</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for document in job.estimate.generated_documents.all %}
+            <tr>
+              <td>{{ document.get_document_type_display }}</td>
+              <td>v{{ document.version }}</td>
+              <td>{{ document.generated_at }}</td>
+              <td>
+                {% if document.docx_file %}
+                  <a href="{{ document.docx_file.url }}">DOCX</a>
+                {% endif %}
+                {% if document.pdf_file %}
+                  <a href="{{ document.pdf_file.url }}">PDF</a>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="empty-state compact-empty">
+        <p>Nessun documento generato dal preventivo collegato.</p>
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}

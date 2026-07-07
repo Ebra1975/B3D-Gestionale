@@ -42,16 +42,22 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Sprint 02 | Manuale operativo nella sidebar | Approvato come prima versione | Serve all'operatore per seguire procedure come preventivo e commessa. |
 | Sprint 02 | Creazione commessa da preventivo accettato | Approvato come primo flusso | Collega preventivo, cliente e configurazione scelta senza ricopiare dati. |
 | Sprint 02 | Ricerca e filtri su preventivi e commesse | Approvato come prima versione | Aiuta a distinguere lavoro aperto, convertito e commesse operative. |
+| Sprint 03 | Dettaglio commessa operativo | Approvato come prima versione | Mostra stato, date, note, preventivo, configurazione scelta, costi previsti e documenti collegati. |
+| Sprint 03 | Ricerca estesa sugli archivi principali | Approvato come prima versione | Aggiunge ricerca a clienti, materiali, stampanti e documenti. |
+| Sprint 03 | Formula prezzo/margine base | Approvato come prima versione | Calcola una voce interna di margine commerciale da costo interno, percentuale e arrotondamento. |
+| Sprint 03 | Backup locale di sviluppo | Approvato come prima versione | Comando `backup_local` per salvare SQLite, media e documentazione in uno zip. |
+| Sprint 03 | Procedura BMAX Linux Server | Approvato come prima bozza | Guida iniziale per installazione Docker Compose in rete locale. |
+| Sprint 03 | Template consulenza base v2 | Approvato come prima rifinitura | Layout piu ordinato con intestazione, riepilogo cliente/preventivo, sezione tecnica, sintesi economica e nota fiscale da validare. |
+| Sprint 03 | Procedura GitHub | Approvato come guida | Repository privato GitHub previsto come ponte dev/prod; collegamento remoto da completare dopo creazione repository. |
 
 ## In Revisione
 
 | Area | Elemento | Stato | Note |
 |---|---|---|---|
 | Interfaccia | Dettaglio grafico schermate | Da definire | Layout, colori, logo, densita delle informazioni. |
-| Calcolo | Margine e prezzi | Da definire | Serve formula iniziale. |
-| Documenti | Layout grafico template `.docx` | Da definire | Partire dai PDF esistenti come riferimento. |
-| Documenti | Template consulenza base generato dal gestionale | Provvisorio | Serve a testare il flusso reale; il layout finale resta da definire. |
-| Installazione | Procedura Linux Server | Da definire | Scrivere guida passo passo. |
+| Documenti | Layout grafico template `.docx` definitivo | Da definire | Il template base v2 e una prima rifinitura, non il layout finale di brand. |
+| Backup | Backup automatico BMAX | Da definire | Dopo la procedura manuale serve automatizzare frequenza, rotazione e controllo esito. |
+| Installazione | Rifinitura produzione stabile | Da definire | Verificare direttamente sul BMAX Docker, LibreOffice PDF, IP locale e riavvio automatico. |
 | Prodotto | Implementazione listini e accordi | Da pianificare | Dopo flusso preventivo base. |
 | Prodotto | Implementazione documenti contrattuali cliente | Da pianificare | NDA, accordi quadro, condizioni particolari, listini firmati. |
 | Prodotto | Implementazione AI e regole lavorazione | Da pianificare | Prima regole semplici, poi AI generativa. |

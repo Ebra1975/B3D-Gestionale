@@ -49,6 +49,13 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-07 | Commesse | Una commessa puo essere creata dal dettaglio di un preventivo accettato. | Evita ricopiature manuali e collega commessa, cliente, preventivo e configurazione scelta. |
 | 2026-07-07 | Liste operative | Le liste preventivi e commesse hanno ricerca e filtri base. | Aiuta a trovare rapidamente record e separa i preventivi ancora da lavorare da quelli gia convertiti in commessa. |
 | 2026-07-07 | Metodo di lavoro | Ogni chiusura sprint include controllo di allineamento documentazione. | Evita che manuale operativo, board, decisioni e schermate restino indietro rispetto al software. |
+| 2026-07-07 | Sprint 03 | La prima parte dello sprint consolida la gestione commessa usando i campi gia presenti nel modello. | Permette di seguire il lavoro dopo accettazione senza introdurre complessita o migrazioni premature. |
+| 2026-07-07 | Liste operative | La ricerca viene estesa a clienti, materiali, stampanti e documenti. | Riduce il tempo per trovare dati quando gli archivi iniziano a crescere. |
+| 2026-07-07 | Calcolo | La prima formula prezzo/margine genera una voce interna "Margine commerciale" partendo da costo interno, percentuale e arrotondamento. | Mantiene un solo dettaglio economico interno e rende piu ripetibile il prezzo finale senza aggiungere nuovi campi al modello dati. |
+| 2026-07-07 | Backup | Il backup locale di sviluppo viene gestito con un comando Django dedicato. | Permette di salvare database SQLite, media e documentazione in modo ripetibile durante lo sviluppo. |
+| 2026-07-07 | Installazione | La prima procedura BMAX viene documentata come installazione Docker Compose in rete locale. | Prepara il passaggio al mini PC senza cambiare stack approvato. |
+| 2026-07-07 | Documenti | Il template consulenza base generato dal gestionale viene rifinito come v2. | Migliora leggibilita e presentazione cliente, continuando a non esporre il dettaglio economico interno. |
+| 2026-07-07 | Versionamento | GitHub viene preparato come repository privato da collegare al Git locale. | Serve come ponte tra sviluppo Windows e installazione BMAX, senza caricare dati, media, backup o segreti. |
 
 ## Decisioni Da Prendere
 

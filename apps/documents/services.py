@@ -9,7 +9,10 @@ from django.conf import settings
 from django.db.models import Max
 from docxtpl import DocxTemplate
 from docx import Document
+from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.oxml import OxmlElement
+from docx.oxml.ns import qn
 from docx.shared import Cm, Pt, RGBColor
 
 from .models import DocumentTemplate, GeneratedDocument
@@ -134,7 +137,37 @@ def build_consulting_context(estimate):
                 "Dicitura commerciale e fiscale da validare con commercialista."
             ),
         },
+        "b3d": {
+            "nome": "B3D Lab",
+            "sottotitolo": "Consulenza tecnica e manifattura additiva",
+        },
     }
+
+
+def set_cell_background(cell, color):
+    cell_properties = cell._tc.get_or_add_tcPr()
+    shading = OxmlElement("w:shd")
+    shading.set(qn("w:fill"), color)
+    cell_properties.append(shading)
+
+
+def set_cell_text(cell, text, bold=False, color=None):
+    cell.text = ""
+    paragraph = cell.paragraphs[0]
+    run = paragraph.add_run(text)
+    run.bold = bold
+    if color:
+        run.font.color.rgb = RGBColor.from_string(color)
+
+
+def add_section_title(document, text):
+    paragraph = document.add_paragraph()
+    paragraph.paragraph_format.space_before = Pt(12)
+    paragraph.paragraph_format.space_after = Pt(6)
+    run = paragraph.add_run(text)
+    run.bold = True
+    run.font.size = Pt(12)
+    run.font.color.rgb = RGBColor(35, 87, 166)
 
 
 def create_default_consulting_template(template_path):
@@ -142,66 +175,149 @@ def create_default_consulting_template(template_path):
 
     document = Document()
     section = document.sections[0]
-    section.top_margin = Cm(2.0)
-    section.bottom_margin = Cm(2.0)
-    section.left_margin = Cm(2.0)
-    section.right_margin = Cm(2.0)
+    section.top_margin = Cm(1.6)
+    section.bottom_margin = Cm(1.6)
+    section.left_margin = Cm(1.8)
+    section.right_margin = Cm(1.8)
 
     styles = document.styles
-    styles["Normal"].font.name = "Arial"
+    styles["Normal"].font.name = "Aptos"
     styles["Normal"].font.size = Pt(10.5)
 
-    title = document.add_paragraph()
-    title.alignment = WD_ALIGN_PARAGRAPH.LEFT
-    run = title.add_run("B3D Lab")
+    header = document.add_table(rows=1, cols=2)
+    header.autofit = True
+    left, right = header.rows[0].cells
+    set_cell_background(left, "F3F6FA")
+    set_cell_background(right, "2457A6")
+    left.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
+    right.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
+
+    brand = left.paragraphs[0]
+    brand.paragraph_format.space_after = Pt(2)
+    run = brand.add_run("{{ b3d.nome }}")
     run.bold = True
     run.font.size = Pt(18)
-    run.font.color.rgb = RGBColor(35, 58, 89)
+    run.font.color.rgb = RGBColor(23, 32, 42)
+    subtitle = left.add_paragraph()
+    run = subtitle.add_run("{{ b3d.sottotitolo }}")
+    run.font.size = Pt(9)
+    run.font.color.rgb = RGBColor(97, 112, 128)
 
-    subtitle = document.add_paragraph()
-    run = subtitle.add_run("Proposta di consulenza tecnica")
+    doc_type = right.paragraphs[0]
+    doc_type.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+    run = doc_type.add_run("PROPOSTA DI CONSULENZA")
     run.bold = True
-    run.font.size = Pt(14)
+    run.font.size = Pt(11)
+    run.font.color.rgb = RGBColor(255, 255, 255)
+    meta = right.add_paragraph()
+    meta.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+    run = meta.add_run("N. {{ preventivo.numero }} | {{ preventivo.data }}")
+    run.font.size = Pt(9)
+    run.font.color.rgb = RGBColor(255, 255, 255)
 
-    document.add_paragraph("Preventivo n. {{ preventivo.numero }} del {{ preventivo.data }}")
-    document.add_paragraph("Cliente: {{ cliente.nome }}")
-    document.add_paragraph("Oggetto: {{ preventivo.oggetto }}")
+    document.add_paragraph()
 
-    document.add_heading("Contesto e richiesta", level=1)
-    document.add_paragraph("{{ preventivo.descrizione }}")
+    summary = document.add_table(rows=4, cols=2)
+    summary.style = "Table Grid"
+    rows = [
+        ("Cliente", "{{ cliente.nome }}"),
+        ("Referente", "{{ cliente.referente }}"),
+        ("Oggetto", "{{ preventivo.oggetto }}"),
+        ("Validita proposta", "{{ preventivo.validita }}"),
+    ]
+    for row, (label, value) in zip(summary.rows, rows):
+        label_cell, value_cell = row.cells
+        set_cell_background(label_cell, "EEF2F7")
+        set_cell_text(label_cell, label, bold=True)
+        set_cell_text(value_cell, value)
 
-    document.add_heading("Configurazione proposta", level=1)
-    document.add_paragraph("{{ configurazione.nome }}")
+    add_section_title(document, "Contesto e richiesta")
+    paragraph = document.add_paragraph("{{ preventivo.descrizione }}")
+    paragraph.paragraph_format.space_after = Pt(8)
+
+    add_section_title(document, "Soluzione proposta")
+    document.add_paragraph("{{ configurazione.nome }}").runs[0].bold = True
     document.add_paragraph("{{ configurazione.descrizione }}")
-    document.add_paragraph("Materiale / processo: {{ configurazione.materiale }} {{ configurazione.processo }}")
-    document.add_paragraph("Modalita operativa: {{ configurazione.modalita }}")
-    document.add_paragraph("Durata attesa: {{ configurazione.durata }}")
-    document.add_paragraph("Note: {{ configurazione.note }}")
 
-    document.add_heading("Compenso", level=1)
-    table = document.add_table(rows=1, cols=3)
+    technical = document.add_table(rows=5, cols=2)
+    technical.style = "Table Grid"
+    rows = [
+        ("Materiale / tecnologia", "{{ configurazione.materiale }}"),
+        ("Processo", "{{ configurazione.processo }}"),
+        ("Trattamento", "{{ configurazione.trattamento }}"),
+        ("Durata attesa", "{{ configurazione.durata }}"),
+        ("Modalita operativa", "{{ configurazione.modalita }}"),
+    ]
+    for row, (label, value) in zip(technical.rows, rows):
+        label_cell, value_cell = row.cells
+        set_cell_background(label_cell, "F8FAFC")
+        set_cell_text(label_cell, label, bold=True)
+        set_cell_text(value_cell, value)
+
+    add_section_title(document, "Sintesi economica")
+    table = document.add_table(rows=1, cols=4)
     table.style = "Table Grid"
     header = table.rows[0].cells
-    header[0].text = "Voce"
-    header[1].text = "Quantita"
-    header[2].text = "Totale"
+    labels = ["Voce", "Quantita", "Unitario", "Totale"]
+    for cell, label in zip(header, labels):
+        set_cell_background(cell, "2457A6")
+        set_cell_text(cell, label, bold=True, color="FFFFFF")
     row = table.add_row().cells
     row[0].text = "{{ proposta.voce }}"
     row[1].text = "{{ preventivo.quantita }}"
-    row[2].text = "{{ proposta.totale }}"
+    row[2].text = "{{ proposta.unitario }}"
+    row[3].text = "{{ proposta.totale }}"
 
-    document.add_paragraph("Prezzo unitario indicativo: {{ proposta.unitario }}")
-    document.add_paragraph("{{ proposta.nota_fiscale }}")
+    total_row = table.add_row().cells
+    total_row[0].merge(total_row[2])
+    set_cell_background(total_row[0], "EEF2F7")
+    set_cell_background(total_row[3], "EEF2F7")
+    set_cell_text(total_row[0], "Totale proposta", bold=True)
+    set_cell_text(total_row[3], "{{ proposta.totale }}", bold=True)
 
-    document.add_heading("Condizioni", level=1)
-    document.add_paragraph("Validita proposta: {{ preventivo.validita }}")
+    fiscal_note = document.add_paragraph()
+    fiscal_note.paragraph_format.space_before = Pt(6)
+    run = fiscal_note.add_run("Nota: ")
+    run.bold = True
+    fiscal_note.add_run("{{ proposta.nota_fiscale }}")
+
+    add_section_title(document, "Condizioni e note")
     document.add_paragraph("{{ preventivo.condizioni }}")
+    document.add_paragraph("{{ configurazione.note }}")
+
+    footer = section.footer.paragraphs[0]
+    footer.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    run = footer.add_run("B3D Lab - Documento generato dal gestionale interno")
+    run.font.size = Pt(8)
+    run.font.color.rgb = RGBColor(97, 112, 128)
 
     document.save(template_path)
     return template_path
 
 
 def get_or_create_default_consulting_template():
+    generated_template = (
+        DocumentTemplate.objects.filter(
+            document_type=DocumentTemplate.DocumentType.CONSULTING_ESTIMATE,
+            active=True,
+            name__startswith="Preventivo consulenza base",
+        )
+        .order_by("-uploaded_at", "-id")
+        .first()
+    )
+    if generated_template:
+        relative_path = Path("templates") / "consulting_estimate" / "preventivo_consulenza_base_v2.docx"
+        absolute_path = Path(settings.MEDIA_ROOT) / relative_path
+        create_default_consulting_template(absolute_path)
+        generated_template.template_file = str(relative_path).replace("\\", "/")
+        generated_template.template_version = "v2"
+        generated_template.notes = (
+            "Template base generato dal gestionale e rifinito nello Sprint 03. "
+            "Resta sostituibile con un template DOCX personalizzato."
+        )
+        generated_template.save(update_fields=["template_file", "template_version", "notes"])
+        return generated_template
+
     template = (
         DocumentTemplate.objects.filter(
             document_type=DocumentTemplate.DocumentType.CONSULTING_ESTIMATE,
@@ -213,7 +329,7 @@ def get_or_create_default_consulting_template():
     if template:
         return template
 
-    relative_path = Path("templates") / "consulting_estimate" / "preventivo_consulenza_base_v1.docx"
+    relative_path = Path("templates") / "consulting_estimate" / "preventivo_consulenza_base_v2.docx"
     absolute_path = Path(settings.MEDIA_ROOT) / relative_path
     create_default_consulting_template(absolute_path)
 
@@ -222,9 +338,12 @@ def get_or_create_default_consulting_template():
         document_type=DocumentTemplate.DocumentType.CONSULTING_ESTIMATE,
         profile="consulting",
         template_file=str(relative_path).replace("\\", "/"),
-        template_version="v1",
+        template_version="v2",
         active=True,
-        notes="Template base generato dal gestionale per il primo flusso reale Sprint 02.",
+        notes=(
+            "Template base generato dal gestionale e rifinito nello Sprint 03. "
+            "Resta sostituibile con un template DOCX personalizzato."
+        ),
     )
 
 

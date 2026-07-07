@@ -150,6 +150,7 @@ Azioni:
 - aggiungi configurazione;
 - duplica configurazione;
 - modifica costi interni;
+- applica prezzo/margine;
 - genera documento per questa configurazione;
 - marca come configurazione scelta.
 
@@ -180,6 +181,19 @@ Per ogni voce:
 - totale;
 - note.
 
+La scheda configurazione mostra anche un riepilogo prezzo con:
+
+- costo interno senza margine;
+- margine commerciale;
+- percentuale margine effettiva;
+- totale proposta.
+
+La prima regola prezzo/margine usa:
+
+- percentuale di margine;
+- arrotondamento al multiplo indicato;
+- voce interna **Margine commerciale**.
+
 ### Documenti Cliente
 
 Da ogni preventivo si deve poter generare:
@@ -189,6 +203,16 @@ Da ogni preventivo si deve poter generare:
 - proposta fornitura/artigiano.
 
 La scelta del profilo non deve cambiare i dati del preventivo: cambia solo come vengono presentati.
+
+Il template consulenza base generato dal gestionale e stato rifinito in versione v2 con:
+
+- intestazione B3D Lab;
+- riepilogo cliente/preventivo;
+- sezione tecnica;
+- sintesi economica cliente;
+- nota fiscale/commerciale marcata come da validare.
+
+Il template v2 non e ancora il layout definitivo di brand, ma e piu adatto a controllare il flusso cliente rispetto al template provvisorio iniziale.
 
 ## Commesse
 
@@ -229,19 +253,22 @@ Mostrare:
 - dati cliente;
 - preventivo collegato;
 - configurazione scelta;
-- file collegati;
+- documenti collegati al preventivo;
 - note operative;
-- fasi di lavoro;
-- costi finali effettivi;
-- differenza tra previsto e reale.
+- costi previsti interni della configurazione scelta;
+- date operative;
+- note finali.
 
 ### Azioni
 
 - cambia stato;
 - aggiungi nota;
-- allega file;
-- registra tempo o costo extra;
+- aggiorna data avvio;
+- aggiorna consegna prevista;
+- registra data consegna;
 - chiudi commessa.
+
+Nella prima versione Sprint 03 la scheda commessa non registra ancora costi finali effettivi o file allegati dedicati alla commessa. Questi restano passaggi successivi.
 
 ## Materiali
 
@@ -261,6 +288,8 @@ Mostrare:
 - disponibilita;
 - resistenza UV;
 - note.
+
+La lista deve avere una ricerca per nome, tipo, marca, colore, fornitore e note.
 
 ### Scheda Materiale
 
@@ -290,6 +319,8 @@ Mostrare:
 - costo orario stimato;
 - stato.
 
+La lista deve avere una ricerca per nome, modello, materiali supportati e note.
+
 ### Scheda Stampante
 
 Mostrare:
@@ -318,6 +349,8 @@ Mostrare:
 - versione;
 - file `.docx`;
 - file PDF.
+
+La lista deve avere una ricerca per template, preventivo, cliente e oggetto.
 
 Tipi:
 

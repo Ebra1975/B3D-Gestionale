@@ -18,6 +18,7 @@ urlpatterns = [
     path("configurazioni/<int:pk>/costi/auto/materiale/", views.add_material_cost, name="add_material_cost"),
     path("configurazioni/<int:pk>/costi/auto/macchina/", views.add_machine_time_cost, name="add_machine_time_cost"),
     path("configurazioni/<int:pk>/costi/auto/setup/", views.add_setup_cost, name="add_setup_cost"),
+    path("configurazioni/<int:pk>/prezzo/applica/", views.apply_pricing_rule, name="apply_pricing_rule"),
     path("configurazioni/<int:pk>/costi/nuovo/", views.cost_item_create, name="cost_item_create"),
     path("costi/<int:pk>/modifica/", views.cost_item_update, name="cost_item_update"),
 ]

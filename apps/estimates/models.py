@@ -81,6 +81,22 @@ class EstimateConfiguration(models.Model):
         return value or Decimal("0.00")
 
     @property
+    def base_cost(self):
+        value = self.cost_items.exclude(category=CostItem.Category.MARGIN).aggregate(total=Sum("total"))["total"]
+        return value or Decimal("0.00")
+
+    @property
+    def margin_total(self):
+        value = self.cost_items.filter(category=CostItem.Category.MARGIN).aggregate(total=Sum("total"))["total"]
+        return value or Decimal("0.00")
+
+    @property
+    def margin_percentage(self):
+        if not self.base_cost:
+            return Decimal("0.00")
+        return self.margin_total / self.base_cost * Decimal("100")
+
+    @property
     def unit_price(self):
         if not self.quantity:
             return Decimal("0.00")

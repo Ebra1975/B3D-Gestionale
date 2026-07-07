@@ -3,13 +3,14 @@ from django.db import transaction
 from django.db.models import Exists, OuterRef, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
+from decimal import Decimal, ROUND_CEILING
 
 from apps.documents.models import GeneratedDocument
 from apps.documents.services import generate_consulting_estimate_docx
 from apps.jobs.models import Job
 from apps.jobs.services import create_job_from_estimate
 
-from .forms import CostItemForm, EstimateConfigurationForm, EstimateForm
+from .forms import CostItemForm, EstimateConfigurationForm, EstimateForm, PricingRuleForm
 from .models import CostItem, Estimate, EstimateConfiguration
 
 
@@ -31,6 +32,33 @@ def upsert_cost_item(configuration, category, defaults):
         setattr(cost_item, field, value)
     cost_item.save()
     return cost_item, created
+
+
+def money(value):
+    return value.quantize(Decimal("0.01"))
+
+
+def round_up_to_step(value, step):
+    if step <= 0:
+        return money(value)
+    multiplier = (value / step).to_integral_value(rounding=ROUND_CEILING)
+    return money(multiplier * step)
+
+
+def build_configuration_pricing(configuration):
+    cost_items = list(configuration.cost_items.all())
+    base_cost = sum((item.total for item in cost_items if item.category != CostItem.Category.MARGIN), Decimal("0.00"))
+    margin_total = sum((item.total for item in cost_items if item.category == CostItem.Category.MARGIN), Decimal("0.00"))
+    total = base_cost + margin_total
+    margin_percentage = Decimal("0.00")
+    if base_cost:
+        margin_percentage = (margin_total / base_cost * Decimal("100")).quantize(Decimal("0.01"))
+    return {
+        "base_cost": money(base_cost),
+        "margin_total": money(margin_total),
+        "total": money(total),
+        "margin_percentage": margin_percentage,
+    }
 
 
 def estimate_list(request):
@@ -127,7 +155,11 @@ def estimate_detail(request, pk):
     return render(
         request,
         "estimates/detail.html",
-        {"estimate": estimate, "readiness": build_estimate_readiness(estimate)},
+        {
+            "estimate": estimate,
+            "readiness": build_estimate_readiness(estimate),
+            "pricing_form": PricingRuleForm(),
+        },
     )
 
 
@@ -195,7 +227,7 @@ def create_job(request, pk):
         messages.success(request, f"Commessa {job.number} creata dal preventivo.")
     else:
         messages.info(request, f"Commessa {job.number} gia presente per questo preventivo.")
-    return redirect("jobs:list")
+    return redirect("jobs:detail", pk=job.pk)
 
 
 def configuration_create(request, pk):
@@ -325,6 +357,56 @@ def add_setup_cost(request, pk):
         "Voce progettazione/setup generata con importo da completare."
         if created
         else "Voce progettazione/setup gia presente e aggiornata.",
+    )
+    return redirect("estimates:detail", pk=configuration.estimate.pk)
+
+
+@transaction.atomic
+@require_POST
+def apply_pricing_rule(request, pk):
+    configuration = get_object_or_404(EstimateConfiguration.objects.select_related("estimate"), pk=pk)
+    form = PricingRuleForm(request.POST)
+    if not form.is_valid():
+        messages.error(request, "Controlla margine e arrotondamento: servono valori numerici validi.")
+        return redirect("estimates:detail", pk=configuration.estimate.pk)
+
+    pricing = build_configuration_pricing(configuration)
+    base_cost = pricing["base_cost"]
+    if base_cost <= 0:
+        messages.error(request, "Inserisci prima almeno un costo interno diverso dal margine.")
+        return redirect("estimates:detail", pk=configuration.estimate.pk)
+
+    margin_percentage = form.cleaned_data["margin_percentage"]
+    rounding_step = form.cleaned_data["rounding_step"]
+    target_total = base_cost * (Decimal("1.00") + margin_percentage / Decimal("100"))
+    target_total = round_up_to_step(target_total, rounding_step)
+    margin_value = money(target_total - base_cost)
+
+    margin_items = list(configuration.cost_items.filter(category=CostItem.Category.MARGIN).order_by("id"))
+    created = not margin_items
+    margin_item = margin_items[0] if margin_items else CostItem(configuration=configuration, category=CostItem.Category.MARGIN)
+    margin_item.description = "Margine commerciale"
+    margin_item.quantity = 1
+    margin_item.unit = "voce"
+    margin_item.unit_cost = margin_value
+    margin_item.visible_internal = True
+    margin_item.visible_consulting = False
+    margin_item.visible_supply = True
+    margin_item.notes = (
+        f"Generato da regola: margine {margin_percentage}%"
+        f", arrotondamento {rounding_step} EUR."
+    )
+    margin_item.save()
+
+    for old_margin_item in margin_items[1:]:
+        old_margin_item.unit_cost = Decimal("0.00")
+        old_margin_item.quantity = 1
+        old_margin_item.notes = "Voce margine disattivata dalla regola prezzo per evitare doppio conteggio."
+        old_margin_item.save(update_fields=["quantity", "unit_cost", "total", "notes"])
+
+    messages.success(
+        request,
+        "Margine commerciale generato." if created else "Margine commerciale aggiornato.",
     )
     return redirect("estimates:detail", pk=configuration.estimate.pk)
 

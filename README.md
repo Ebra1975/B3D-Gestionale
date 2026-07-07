@@ -85,3 +85,19 @@ python manage.py runserver
 ```
 
 La produzione sul BMAX usera invece `DJANGO_ENV=prod` con PostgreSQL tramite Docker Compose.
+
+## Backup E Installazione BMAX
+
+Le prime procedure operative sono in:
+
+- `docs/BACKUP_E_RIPRISTINO.md`
+- `docs/INSTALLAZIONE_BMAX_LINUX.md`
+- `docs/GITHUB_E_VERSIONAMENTO.md`
+
+In sviluppo locale e disponibile il comando:
+
+```bash
+python manage.py backup_local
+```
+
+Il comando crea uno zip in `backups/` con database SQLite, file media e documentazione.

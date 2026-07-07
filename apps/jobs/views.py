@@ -1,6 +1,8 @@
-from django.shortcuts import render
 from django.db.models import Q
+from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect, render
 
+from .forms import JobForm
 from .models import Job
 
 
@@ -34,3 +36,30 @@ def job_list(request):
             "status_choices": Job.Status.choices,
         },
     )
+
+
+def job_detail(request, pk):
+    job = get_object_or_404(
+        Job.objects.select_related(
+            "customer",
+            "estimate",
+            "selected_configuration",
+            "selected_configuration__material",
+            "selected_configuration__printer",
+        ).prefetch_related(
+            "selected_configuration__cost_items",
+            "estimate__generated_documents",
+        ),
+        pk=pk,
+    )
+    return render(request, "jobs/detail.html", {"job": job})
+
+
+def job_update(request, pk):
+    job = get_object_or_404(Job.objects.select_related("estimate"), pk=pk)
+    form = JobForm(request.POST or None, instance=job)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Commessa aggiornata.")
+        return redirect("jobs:detail", pk=job.pk)
+    return render(request, "jobs/form.html", {"form": form, "job": job, "title": f"Modifica {job.number}"})

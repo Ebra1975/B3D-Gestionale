@@ -9,6 +9,19 @@
 {% endblock %}
 
 {% block content %}
+  <section class="panel filter-panel">
+    <form class="filter-form" method="get">
+      <div class="form-field">
+        <label for="customer-search">Cerca</label>
+        <input id="customer-search" type="search" name="q" value="{{ query }}" placeholder="Cliente, referente, email, telefono">
+      </div>
+      <div class="filter-actions">
+        <button class="button" type="submit">Cerca</button>
+        <a class="button secondary" href="{% url 'customers:list' %}">Pulisci</a>
+      </div>
+    </form>
+  </section>
+
   <section class="panel">
     <div class="panel-header">
       <h2>Elenco clienti</h2>

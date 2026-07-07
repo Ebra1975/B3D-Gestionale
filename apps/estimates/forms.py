@@ -62,6 +62,24 @@ class CostItemForm(forms.ModelForm):
         ]
 
 
+class PricingRuleForm(forms.Form):
+    margin_percentage = forms.DecimalField(
+        label="Margine percentuale",
+        min_value=0,
+        max_digits=5,
+        decimal_places=2,
+        initial=30,
+    )
+    rounding_step = forms.DecimalField(
+        label="Arrotonda al multiplo di",
+        min_value=0,
+        max_digits=8,
+        decimal_places=2,
+        initial=5,
+        help_text="Usare 0 per non arrotondare.",
+    )
+
+
 class PrototypeForm(forms.ModelForm):
     class Meta:
         model = Prototype

@@ -9,6 +9,19 @@
 {% endblock %}
 
 {% block content %}
+  <section class="panel filter-panel">
+    <form class="filter-form" method="get">
+      <div class="form-field">
+        <label for="printer-search">Cerca</label>
+        <input id="printer-search" type="search" name="q" value="{{ query }}" placeholder="Stampante, modello, materiali, note">
+      </div>
+      <div class="filter-actions">
+        <button class="button" type="submit">Cerca</button>
+        <a class="button secondary" href="{% url 'inventory:printers' %}">Pulisci</a>
+      </div>
+    </form>
+  </section>
+
   <section class="panel">
     <div class="panel-header">
       <h2>Elenco stampanti</h2>
