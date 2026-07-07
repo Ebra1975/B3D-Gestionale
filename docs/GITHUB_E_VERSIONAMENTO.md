@@ -10,8 +10,14 @@ Il repository Git locale contiene il codice e la documentazione. Non deve conten
 
 - Repository Git locale: presente.
 - Branch locale: `master`.
-- Remote GitHub: da configurare.
+- Remote GitHub: configurato.
 - GitHub CLI: non installata sul PC al momento della verifica Sprint 03.
+
+Repository GitHub:
+
+```text
+https://github.com/Ebra1975/B3D-Gestionale
+```
 
 ## File Da Non Caricare
 
@@ -95,9 +101,13 @@ Prima di inviare modifiche a GitHub:
 4. creare un commit con messaggio chiaro;
 5. inviare su GitHub.
 
+## Completato Sprint 03
+
+- Creato collegamento remote `origin`.
+- Eseguito primo push del branch `master`.
+- Il branch locale traccia `origin/master`.
+
 ## Da Fare
 
-- Creare repository GitHub privato.
-- Configurare remote `origin`.
-- Eseguire primo `git push`.
-- Aggiornare `docs/INSTALLAZIONE_BMAX_LINUX.md` con l'URL reale del repository.
+- Verificare che il repository resti privato.
+- Usare GitHub come sorgente per il futuro clone sul BMAX.

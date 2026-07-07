@@ -22,13 +22,12 @@ Consolidare il flusso post-accettazione e preparare il gestionale a essere piu u
 | Procedura backup/ripristino | Completato come prima bozza | Sapere cosa salvare e come ripristinare. | Creato `docs/BACKUP_E_RIPRISTINO.md` per Windows locale e BMAX Docker/PostgreSQL. |
 | Procedura BMAX Linux Server | Completato come prima bozza | Preparare il passaggio al mini PC in rete locale. | Creato `docs/INSTALLAZIONE_BMAX_LINUX.md`. |
 | Template consulenza base v2 | Completato come prima rifinitura | Rendere la proposta cliente piu leggibile senza esporre i costi interni. | Migliorato template automatico con intestazione, riepilogo, sezione tecnica, tabella economica sintetica e nota fiscale da validare. |
-| Procedura GitHub | Completato come guida | Preparare il ponte tra sviluppo Windows e BMAX. | Creato `docs/GITHUB_E_VERSIONAMENTO.md`; remote GitHub ancora da configurare dopo creazione repository. |
+| Procedura GitHub | Completato | Preparare il ponte tra sviluppo Windows e BMAX. | Creato `docs/GITHUB_E_VERSIONAMENTO.md`, configurato remote `origin` e inviato `master` su GitHub. |
 
 ## Ancora Da Fare Nello Sprint 03
 
 | Tema | Motivo |
 |---|---|
-| Collegamento remoto GitHub effettivo | Serve creare il repository privato su GitHub e configurare `origin`. |
 | Layout DOCX definitivo di brand | Il template v2 e una base piu ordinata, ma resta sostituibile con modello personalizzato. |
 | Backup automatico BMAX | Dopo la procedura manuale serve automatizzare frequenza e rotazione. |
 

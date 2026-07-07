@@ -48,7 +48,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Sprint 03 | Backup locale di sviluppo | Approvato come prima versione | Comando `backup_local` per salvare SQLite, media e documentazione in uno zip. |
 | Sprint 03 | Procedura BMAX Linux Server | Approvato come prima bozza | Guida iniziale per installazione Docker Compose in rete locale. |
 | Sprint 03 | Template consulenza base v2 | Approvato come prima rifinitura | Layout piu ordinato con intestazione, riepilogo cliente/preventivo, sezione tecnica, sintesi economica e nota fiscale da validare. |
-| Sprint 03 | Procedura GitHub | Approvato come guida | Repository privato GitHub previsto come ponte dev/prod; collegamento remoto da completare dopo creazione repository. |
+| Sprint 03 | Collegamento GitHub | Approvato | Repository `Ebra1975/B3D-Gestionale` configurato come `origin` e primo push completato. |
 
 ## In Revisione
 

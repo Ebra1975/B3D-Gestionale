@@ -47,11 +47,9 @@ Installare Docker seguendo la procedura ufficiale della distribuzione Linux scel
 Quando il collegamento GitHub sara pronto:
 
 ```bash
-git clone URL_REPOSITORY_GITHUB gestionale-b3d
+git clone https://github.com/Ebra1975/B3D-Gestionale.git gestionale-b3d
 cd gestionale-b3d
 ```
-
-Fino al collegamento GitHub, il trasferimento puo essere fatto manualmente, ma non e la soluzione consigliata per l'uso stabile.
 
 La procedura di collegamento GitHub e descritta in `docs/GITHUB_E_VERSIONAMENTO.md`.
 

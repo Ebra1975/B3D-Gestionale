@@ -56,6 +56,7 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-07 | Installazione | La prima procedura BMAX viene documentata come installazione Docker Compose in rete locale. | Prepara il passaggio al mini PC senza cambiare stack approvato. |
 | 2026-07-07 | Documenti | Il template consulenza base generato dal gestionale viene rifinito come v2. | Migliora leggibilita e presentazione cliente, continuando a non esporre il dettaglio economico interno. |
 | 2026-07-07 | Versionamento | GitHub viene preparato come repository privato da collegare al Git locale. | Serve come ponte tra sviluppo Windows e installazione BMAX, senza caricare dati, media, backup o segreti. |
+| 2026-07-07 | Versionamento | Il repository GitHub `Ebra1975/B3D-Gestionale` viene collegato come `origin` e riceve il primo push. | Rende disponibile il codice per il futuro clone sul BMAX e per il passaggio ordinato dev/prod. |
 
 ## Decisioni Da Prendere
 
