@@ -104,6 +104,24 @@
         <div><dt>Profilo</dt><dd>{{ estimate.get_preferred_document_profile_display }}</dd></div>
         <div><dt>Quantita</dt><dd>{{ estimate.quantity }}</dd></div>
       </dl>
+      <div class="quick-actions status-actions">
+        <form method="post" action="{% url 'estimates:update_status' estimate.pk 'sent' %}">
+          {% csrf_token %}
+          <button class="button secondary compact" type="submit">Segna inviato</button>
+        </form>
+        <form method="post" action="{% url 'estimates:update_status' estimate.pk 'revision' %}">
+          {% csrf_token %}
+          <button class="button secondary compact" type="submit">Da rivedere</button>
+        </form>
+        <form method="post" action="{% url 'estimates:update_status' estimate.pk 'accepted' %}">
+          {% csrf_token %}
+          <button class="button secondary compact" type="submit">Accettato</button>
+        </form>
+        <form method="post" action="{% url 'estimates:update_status' estimate.pk 'rejected' %}">
+          {% csrf_token %}
+          <button class="button secondary compact" type="submit">Rifiutato</button>
+        </form>
+      </div>
     </article>
 
     <article class="panel detail-panel">

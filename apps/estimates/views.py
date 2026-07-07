@@ -132,6 +132,20 @@ def generate_consulting_document(request, pk):
     return redirect("estimates:detail", pk=estimate.pk)
 
 
+@require_POST
+def update_estimate_status(request, pk, status):
+    estimate = get_object_or_404(Estimate, pk=pk)
+    valid_statuses = dict(Estimate.Status.choices)
+    if status not in valid_statuses:
+        messages.error(request, "Stato preventivo non valido.")
+        return redirect("estimates:detail", pk=estimate.pk)
+
+    estimate.status = status
+    estimate.save(update_fields=["status", "updated_at"])
+    messages.success(request, f"Preventivo aggiornato: {valid_statuses[status]}.")
+    return redirect("estimates:detail", pk=estimate.pk)
+
+
 def configuration_create(request, pk):
     estimate = get_object_or_404(Estimate, pk=pk)
     form = EstimateConfigurationForm(request.POST or None)

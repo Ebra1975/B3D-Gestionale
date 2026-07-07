@@ -73,7 +73,7 @@ Arrivare a un preventivo con:
 18. Quando il totale e coerente, generare il **DOCX consulenza**.
 19. Scaricare e controllare il DOCX.
 20. Scaricare e controllare il PDF.
-21. Se il documento e corretto, aggiornare lo stato del preventivo secondo il flusso reale, per esempio **Inviato**.
+21. Se il documento e corretto, usare l'azione rapida **Segna inviato** nel dettaglio preventivo.
 
 ### Controlli Prima Di Inviare
 
@@ -87,6 +87,7 @@ Prima di inviare una proposta al cliente, verificare:
 - il prezzo unitario ha senso rispetto alla quantita;
 - il documento cliente non mostra il dettaglio economico interno;
 - eventuali diciture fiscali o commerciali importanti sono da validare con commercialista se non gia confermate.
+- dopo l'invio, lo stato del preventivo e aggiornato a **Inviato**.
 
 ### Cosa Non Fare
 
