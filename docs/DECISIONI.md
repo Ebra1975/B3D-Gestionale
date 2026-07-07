@@ -48,6 +48,7 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-07 | Preventivi | Il dettaglio preventivo include azioni rapide per aggiornare lo stato. | Dopo generazione e invio documento, l'operatore puo segnare rapidamente il preventivo come inviato, da rivedere, accettato o rifiutato. |
 | 2026-07-07 | Commesse | Una commessa puo essere creata dal dettaglio di un preventivo accettato. | Evita ricopiature manuali e collega commessa, cliente, preventivo e configurazione scelta. |
 | 2026-07-07 | Liste operative | Le liste preventivi e commesse hanno ricerca e filtri base. | Aiuta a trovare rapidamente record e separa i preventivi ancora da lavorare da quelli gia convertiti in commessa. |
+| 2026-07-07 | Metodo di lavoro | Ogni chiusura sprint include controllo di allineamento documentazione. | Evita che manuale operativo, board, decisioni e schermate restino indietro rispetto al software. |
 
 ## Decisioni Da Prendere
 

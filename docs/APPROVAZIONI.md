@@ -71,3 +71,11 @@ Una funzione e pronta solo quando:
 - risolve un caso reale;
 - e stata verificata;
 - se cambia una decisione importante, `docs/DECISIONI.md` e aggiornato.
+
+Uno sprint puo essere chiuso solo dopo aver controllato che la documentazione sia allineata a quanto implementato, in particolare:
+
+- `docs/DECISIONI.md`;
+- `docs/APPROVAZIONI.md`;
+- board dello sprint;
+- manuale operativo, se il flusso cambia;
+- schermate e flussi, se cambia l'uso del gestionale.
