@@ -43,6 +43,7 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-06 | Preventivi | Il dettaglio preventivo mostra uno stato operativo con configurazione usata, totale, ultimo documento e controlli mancanti. | Aiuta a capire se la proposta consulenza e pronta senza cercare le informazioni in piu punti della pagina. |
 | 2026-07-06 | Interfaccia | La sidebar resta fissa durante lo scorrimento delle pagine lunghe su desktop. | Mantiene la navigazione sempre disponibile, soprattutto nelle pagine preventivo ricche di informazioni. |
 | 2026-07-07 | Manuale operativo | La "wiki" viene intesa come manuale operativo per l'operatore, con procedure passo passo. | Serve a spiegare come usare il gestionale, ad esempio come fare un preventivo, non a documentare il codice. |
+| 2026-07-07 | Dati demo | Viene aggiunto un comando Django per creare un preventivo demo realistico `B3D-2026-001`. | Permette di testare e mostrare il flusso consulenza DOCX/PDF senza usare dati cliente reali. |
 
 ## Decisioni Da Prendere
 

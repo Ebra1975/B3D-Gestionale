@@ -6,8 +6,9 @@ Questo board raccoglie i temi emersi durante lo Sprint 02, separando cio che e i
 
 | Tema | Stato | Problema Pratico | Prossimo Passo |
 |---|---|---|---|
-| Flusso preventivo consulenza DOCX/PDF | In corso | Generare una proposta cliente partendo dai dati interni del preventivo. | Provare il flusso con un preventivo realistico B3D Lab. |
+| Flusso preventivo consulenza DOCX/PDF | In corso | Generare una proposta cliente partendo dai dati interni del preventivo. | Usare il preventivo demo realistico `B3D-2026-001` per verificare il flusso. |
 | Dettaglio preventivo operativo | In corso | Capire subito se un preventivo e pronto o cosa manca. | Rifinire dati di esempio e controlli utili. |
+| Dati demo realistici | In corso | Testare il gestionale con dati piu vicini al lavoro reale rispetto a `TEST-001`. | Creare/aggiornare il caso demo con `python manage.py seed_demo_data --with-documents`. |
 
 ## Da Ragionare
 

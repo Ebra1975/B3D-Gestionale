@@ -9,6 +9,27 @@ Non e documentazione tecnica per sviluppatori: serve all'operatore per sapere co
 | Procedura | Stato | Scopo |
 |---|---|---|
 | Fare un preventivo consulenza | Bozza iniziale | Creare un preventivo completo e generare DOCX/PDF cliente. |
+| Usare il preventivo demo | Bozza iniziale | Provare il flusso senza usare dati reali di clienti. |
+
+## Procedura - Usare Il Preventivo Demo
+
+### Quando Usarla
+
+Usare questa procedura per provare il gestionale, fare verifiche o mostrare il flusso senza inserire dati reali.
+
+### Passi Operativi
+
+1. Aprire la sezione **Preventivi**.
+2. Cercare il preventivo `B3D-2026-001`.
+3. Aprire il dettaglio preventivo.
+4. Controllare il riquadro **Stato preventivo**.
+5. Verificare che siano presenti totale, prezzo unitario e configurazione scelta.
+6. Generare il **DOCX consulenza** se serve una nuova versione del documento.
+7. Scaricare DOCX e PDF per verificare il risultato.
+
+### Nota
+
+Il preventivo demo non rappresenta un cliente reale. Serve solo a testare il flusso operativo.
 
 ## Procedura - Fare Un Preventivo Consulenza
 
