@@ -39,6 +39,9 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Prodotto | AI come copilota e non come decisore | Approvato | Ogni decisione importante resta al titolare. |
 | Prodotto | Casistiche lavorazione con checklist e regole | Approvato come direzione | Base per automazioni e suggerimenti futuri. |
 | Sprint 02 | Generazione DOCX consulenza dal dettaglio preventivo | Approvato come primo flusso | Generazione locale immediata, senza esporre il dettaglio economico interno. |
+| Sprint 02 | Manuale operativo nella sidebar | Approvato come prima versione | Serve all'operatore per seguire procedure come preventivo e commessa. |
+| Sprint 02 | Creazione commessa da preventivo accettato | Approvato come primo flusso | Collega preventivo, cliente e configurazione scelta senza ricopiare dati. |
+| Sprint 02 | Ricerca e filtri su preventivi e commesse | Approvato come prima versione | Aiuta a distinguere lavoro aperto, convertito e commesse operative. |
 
 ## In Revisione
 
@@ -49,7 +52,6 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Documenti | Layout grafico template `.docx` | Da definire | Partire dai PDF esistenti come riferimento. |
 | Documenti | Template consulenza base generato dal gestionale | Provvisorio | Serve a testare il flusso reale; il layout finale resta da definire. |
 | Installazione | Procedura Linux Server | Da definire | Scrivere guida passo passo. |
-| Tecnologia | Prima struttura progetto applicativo | Da fare | Creare scheletro Django, moduli, configurazione e documentazione avvio. |
 | Prodotto | Implementazione listini e accordi | Da pianificare | Dopo flusso preventivo base. |
 | Prodotto | Implementazione documenti contrattuali cliente | Da pianificare | NDA, accordi quadro, condizioni particolari, listini firmati. |
 | Prodotto | Implementazione AI e regole lavorazione | Da pianificare | Prima regole semplici, poi AI generativa. |
