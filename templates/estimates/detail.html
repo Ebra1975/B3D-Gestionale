@@ -65,6 +65,19 @@
             </ul>
           </div>
         {% endif %}
+
+        <div class="workflow-actions">
+          {% if readiness.existing_job %}
+            <span class="badge success">Commessa {{ readiness.existing_job.number }}</span>
+          {% elif readiness.can_create_job %}
+            <form method="post" action="{% url 'estimates:create_job' estimate.pk %}">
+              {% csrf_token %}
+              <button class="button" type="submit">Crea commessa</button>
+            </form>
+          {% else %}
+            <span class="muted-text">La commessa si crea dopo l'accettazione del preventivo.</span>
+          {% endif %}
+        </div>
       </div>
     </article>
 

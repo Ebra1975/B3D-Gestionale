@@ -10,6 +10,7 @@ Non e documentazione tecnica per sviluppatori: serve all'operatore per sapere co
 |---|---|---|
 | Fare un preventivo consulenza | Bozza iniziale | Creare un preventivo completo e generare DOCX/PDF cliente. |
 | Usare il preventivo demo | Bozza iniziale | Provare il flusso senza usare dati reali di clienti. |
+| Creare una commessa da preventivo accettato | Bozza iniziale | Avviare il lavoro operativo dopo accettazione cliente. |
 
 ## Procedura - Usare Il Preventivo Demo
 
@@ -30,6 +31,26 @@ Usare questa procedura per provare il gestionale, fare verifiche o mostrare il f
 ### Nota
 
 Il preventivo demo non rappresenta un cliente reale. Serve solo a testare il flusso operativo.
+
+## Procedura - Creare Una Commessa Da Preventivo Accettato
+
+### Quando Usarla
+
+Usare questa procedura quando il cliente conferma un preventivo e il lavoro deve diventare una commessa operativa.
+
+### Passi Operativi
+
+1. Aprire il preventivo confermato dal cliente.
+2. Verificare che la configurazione scelta sia corretta.
+3. Usare l'azione rapida **Accettato**.
+4. Nel riquadro **Stato preventivo**, usare **Crea commessa**.
+5. Aprire la sezione **Commesse**.
+6. Verificare che la nuova commessa sia presente.
+7. Completare successivamente date operative, file e note di produzione.
+
+### Risultato Atteso
+
+Il gestionale crea una commessa collegata al preventivo, al cliente e alla configurazione scelta.
 
 ## Procedura - Fare Un Preventivo Consulenza
 

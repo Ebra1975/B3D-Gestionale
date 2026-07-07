@@ -5,6 +5,7 @@ from django.views.decorators.http import require_POST
 
 from apps.documents.models import GeneratedDocument
 from apps.documents.services import generate_consulting_estimate_docx
+from apps.jobs.services import create_job_from_estimate
 
 from .forms import CostItemForm, EstimateConfigurationForm, EstimateForm
 from .models import CostItem, Estimate, EstimateConfiguration
@@ -73,13 +74,16 @@ def build_estimate_readiness(estimate):
         ),
         None,
     )
+    existing_job = estimate.jobs.first()
 
     return {
         "selected_configuration": selected_configuration,
         "missing_items": missing_items,
         "warnings": warnings,
         "latest_document": latest_document,
+        "existing_job": existing_job,
         "can_generate": bool(configurations) and not missing_items,
+        "can_create_job": estimate.status == Estimate.Status.ACCEPTED and existing_job is None,
     }
 
 
@@ -88,6 +92,7 @@ def estimate_detail(request, pk):
         Estimate.objects.select_related("customer").prefetch_related(
             "configurations__cost_items",
             "generated_documents",
+            "jobs",
         ),
         pk=pk,
     )
@@ -144,6 +149,25 @@ def update_estimate_status(request, pk, status):
     estimate.save(update_fields=["status", "updated_at"])
     messages.success(request, f"Preventivo aggiornato: {valid_statuses[status]}.")
     return redirect("estimates:detail", pk=estimate.pk)
+
+
+@require_POST
+def create_job(request, pk):
+    estimate = get_object_or_404(
+        Estimate.objects.select_related("customer").prefetch_related("configurations", "jobs"),
+        pk=pk,
+    )
+    try:
+        job, created = create_job_from_estimate(estimate)
+    except ValueError as error:
+        messages.error(request, str(error))
+        return redirect("estimates:detail", pk=estimate.pk)
+
+    if created:
+        messages.success(request, f"Commessa {job.number} creata dal preventivo.")
+    else:
+        messages.info(request, f"Commessa {job.number} gia presente per questo preventivo.")
+    return redirect("jobs:list")
 
 
 def configuration_create(request, pk):

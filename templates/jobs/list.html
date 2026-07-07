@@ -19,6 +19,7 @@
             <th>Configurazione</th>
             <th>Stato</th>
             <th>Consegna prevista</th>
+            <th>Note operative</th>
           </tr>
         </thead>
         <tbody>
@@ -26,10 +27,11 @@
             <tr>
               <td>{{ job.number }}</td>
               <td>{{ job.customer.name }}</td>
-              <td>{{ job.estimate.number }}</td>
+              <td><a href="{% url 'estimates:detail' job.estimate.pk %}">{{ job.estimate.number }}</a></td>
               <td>{{ job.selected_configuration.name }}</td>
               <td><span class="badge">{{ job.get_status_display }}</span></td>
               <td>{{ job.expected_delivery|default:"-" }}</td>
+              <td>{{ job.operational_notes|default:"-" }}</td>
             </tr>
           {% endfor %}
         </tbody>

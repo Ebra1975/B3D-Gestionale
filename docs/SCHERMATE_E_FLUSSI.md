@@ -399,7 +399,7 @@ Prima bozza in `docs/MANUALE_OPERATIVO.md` e prima schermata consultabile dalla 
 1. Apro il preventivo.
 2. Segno lo stato come accettato.
 3. Scelgo la configurazione confermata.
-4. Creo la commessa.
+4. Uso l'azione **Crea commessa** dal dettaglio preventivo.
 5. Inserisco data avvio e consegna prevista.
 6. Seguo gli stati fino alla consegna.
 

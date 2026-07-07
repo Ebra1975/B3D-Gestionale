@@ -12,6 +12,7 @@ urlpatterns = [
     path("<int:pk>/modifica/", views.estimate_update, name="update"),
     path("<int:pk>/documenti/consulenza/genera/", views.generate_consulting_document, name="generate_consulting_document"),
     path("<int:pk>/stato/<str:status>/", views.update_estimate_status, name="update_status"),
+    path("<int:pk>/commessa/crea/", views.create_job, name="create_job"),
     path("<int:pk>/configurazioni/nuova/", views.configuration_create, name="configuration_create"),
     path("configurazioni/<int:pk>/modifica/", views.configuration_update, name="configuration_update"),
     path("configurazioni/<int:pk>/costi/auto/materiale/", views.add_material_cost, name="add_material_cost"),
