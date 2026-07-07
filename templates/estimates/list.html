@@ -9,6 +9,27 @@
 {% endblock %}
 
 {% block content %}
+  <section class="panel filter-panel">
+    <form class="filter-form" method="get">
+      <div class="form-field">
+        <label for="estimate-search">Cerca</label>
+        <input id="estimate-search" type="search" name="q" value="{{ query }}" placeholder="Numero, cliente, oggetto">
+      </div>
+      <div class="form-field">
+        <label for="estimate-view">Vista</label>
+        <select id="estimate-view" name="view">
+          <option value="active" {% if view_filter == "active" %}selected{% endif %}>Da lavorare</option>
+          <option value="converted" {% if view_filter == "converted" %}selected{% endif %}>Convertiti in commessa</option>
+          <option value="all" {% if view_filter == "all" %}selected{% endif %}>Tutti</option>
+        </select>
+      </div>
+      <div class="filter-actions">
+        <button class="button" type="submit">Filtra</button>
+        <a class="button secondary" href="{% url 'estimates:list' %}">Pulisci</a>
+      </div>
+    </form>
+  </section>
+
   <section class="panel">
     <div class="panel-header">
       <h2>Elenco preventivi</h2>
@@ -27,12 +48,17 @@
         </thead>
         <tbody>
           {% for estimate in estimates %}
-            <tr>
+            <tr class="{% if estimate.has_job %}is-muted-row{% endif %}">
               <td><a href="{% url 'estimates:detail' estimate.pk %}">{{ estimate.number }}</a></td>
               <td>{{ estimate.customer.name }}</td>
               <td>{{ estimate.subject }}</td>
               <td>{{ estimate.date }}</td>
-              <td><span class="badge">{{ estimate.get_status_display }}</span></td>
+              <td>
+                <span class="badge">{{ estimate.get_status_display }}</span>
+                {% if estimate.has_job %}
+                  <span class="badge muted-badge">In commessa</span>
+                {% endif %}
+              </td>
               <td>{{ estimate.get_preferred_document_profile_display }}</td>
             </tr>
           {% endfor %}
@@ -40,7 +66,7 @@
       </table>
     {% else %}
       <div class="empty-state">
-        <p>Nessun preventivo inserito. La prossima funzione sara la creazione guidata.</p>
+        <p>Nessun preventivo trovato con i filtri correnti.</p>
       </div>
     {% endif %}
   </section>

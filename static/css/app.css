@@ -321,6 +321,15 @@ h2 {
   border-top: 1px solid var(--color-line);
 }
 
+.data-table tr.is-muted-row {
+  background: #f7f8fa;
+  color: var(--color-muted);
+}
+
+.data-table tr.is-muted-row a {
+  color: var(--color-muted);
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
@@ -341,6 +350,12 @@ h2 {
 .badge.warning {
   background: #fff4e5;
   color: #b54708;
+}
+
+.badge.muted-badge {
+  background: #eef2f7;
+  color: var(--color-muted);
+  margin-left: 6px;
 }
 
 .file-links {
@@ -436,6 +451,23 @@ h2 {
   display: flex;
   justify-content: flex-end;
   padding-top: 8px;
+}
+
+.filter-panel {
+  margin-bottom: 20px;
+}
+
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(180px, 260px) auto;
+  gap: 14px;
+  align-items: end;
+  padding: 18px;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 10px;
 }
 
 .help-text,
@@ -645,6 +677,7 @@ h2 {
   .readiness-grid,
   .manual-layout,
   .price-summary,
+  .filter-form,
   .definition-list.inline,
   .checklist-grid,
   .form-layout {
@@ -672,5 +705,9 @@ h2 {
 
   .metric-grid {
     grid-template-columns: 1fr;
+  }
+
+  .filter-actions {
+    display: grid;
   }
 }

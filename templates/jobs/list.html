@@ -5,6 +5,28 @@
 {% block eyebrow %}Lavori accettati{% endblock %}
 
 {% block content %}
+  <section class="panel filter-panel">
+    <form class="filter-form" method="get">
+      <div class="form-field">
+        <label for="job-search">Cerca</label>
+        <input id="job-search" type="search" name="q" value="{{ query }}" placeholder="Commessa, cliente, preventivo">
+      </div>
+      <div class="form-field">
+        <label for="job-status">Stato</label>
+        <select id="job-status" name="status">
+          <option value="">Tutti</option>
+          {% for value, label in status_choices %}
+            <option value="{{ value }}" {% if status_filter == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="filter-actions">
+        <button class="button" type="submit">Filtra</button>
+        <a class="button secondary" href="{% url 'jobs:list' %}">Pulisci</a>
+      </div>
+    </form>
+  </section>
+
   <section class="panel">
     <div class="panel-header">
       <h2>Elenco commesse</h2>
@@ -38,7 +60,7 @@
       </table>
     {% else %}
       <div class="empty-state">
-        <p>Nessuna commessa presente. Le commesse nasceranno dai preventivi accettati.</p>
+        <p>Nessuna commessa trovata con i filtri correnti.</p>
       </div>
     {% endif %}
   </section>

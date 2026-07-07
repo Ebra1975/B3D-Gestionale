@@ -11,6 +11,7 @@ Questo board raccoglie i temi emersi durante lo Sprint 02, separando cio che e i
 | Dati demo realistici | In corso | Testare il gestionale con dati piu vicini al lavoro reale rispetto a `TEST-001`. | Creare/aggiornare il caso demo con `python manage.py seed_demo_data --with-documents`. |
 | Azioni rapide stato preventivo | In corso | Aggiornare lo stato dopo invio o risposta cliente senza riaprire il form completo. | Verificare sul preventivo demo il passaggio a Inviato, Da rivedere, Accettato o Rifiutato. |
 | Creazione commessa da preventivo | In corso | Trasformare un preventivo accettato in lavoro operativo senza ricopiare dati. | Verificare con il preventivo demo e poi aggiungere dettaglio commessa. |
+| Ricerca e filtri liste | In corso | Trovare rapidamente preventivi e commesse, distinguendo quelli ancora da lavorare da quelli convertiti. | Estendere in seguito anche a clienti, materiali, stampanti e documenti. |
 
 ## Da Ragionare
 

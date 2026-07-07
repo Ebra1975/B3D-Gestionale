@@ -1,10 +1,12 @@
 from django.contrib import messages
 from django.db import transaction
+from django.db.models import Exists, OuterRef, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
 from apps.documents.models import GeneratedDocument
 from apps.documents.services import generate_consulting_estimate_docx
+from apps.jobs.models import Job
 from apps.jobs.services import create_job_from_estimate
 
 from .forms import CostItemForm, EstimateConfigurationForm, EstimateForm
@@ -32,8 +34,34 @@ def upsert_cost_item(configuration, category, defaults):
 
 
 def estimate_list(request):
-    estimates = Estimate.objects.select_related("customer").all()
-    return render(request, "estimates/list.html", {"estimates": estimates})
+    query = request.GET.get("q", "").strip()
+    view_filter = request.GET.get("view", "active")
+    job_exists = Job.objects.filter(estimate=OuterRef("pk"))
+    estimates = Estimate.objects.select_related("customer").annotate(has_job=Exists(job_exists))
+
+    if query:
+        estimates = estimates.filter(
+            Q(number__icontains=query)
+            | Q(customer__name__icontains=query)
+            | Q(subject__icontains=query)
+            | Q(description__icontains=query)
+        )
+
+    if view_filter == "converted":
+        estimates = estimates.filter(has_job=True)
+    elif view_filter != "all":
+        view_filter = "active"
+        estimates = estimates.filter(has_job=False)
+
+    return render(
+        request,
+        "estimates/list.html",
+        {
+            "estimates": estimates,
+            "query": query,
+            "view_filter": view_filter,
+        },
+    )
 
 
 def build_estimate_readiness(estimate):

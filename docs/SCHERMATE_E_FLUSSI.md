@@ -105,6 +105,8 @@ Mostrare:
 - totale principale;
 - profilo documento scelto.
 
+La lista deve avere una ricerca per numero, cliente e oggetto. I preventivi gia convertiti in commessa devono essere visivamente attenuati e filtrabili separatamente.
+
 Stati:
 
 - bozza;
@@ -206,6 +208,8 @@ Mostrare:
 - data avvio;
 - consegna prevista;
 - avanzamento.
+
+La lista deve avere una ricerca per numero commessa, cliente e preventivo, oltre a un filtro per stato.
 
 Stati:
 

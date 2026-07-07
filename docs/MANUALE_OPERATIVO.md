@@ -46,7 +46,14 @@ Usare questa procedura quando il cliente conferma un preventivo e il lavoro deve
 4. Nel riquadro **Stato preventivo**, usare **Crea commessa**.
 5. Aprire la sezione **Commesse**.
 6. Verificare che la nuova commessa sia presente.
-7. Completare successivamente date operative, file e note di produzione.
+7. Tornare alla lista **Preventivi** e verificare che il preventivo sia filtrabile tra quelli convertiti in commessa.
+8. Completare successivamente date operative, file e note di produzione.
+
+### Ricerca E Filtri
+
+- Nella lista **Preventivi**, usare la vista **Da lavorare** per nascondere i preventivi gia diventati commessa.
+- Usare **Convertiti in commessa** per recuperare i preventivi gia trasformati in lavoro operativo.
+- Nella lista **Commesse**, usare la ricerca per numero commessa, cliente o preventivo.
 
 ### Risultato Atteso
 
