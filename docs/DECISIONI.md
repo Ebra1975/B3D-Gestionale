@@ -41,6 +41,8 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-06 | Documenti | La conversione PDF usa LibreOffice headless quando disponibile; su Windows viene preferito `soffice.com`. | `soffice.com` restituisce messaggi affidabili da terminale e funziona meglio per conversioni automatiche rispetto all'avvio grafico di Writer. |
 | 2026-07-06 | Versionamento | Il progetto viene inizializzato come repository Git locale dopo il primo flusso DOCX/PDF funzionante. | Salva un punto stabile dello Sprint 02 prima di proseguire con nuove funzioni e future sincronizzazioni GitHub/BMAX. |
 | 2026-07-06 | Preventivi | Il dettaglio preventivo mostra uno stato operativo con configurazione usata, totale, ultimo documento e controlli mancanti. | Aiuta a capire se la proposta consulenza e pronta senza cercare le informazioni in piu punti della pagina. |
+| 2026-07-06 | Interfaccia | La sidebar resta fissa durante lo scorrimento delle pagine lunghe su desktop. | Mantiene la navigazione sempre disponibile, soprattutto nelle pagine preventivo ricche di informazioni. |
+| 2026-07-07 | Manuale operativo | La "wiki" viene intesa come manuale operativo per l'operatore, con procedure passo passo. | Serve a spiegare come usare il gestionale, ad esempio come fare un preventivo, non a documentare il codice. |
 
 ## Decisioni Da Prendere
 
@@ -54,6 +56,7 @@ Questo documento registra le decisioni importanti del progetto.
 | Interfaccia | Stile visivo | Sobrio operativo, tecnico, commerciale | Da decidere prima della realizzazione grafica. |
 | Prodotto | Priorita listini/AI | MVP immediato o fase successiva | Da decidere dopo il primo flusso preventivo completo. |
 | Prodotto | Implementazione documenti contrattuali cliente | Fase successiva | NDA, accordi quadro, condizioni particolari e allegati commerciali. |
+| Prodotto | Manuale operativo nel gestionale | Markdown nel repository, pagine Django, soluzione ibrida | Prima bozza in `docs/MANUALE_OPERATIVO.md`; da decidere se esporlo anche nella sidebar. |
 
 ## Note
 

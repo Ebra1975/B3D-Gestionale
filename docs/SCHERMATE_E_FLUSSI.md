@@ -21,6 +21,8 @@ Menu iniziale consigliato:
 
 La prima versione deve restare semplice. Le voci possono crescere in futuro, ma all'inizio devono coprire il flusso reale di lavoro.
 
+Su desktop la sidebar deve restare fissa durante lo scorrimento delle pagine lunghe, cosi la navigazione principale resta sempre disponibile.
+
 ## Dashboard
 
 ### Obiettivo
@@ -357,6 +359,25 @@ Contenuti iniziali:
 - margine predefinito;
 - profilo documento predefinito.
 - template documento predefiniti.
+
+## Manuale Operativo
+
+### Obiettivo
+
+Spiegare all'operatore come usare il gestionale nelle operazioni quotidiane, con procedure passo passo.
+
+### Stato
+
+Prima bozza in `docs/MANUALE_OPERATIVO.md`. In seguito si decidera se renderlo disponibile anche come sezione consultabile dalla sidebar del gestionale.
+
+### Contenuti Possibili
+
+- come creare un cliente;
+- come fare un preventivo consulenza;
+- come generare DOCX e PDF;
+- come controllare cosa manca prima dell'invio;
+- come trasformare un preventivo accettato in commessa;
+- come gestire documenti e template.
 
 ## Flusso 1 - Nuovo Preventivo Consulenza
 

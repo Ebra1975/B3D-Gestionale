@@ -34,6 +34,12 @@ a {
 }
 
 .sidebar {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
   background: #111827;
   color: #ffffff;
   padding: 24px 18px;
