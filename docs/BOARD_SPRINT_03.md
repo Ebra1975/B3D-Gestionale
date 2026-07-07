@@ -24,7 +24,7 @@ Consolidare il flusso post-accettazione e preparare il gestionale a essere piu u
 | Template consulenza base v2 | Completato come prima rifinitura | Rendere la proposta cliente piu leggibile senza esporre i costi interni. | Migliorato template automatico con intestazione, riepilogo, sezione tecnica, tabella economica sintetica e nota fiscale da validare. |
 | Procedura GitHub | Completato | Preparare il ponte tra sviluppo Windows e BMAX. | Creato `docs/GITHUB_E_VERSIONAMENTO.md`, configurato remote `origin` e inviato `master` su GitHub. |
 
-## Ancora Da Fare Nello Sprint 03
+## Rimandato A Sprint 04
 
 | Tema | Motivo |
 |---|---|
