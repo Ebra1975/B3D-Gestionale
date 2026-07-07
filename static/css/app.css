@@ -167,7 +167,7 @@ h2 {
 
 .metric-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
   gap: 16px;
   margin-bottom: 20px;
 }
@@ -345,6 +345,15 @@ h2 {
   color: var(--color-muted);
 }
 
+.compact-table td {
+  padding: 10px 12px;
+}
+
+.compact-table td:first-child {
+  display: grid;
+  gap: 3px;
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
@@ -402,6 +411,104 @@ h2 {
   flex-wrap: wrap;
   gap: 10px;
   padding: 18px;
+}
+
+.follow-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.follow-block {
+  border-right: 1px solid var(--color-line);
+  padding: 18px;
+}
+
+.follow-block:last-child {
+  border-right: 0;
+}
+
+.follow-block h3 {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+}
+
+.follow-list {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.follow-list li {
+  display: grid;
+  gap: 3px;
+}
+
+.follow-list a {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.follow-list span {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.follow-list strong {
+  font-size: 0.9rem;
+}
+
+.commercial-alerts {
+  border-bottom: 1px solid var(--color-line);
+  background: #fff9f0;
+  padding: 16px 18px;
+}
+
+.commercial-review {
+  border-bottom: 1px solid var(--color-line);
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(280px, 1.1fr);
+  gap: 18px;
+  padding: 16px 18px;
+}
+
+.commercial-review h3 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+}
+
+.commercial-review p:last-child {
+  margin-bottom: 0;
+}
+
+.commercial-review-form {
+  display: grid;
+  gap: 10px;
+}
+
+.commercial-alerts h3,
+.commercial-memory-grid h3 {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+}
+
+.commercial-memory-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+}
+
+.commercial-memory-grid > div {
+  padding: 18px;
+}
+
+.commercial-memory-grid > div + div {
+  border-left: 1px solid var(--color-line);
+}
+
+.text-danger {
+  color: #b42318;
 }
 
 .cost-actions {
@@ -731,6 +838,9 @@ h2 {
   }
 
   .detail-grid,
+  .follow-grid,
+  .commercial-memory-grid,
+  .commercial-review,
   .readiness-grid,
   .job-timeline,
   .pricing-box,
@@ -743,6 +853,20 @@ h2 {
   .checklist-grid,
   .form-layout {
     grid-template-columns: 1fr;
+  }
+
+  .follow-block {
+    border-right: 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .follow-block:last-child {
+    border-bottom: 0;
+  }
+
+  .commercial-memory-grid > div + div {
+    border-top: 1px solid var(--color-line);
+    border-left: 0;
   }
 
   .manual-index {

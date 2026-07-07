@@ -15,9 +15,9 @@ class EstimateConfigurationInline(admin.StackedInline):
 
 @admin.register(Estimate)
 class EstimateAdmin(admin.ModelAdmin):
-    list_display = ("number", "customer", "subject", "date", "status", "preferred_document_profile")
+    list_display = ("number", "customer", "subject", "date", "status", "preferred_document_profile", "commercial_terms_reviewed_at")
     search_fields = ("number", "subject", "customer__name")
-    list_filter = ("status", "preferred_document_profile", "date")
+    list_filter = ("status", "preferred_document_profile", "date", "commercial_terms_reviewed_at")
     inlines = [EstimateConfigurationInline]
 
 

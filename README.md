@@ -93,6 +93,7 @@ Le prime procedure operative sono in:
 - `docs/BACKUP_E_RIPRISTINO.md`
 - `docs/INSTALLAZIONE_BMAX_LINUX.md`
 - `docs/GITHUB_E_VERSIONAMENTO.md`
+- `docs/PROCEDURA_MANUTENZIONE.md`
 
 In sviluppo locale e disponibile il comando:
 

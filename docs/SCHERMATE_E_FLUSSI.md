@@ -36,7 +36,9 @@ Dare una visione immediata della situazione.
 - Commesse in corso.
 - Lavori pronti.
 - Prototipi da validare.
-- Scadenze o consegne previste.
+- Preventivi in scadenza entro 14 giorni o gia scaduti.
+- Consegne commesse entro 14 giorni o gia scadute.
+- Accordi cliente e documenti commerciali in scadenza entro 30 giorni o gia scaduti.
 - Riepilogo economico base del mese.
 
 ### Azioni
@@ -49,6 +51,8 @@ Dare una visione immediata della situazione.
 ### Note
 
 La dashboard non deve sembrare una pagina pubblicitaria. Deve essere uno strumento di lavoro, ordinato e leggibile.
+
+La prima versione dello Sprint 06 usa soglie fisse e semplici: 14 giorni per preventivi e commesse, 30 giorni per accordi e documenti commerciali cliente. Le soglie potranno diventare configurabili dopo l'uso reale.
 
 ## Clienti
 
@@ -78,6 +82,8 @@ Mostrare:
 - preventivi collegati;
 - commesse collegate;
 - documenti generati.
+- accordi cliente;
+- documenti commerciali cliente.
 
 ### Azioni
 
@@ -85,6 +91,8 @@ Mostrare:
 - Modifica cliente.
 - Crea preventivo per questo cliente.
 - Apri storico.
+- Crea accordo cliente.
+- Crea documento commerciale cliente.
 
 ## Preventivi
 
@@ -422,14 +430,17 @@ Prima bozza in `docs/MANUALE_OPERATIVO.md` e prima schermata consultabile dalla 
 1. Apro la dashboard.
 2. Creo un nuovo cliente o seleziono un cliente esistente.
 3. Creo un nuovo preventivo.
-4. Inserisco oggetto, quantita e descrizione tecnica.
-5. Aggiungo una o piu configurazioni.
-6. Inserisco i costi interni per ogni configurazione.
-7. Aggiungo eventuale prototipo.
-8. Scelgo profilo documento "consulenza".
-9. Scelgo il template `.docx` di consulenza.
-10. Genero proposta `.docx` e PDF.
-11. Segno il preventivo come inviato.
+4. Controllo nel dettaglio preventivo la memoria commerciale del cliente.
+5. Inserisco oggetto, quantita e descrizione tecnica.
+6. Aggiungo una o piu configurazioni.
+7. Inserisco i costi interni per ogni configurazione.
+8. Applico prezzo e margine dopo aver controllato le condizioni cliente.
+9. Confermo nel preventivo la revisione di accordi, listini e documenti commerciali.
+10. Aggiungo eventuale prototipo.
+11. Scelgo profilo documento "consulenza".
+12. Scelgo il template `.docx` di consulenza.
+13. Genero proposta `.docx` e PDF.
+14. Segno il preventivo come inviato.
 
 ## Flusso 2 - Preventivo Accettato
 

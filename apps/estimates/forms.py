@@ -80,6 +80,19 @@ class PricingRuleForm(forms.Form):
     )
 
 
+class CommercialTermsReviewForm(forms.Form):
+    notes = forms.CharField(
+        label="Note interne sul controllo",
+        required=False,
+        widget=forms.Textarea(
+            attrs={
+                "rows": 3,
+                "placeholder": "Esempio: controllato accordo annuale e NDA; prezzo confermato manualmente.",
+            }
+        ),
+    )
+
+
 class PrototypeForm(forms.ModelForm):
     class Meta:
         model = Prototype

@@ -49,6 +49,18 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Sprint 03 | Procedura BMAX Linux Server | Approvato come prima bozza | Guida iniziale per installazione Docker Compose in rete locale. |
 | Sprint 03 | Template consulenza base v2 | Approvato come prima rifinitura | Layout piu ordinato con intestazione, riepilogo cliente/preventivo, sezione tecnica, sintesi economica e nota fiscale da validare. |
 | Sprint 03 | Collegamento GitHub | Approvato | Repository `Ebra1975/B3D-Gestionale` configurato come `origin` e primo push completato. |
+| Sprint 04 | Scheda cliente con memoria commerciale | Approvato come prima versione | Mostra dati cliente, note, preventivi, commesse, accordi e documenti commerciali collegati. |
+| Sprint 04 | Accordi cliente | Approvato come prima versione | Archivio collegato al cliente con stato, validita, listino collegato, condizioni e note commerciali. |
+| Sprint 04 | Documenti commerciali cliente | Approvato come prima versione | Archivio collegato al cliente per NDA, accordi, listini firmati e allegati con file e scadenze. |
+| Sprint 05 | Procedure installazione, backup, ripristino, GitHub e manutenzione | Approvato come base operativa | Prima guida per passare al BMAX senza perdere controllo su dati, codice e aggiornamenti. |
+| Backup | Prova di ripristino prima dei dati reali | Approvato come obbligatoria | Serve a verificare che il backup sia realmente recuperabile. |
+| Sprint 06 | Dashboard operativa con promemoria | Approvato come prima versione | Mostra preventivi, commesse, accordi e documenti commerciali da seguire. |
+| Dashboard | Soglie 14/30 giorni per promemoria | Approvato come prima versione | 14 giorni per preventivi/commesse, 30 giorni per accordi/documenti commerciali. |
+| Sprint 07 | Memoria commerciale cliente nel dettaglio preventivo | Approvato come prima versione | Mostra accordi, listini collegati e documenti commerciali prima della proposta. |
+| Preventivi | Accordi cliente come promemoria non automatico | Approvato come prima versione | La revisione del titolare resta obbligatoria prima di applicare condizioni economiche. |
+| Sprint 08 | Prezzo assistito e condizioni cliente | Approvato come titolo e direzione | Lo sprint prepara una revisione economica piu guidata, mantenendo la conferma manuale del titolare. |
+| Sprint 08 | Conferma manuale condizioni cliente sul preventivo | Approvato come prima versione | Salva data e note del controllo senza modificare automaticamente prezzi o margini. |
+| Benchmark | Comparazione con Stimalo e PreventiPiraz 3D | Approvato come riferimento di analisi | Da usare per orientare i prossimi sprint, non come copia funzionale. |
 
 ## In Revisione
 
@@ -58,9 +70,11 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Documenti | Layout grafico template `.docx` definitivo | Da definire | Il template base v2 e una prima rifinitura, non il layout finale di brand. |
 | Backup | Backup automatico BMAX | Da definire | Dopo la procedura manuale serve automatizzare frequenza, rotazione e controllo esito. |
 | Installazione | Rifinitura produzione stabile | Da definire | Verificare direttamente sul BMAX Docker, LibreOffice PDF, IP locale e riavvio automatico. |
+| Manutenzione | Avvio automatico del gestionale dopo riavvio BMAX | Da definire | Valutare dopo la prima installazione reale. |
 | Prodotto | Implementazione listini e accordi | Da pianificare | Dopo flusso preventivo base. |
 | Prodotto | Implementazione documenti contrattuali cliente | Da pianificare | NDA, accordi quadro, condizioni particolari, listini firmati. |
 | Prodotto | Implementazione AI e regole lavorazione | Da pianificare | Prima regole semplici, poi AI generativa. |
+| Prodotto | Applicazione automatica accordi ai preventivi | Da pianificare | Richiede listini strutturati, regole prezzo e tracciabilita della fonte prezzo. |
 
 ## Da Validare Con Commercialista
 

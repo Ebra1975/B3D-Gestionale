@@ -64,16 +64,32 @@ Per ripristinare un backup locale:
 
 Sul BMAX il database previsto e PostgreSQL dentro Docker.
 
+Creare la cartella backup se non esiste:
+
+```bash
+mkdir -p backups
+```
+
 Backup database:
 
 ```bash
 docker compose exec db pg_dump -U b3dlab b3dlab > backups/b3dlab_db_YYYYMMDD.sql
 ```
 
-Backup file media:
+Backup file media e documenti generati.
+
+Nel `docker-compose.yml` attuale la cartella `media` del gestionale e montata come volume Docker `media_data`.
+
+Con `COMPOSE_PROJECT_NAME=gestionale-b3d` nel file `.env`, il volume si chiama `gestionale-b3d_media_data`. Per salvarlo in modo affidabile usare:
 
 ```bash
-tar -czf backups/b3dlab_media_YYYYMMDD.tar.gz media
+docker run --rm -v gestionale-b3d_media_data:/media_data -v "$(pwd)/backups:/backup" alpine tar -czf /backup/b3dlab_media_YYYYMMDD.tar.gz -C /media_data .
+```
+
+Se `COMPOSE_PROJECT_NAME` viene cambiato o non viene impostato, il nome del volume Docker puo cambiare. Verificarlo con:
+
+```bash
+docker volume ls
 ```
 
 Backup configurazione:
@@ -84,7 +100,22 @@ cp .env backups/env_YYYYMMDD.txt
 
 Il file `.env` contiene segreti e password: non va caricato su GitHub.
 
+## Backup Prima Di Aggiornare
+
+Prima di eseguire `git pull` o aggiornare Docker sul BMAX:
+
+1. creare backup database;
+2. creare backup media;
+3. salvare `.env`;
+4. copiare almeno una volta il backup fuori dal BMAX se contiene dati reali importanti.
+
 ## Ripristino BMAX
+
+Prima di ripristinare, fermare i servizi che usano il database:
+
+```bash
+docker compose stop web worker beat
+```
 
 Ripristino database PostgreSQL:
 
@@ -95,15 +126,29 @@ docker compose exec -T db psql -U b3dlab b3dlab < backups/b3dlab_db_YYYYMMDD.sql
 Ripristino media:
 
 ```bash
-tar -xzf backups/b3dlab_media_YYYYMMDD.tar.gz
+docker run --rm -v gestionale-b3d_media_data:/media_data -v "$(pwd)/backups:/backup" alpine sh -c "rm -rf /media_data/* && tar -xzf /backup/b3dlab_media_YYYYMMDD.tar.gz -C /media_data"
 ```
 
 Dopo il ripristino:
 
 ```bash
-docker compose restart
+docker compose up -d
 docker compose exec web python manage.py check
 ```
+
+Aprire poi il gestionale e controllare clienti, preventivi, commesse, documenti e file allegati.
+
+## Prova Di Ripristino Obbligatoria
+
+Prima di affidare dati reali al gestionale, fare almeno una prova di ripristino su una copia di test.
+
+La prova deve confermare che:
+
+- il database ripristinato si apre;
+- i documenti generati sono presenti;
+- i file caricati sono presenti;
+- il gestionale parte senza errori;
+- l'utente amministratore riesce ad accedere.
 
 ## Frequenza Consigliata
 

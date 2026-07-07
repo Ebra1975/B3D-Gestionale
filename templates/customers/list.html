@@ -40,7 +40,7 @@
         <tbody>
           {% for customer in customers %}
             <tr>
-              <td><a href="{% url 'customers:update' customer.pk %}">{{ customer.name }}</a></td>
+              <td><a href="{% url 'customers:detail' customer.pk %}">{{ customer.name }}</a></td>
               <td>{{ customer.get_customer_type_display }}</td>
               <td>{{ customer.contact_person|default:"-" }}</td>
               <td>{{ customer.email|default:"-" }}</td>
@@ -51,7 +51,7 @@
       </table>
     {% else %}
       <div class="empty-state">
-        <p>Nessun cliente inserito. Puoi aggiungerlo dal pannello Admin.</p>
+        <p>Nessun cliente inserito.</p>
       </div>
     {% endif %}
   </section>

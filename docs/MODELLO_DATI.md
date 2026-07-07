@@ -285,7 +285,7 @@ Categorie possibili:
 
 ## Accordo Cliente
 
-Campi futuri:
+Campi prima versione:
 
 - cliente;
 - nome accordo;
@@ -307,7 +307,7 @@ Stati possibili:
 
 ## Documento Cliente / Contrattuale
 
-Campi futuri:
+Campi prima versione:
 
 - cliente;
 - nome documento;

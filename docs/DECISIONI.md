@@ -57,6 +57,19 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-07 | Documenti | Il template consulenza base generato dal gestionale viene rifinito come v2. | Migliora leggibilita e presentazione cliente, continuando a non esporre il dettaglio economico interno. |
 | 2026-07-07 | Versionamento | GitHub viene preparato come repository privato da collegare al Git locale. | Serve come ponte tra sviluppo Windows e installazione BMAX, senza caricare dati, media, backup o segreti. |
 | 2026-07-07 | Versionamento | Il repository GitHub `Ebra1975/B3D-Gestionale` viene collegato come `origin` e riceve il primo push. | Rende disponibile il codice per il futuro clone sul BMAX e per il passaggio ordinato dev/prod. |
+| 2026-07-07 | Sprint 04 | La prima memoria commerciale cliente viene gestita nella scheda cliente. | Permette di registrare accordi, condizioni e documenti commerciali senza automatizzare ancora i prezzi. |
+| 2026-07-07 | Clienti | Accordi cliente e documenti commerciali cliente sono archivi separati collegati al cliente. | Evita note libere troppo lunghe e mantiene tracciabili validita, stato, scadenze e file allegati. |
+| 2026-07-07 | Preventivi | Gli accordi cliente non vengono ancora applicati automaticamente al preventivo. | La revisione del titolare resta obbligatoria finche listini e regole prezzo non sono progettati in dettaglio. |
+| 2026-07-07 | Sprint 05 | Installazione, backup/ripristino, GitHub e manutenzione vengono documentati come procedure operative prima della prova reale sul BMAX. | Riduce il rischio operativo e rende il passaggio a produzione locale piu controllabile. |
+| 2026-07-07 | Backup | Prima dell'uso reale sul BMAX deve essere provato almeno un ripristino su copia di test. | Un backup non verificato non garantisce recupero dei dati. |
+| 2026-07-07 | Manutenzione | Gli aggiornamenti sul BMAX devono essere preceduti da backup e seguiti da controlli dal browser. | Evita aggiornamenti ciechi e rende chiaro se il gestionale resta utilizzabile. |
+| 2026-07-07 | Sprint 06 | La dashboard diventa punto di controllo quotidiano con promemoria operativi. | Aiuta a seguire preventivi, commesse, accordi e documenti commerciali senza cercarli manualmente in piu sezioni. |
+| 2026-07-07 | Dashboard | Le prime soglie operative sono 14 giorni per preventivi/commesse e 30 giorni per memoria commerciale cliente. | Sono soglie semplici, comprensibili e modificabili in futuro dopo l'uso reale. |
+| 2026-07-07 | Sprint 07 | Il dettaglio preventivo mostra la memoria commerciale del cliente. | Prima di generare o inviare una proposta serve controllare accordi, listini collegati, NDA e documenti commerciali senza aprire manualmente piu schermate. |
+| 2026-07-07 | Preventivi | Gli accordi cliente restano promemoria e non applicano ancora automatismi economici. | Evita prezzi modificati senza revisione del titolare finche listini e regole non sono progettati. |
+| 2026-07-07 | Sprint 08 | Lo sprint viene intitolato "Prezzo assistito e condizioni cliente". | La prossima fase deve aiutare la revisione economica del preventivo usando la memoria commerciale, senza automatizzare ancora i prezzi. |
+| 2026-07-07 | Preventivi | La revisione delle condizioni cliente viene confermata manualmente sul preventivo con data e note interne. | Mantiene tracciabile il controllo di accordi, listini e documenti commerciali senza applicare automatismi al prezzo. |
+| 2026-07-07 | Benchmark | Prima di proseguire con prezzi e listini viene avviata una comparazione con Stimalo e PreventiPiraz 3D. | Serve a capire cosa imparare dagli strumenti esistenti senza snaturare il posizionamento consulenziale B3D Lab. |
 
 ## Decisioni Da Prendere
 
@@ -71,6 +84,7 @@ Questo documento registra le decisioni importanti del progetto.
 | Prodotto | Priorita listini/AI | MVP immediato o fase successiva | Da decidere dopo il primo flusso preventivo completo. |
 | Prodotto | Implementazione documenti contrattuali cliente | Fase successiva | NDA, accordi quadro, condizioni particolari e allegati commerciali. |
 | Prodotto | Manuale operativo nel gestionale | Markdown nel repository, pagine Django, soluzione ibrida | Prima bozza in `docs/MANUALE_OPERATIVO.md`; da decidere se esporlo anche nella sidebar. |
+| Infrastruttura | Avvio automatico BMAX | Docker Compose manuale, servizio systemd, altra gestione avvio | Da decidere dopo prova reale sul mini PC. |
 
 ## Note
 

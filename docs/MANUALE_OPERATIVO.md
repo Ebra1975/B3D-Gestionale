@@ -12,8 +12,31 @@ Non e documentazione tecnica per sviluppatori: serve all'operatore per sapere co
 | Usare il preventivo demo | Bozza iniziale | Provare il flusso senza usare dati reali di clienti. |
 | Creare una commessa da preventivo accettato | Bozza iniziale | Avviare il lavoro operativo dopo accettazione cliente. |
 | Aggiornare una commessa | Bozza iniziale | Seguire stato, date e note del lavoro operativo. |
+| Gestire memoria commerciale cliente | Bozza iniziale | Conservare accordi, NDA, listini firmati e condizioni particolari nella scheda cliente. |
+| Controllare la dashboard | Bozza iniziale | Vedere ogni giorno preventivi, commesse e scadenze commerciali da seguire. |
 | Applicare prezzo e margine | Bozza iniziale | Generare un totale proposta piu ripetibile partendo dai costi interni. |
 | Fare un backup locale | Bozza iniziale | Salvare dati e documenti durante lo sviluppo. |
+
+## Procedura - Controllare La Dashboard
+
+### Quando Usarla
+
+Usare questa procedura all'inizio della giornata o prima di chiudere il lavoro, per capire se ci sono attivita da seguire.
+
+### Passi Operativi
+
+1. Aprire la **Dashboard**.
+2. Controllare i numeri principali: preventivi aperti, commesse in corso, lavori pronti e prototipi da validare.
+3. Nel riquadro **Da seguire**, controllare i **Preventivi in scadenza**.
+4. Aprire i preventivi con data gia superata o vicina e decidere se aggiornare, sollecitare o chiudere.
+5. Controllare le **Consegne commesse**.
+6. Aprire le commesse con consegna vicina o superata e aggiornare stato, note o data prevista.
+7. Controllare la **Memoria commerciale**.
+8. Aprire accordi e documenti cliente in scadenza per verificare rinnovi, NDA, listini firmati o condizioni particolari.
+
+### Risultato Atteso
+
+La dashboard diventa il punto di partenza per non dimenticare scadenze operative e commerciali.
 
 ## Procedura - Usare Il Preventivo Demo
 
@@ -85,6 +108,34 @@ Usare questa procedura mentre il lavoro avanza, ad esempio quando passa in proge
 
 La commessa mostra lo stato operativo aggiornato e resta collegata ai dati del preventivo senza ricopiare informazioni.
 
+## Procedura - Gestire Memoria Commerciale Cliente
+
+### Quando Usarla
+
+Usare questa procedura quando un cliente ha condizioni concordate, NDA, listini firmati, accordi commerciali o documenti che devono essere ricordati prima di preparare nuovi preventivi.
+
+### Passi Operativi
+
+1. Aprire la sezione **Clienti**.
+2. Cercare il cliente per nome, referente, email o telefono.
+3. Aprire la scheda cliente dal nome.
+4. Controllare il riquadro **Accordi cliente**.
+5. Se serve, usare **Nuovo accordo**.
+6. Inserire nome accordo, eventuale listino collegato, date di validita, stato, condizioni generali e note commerciali.
+7. Tornare alla scheda cliente.
+8. Controllare il riquadro **Documenti commerciali**.
+9. Se serve, usare **Nuovo documento**.
+10. Inserire tipo documento, date, stato, eventuale file allegato e note.
+11. Prima di creare un nuovo preventivo per quel cliente, rileggere accordi e documenti attivi o in scadenza.
+
+### Risultato Atteso
+
+La scheda cliente diventa il punto in cui recuperare la memoria commerciale: condizioni, allegati e scadenze non restano dispersi in cartelle o note esterne.
+
+### Nota
+
+In questa prima versione gli accordi non modificano automaticamente il prezzo del preventivo. Servono come promemoria operativo: il titolare controlla le condizioni e decide cosa applicare.
+
 ## Procedura - Fare Un Preventivo Consulenza
 
 ### Quando Usarla
@@ -108,7 +159,8 @@ Arrivare a un preventivo con:
 2. Verificare se il cliente esiste gia.
 3. Se il cliente non esiste, creare una nuova scheda cliente.
 4. Aprire la sezione **Preventivi**.
-5. Creare un nuovo preventivo.
+5. Se il cliente ha accordi o documenti commerciali collegati, controllarli nella scheda cliente.
+6. Creare un nuovo preventivo.
 6. Inserire numero, cliente, oggetto, data, quantita e descrizione della richiesta.
 7. Lasciare il profilo documento su **Consulenza**, salvo caso diverso.
 8. Salvare il preventivo.
@@ -123,12 +175,15 @@ Arrivare a un preventivo con:
 14. Applicare la regola prezzo/margine se serve un margine percentuale con arrotondamento.
 15. Tornare al dettaglio preventivo.
 16. Controllare il riquadro **Stato preventivo**.
-17. Risolvere gli elementi indicati in **Da fare prima della proposta**.
-18. Controllare gli avvisi in **Da controllare**.
-19. Quando il totale e coerente, generare il **DOCX consulenza**.
-20. Scaricare e controllare il DOCX.
-21. Scaricare e controllare il PDF.
-22. Se il documento e corretto, usare l'azione rapida **Segna inviato** nel dettaglio preventivo.
+17. Controllare il riquadro **Memoria commerciale cliente**.
+18. Se ci sono accordi, listini collegati, NDA o documenti in scadenza, aprire la scheda cliente e verificarli.
+19. Nel riquadro **Memoria commerciale cliente**, usare **Conferma controllo condizioni** e aggiungere una nota interna se serve.
+20. Risolvere gli elementi indicati in **Da fare prima della proposta**.
+21. Controllare gli avvisi in **Da controllare**.
+22. Quando il totale e coerente, generare il **DOCX consulenza**.
+23. Scaricare e controllare il DOCX.
+24. Scaricare e controllare il PDF.
+25. Se il documento e corretto, usare l'azione rapida **Segna inviato** nel dettaglio preventivo.
 
 ### Controlli Prima Di Inviare
 
@@ -140,6 +195,8 @@ Prima di inviare una proposta al cliente, verificare:
 - la configurazione scelta e quella giusta;
 - il totale non e zero;
 - il prezzo unitario ha senso rispetto alla quantita;
+- accordi cliente e documenti commerciali sono stati controllati;
+- il controllo condizioni cliente e stato confermato nel dettaglio preventivo;
 - il documento cliente non mostra il dettaglio economico interno;
 - eventuali diciture fiscali o commerciali importanti sono da validare con commercialista se non gia confermate.
 - dopo l'invio, lo stato del preventivo e aggiornato a **Inviato**.

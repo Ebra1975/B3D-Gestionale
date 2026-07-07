@@ -19,6 +19,10 @@
       <strong class="metric-value">{{ active_jobs_count }}</strong>
     </article>
     <article class="metric-card">
+      <span class="metric-label">Lavori pronti</span>
+      <strong class="metric-value">{{ ready_jobs_count }}</strong>
+    </article>
+    <article class="metric-card">
       <span class="metric-label">Documenti generati</span>
       <strong class="metric-value">{{ generated_documents_count }}</strong>
     </article>
@@ -26,6 +30,71 @@
       <span class="metric-label">Prototipi da validare</span>
       <strong class="metric-value">{{ pending_prototypes_count }}</strong>
     </article>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Da seguire</h2>
+    </div>
+    <div class="follow-grid">
+      <article class="follow-block">
+        <h3>Preventivi in scadenza</h3>
+        {% if estimates_to_follow %}
+          <ul class="follow-list">
+            {% for estimate in estimates_to_follow %}
+              <li>
+                <a href="{% url 'estimates:detail' estimate.pk %}">{{ estimate.number }}</a>
+                <span>{{ estimate.customer.name }}</span>
+                <strong class="{% if estimate.valid_until < today %}text-danger{% endif %}">{{ estimate.valid_until }}</strong>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="muted-text">Nessun preventivo in scadenza nei prossimi 14 giorni.</p>
+        {% endif %}
+      </article>
+
+      <article class="follow-block">
+        <h3>Consegne commesse</h3>
+        {% if jobs_to_follow %}
+          <ul class="follow-list">
+            {% for job in jobs_to_follow %}
+              <li>
+                <a href="{% url 'jobs:detail' job.pk %}">{{ job.number }}</a>
+                <span>{{ job.customer.name }}</span>
+                <strong class="{% if job.expected_delivery < today %}text-danger{% endif %}">{{ job.expected_delivery }}</strong>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="muted-text">Nessuna consegna prevista nei prossimi 14 giorni.</p>
+        {% endif %}
+      </article>
+
+      <article class="follow-block">
+        <h3>Memoria commerciale</h3>
+        {% if agreements_to_follow or commercial_documents_to_follow %}
+          <ul class="follow-list">
+            {% for agreement in agreements_to_follow %}
+              <li>
+                <a href="{% url 'customers:agreement_update' agreement.pk %}">{{ agreement.name }}</a>
+                <span>{{ agreement.customer.name }}</span>
+                <strong class="{% if agreement.ends_on < today %}text-danger{% endif %}">{{ agreement.ends_on }}</strong>
+              </li>
+            {% endfor %}
+            {% for document in commercial_documents_to_follow %}
+              <li>
+                <a href="{% url 'customers:commercial_document_update' document.pk %}">{{ document.name }}</a>
+                <span>{{ document.customer.name }}</span>
+                <strong class="{% if document.expires_on < today %}text-danger{% endif %}">{{ document.expires_on }}</strong>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="muted-text">Nessun accordo o documento commerciale in scadenza nei prossimi 30 giorni.</p>
+        {% endif %}
+      </article>
+    </div>
   </section>
 
   <section class="panel">

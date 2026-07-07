@@ -104,6 +104,103 @@
     </article>
   </section>
 
+  <section class="panel">
+    <div class="panel-header split-header">
+      <div>
+        <h2>Memoria commerciale cliente</h2>
+        <p class="muted-text">Accordi e documenti da controllare prima di inviare la proposta.</p>
+      </div>
+      <a class="button secondary compact" href="{% url 'customers:detail' estimate.customer.pk %}">Apri scheda cliente</a>
+    </div>
+
+    {% if commercial_memory.has_memory %}
+      <div class="commercial-review">
+        <div>
+          <h3>Revisione condizioni cliente</h3>
+          {% if estimate.commercial_terms_reviewed_at %}
+            <p class="muted-text">Controllo registrato il {{ estimate.commercial_terms_reviewed_at }}.</p>
+          {% else %}
+            <p class="muted-text">Registra il controllo prima di confermare prezzo e documento cliente.</p>
+          {% endif %}
+          {% if estimate.commercial_terms_review_notes %}
+            <p>{{ estimate.commercial_terms_review_notes }}</p>
+          {% endif %}
+        </div>
+        <form class="commercial-review-form" method="post" action="{% url 'estimates:confirm_commercial_terms_review' estimate.pk %}">
+          {% csrf_token %}
+          <div class="form-field">
+            <label for="{{ commercial_review_form.notes.id_for_label }}">Note interne sul controllo</label>
+            {{ commercial_review_form.notes }}
+          </div>
+          <button class="button secondary compact" type="submit">Conferma controllo condizioni</button>
+        </form>
+      </div>
+
+      {% if commercial_memory.alerts %}
+        <div class="commercial-alerts">
+          <h3>Da verificare</h3>
+          <ul class="check-list">
+            {% for alert in commercial_memory.alerts %}
+              <li>{{ alert }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      <div class="commercial-memory-grid">
+        <div>
+          <h3>Accordi cliente</h3>
+          {% if commercial_memory.agreements %}
+            <table class="data-table compact-table">
+              <tbody>
+                {% for agreement in commercial_memory.agreements %}
+                  <tr>
+                    <td>
+                      <a href="{% url 'customers:agreement_update' agreement.pk %}">{{ agreement.name }}</a>
+                      {% if agreement.price_list_name %}
+                        <span class="muted-text">{{ agreement.price_list_name }}</span>
+                      {% endif %}
+                    </td>
+                    <td>{{ agreement.ends_on|default:"-" }}</td>
+                    <td><span class="badge">{{ agreement.get_status_display }}</span></td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+            <p class="muted-text">Nessun accordo cliente registrato.</p>
+          {% endif %}
+        </div>
+
+        <div>
+          <h3>Documenti commerciali</h3>
+          {% if commercial_memory.commercial_documents %}
+            <table class="data-table compact-table">
+              <tbody>
+                {% for document in commercial_memory.commercial_documents %}
+                  <tr>
+                    <td>
+                      <a href="{% url 'customers:commercial_document_update' document.pk %}">{{ document.name }}</a>
+                      <span class="muted-text">{{ document.get_document_type_display }}</span>
+                    </td>
+                    <td>{{ document.expires_on|default:"-" }}</td>
+                    <td><span class="badge">{{ document.get_status_display }}</span></td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+            <p class="muted-text">Nessun documento commerciale registrato.</p>
+          {% endif %}
+        </div>
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <p>Nessun accordo o documento commerciale registrato per questo cliente.</p>
+      </div>
+    {% endif %}
+  </section>
+
   <section class="detail-grid">
     <article class="panel detail-panel">
       <div class="panel-header">

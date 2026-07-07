@@ -2,15 +2,18 @@ from django.contrib import messages
 from django.db import transaction
 from django.db.models import Exists, OuterRef, Q
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
 from django.views.decorators.http import require_POST
+from datetime import timedelta
 from decimal import Decimal, ROUND_CEILING
 
+from apps.customers.models import CustomerAgreement, CustomerCommercialDocument
 from apps.documents.models import GeneratedDocument
 from apps.documents.services import generate_consulting_estimate_docx
 from apps.jobs.models import Job
 from apps.jobs.services import create_job_from_estimate
 
-from .forms import CostItemForm, EstimateConfigurationForm, EstimateForm, PricingRuleForm
+from .forms import CommercialTermsReviewForm, CostItemForm, EstimateConfigurationForm, EstimateForm, PricingRuleForm
 from .models import CostItem, Estimate, EstimateConfiguration
 
 
@@ -92,7 +95,7 @@ def estimate_list(request):
     )
 
 
-def build_estimate_readiness(estimate):
+def build_estimate_readiness(estimate, commercial_memory=None):
     configurations = list(estimate.configurations.all())
     selected_configuration = next((configuration for configuration in configurations if configuration.is_selected), None)
     if not selected_configuration and configurations:
@@ -109,6 +112,8 @@ def build_estimate_readiness(estimate):
         missing_items.append("Inserire una descrizione della richiesta cliente.")
     if not estimate.valid_until:
         warnings.append("Inserire una data di validita della proposta.")
+    if commercial_memory and commercial_memory["has_memory"] and not estimate.commercial_terms_reviewed_at:
+        warnings.append("Confermare il controllo di accordi, listini e documenti commerciali del cliente.")
 
     if selected_configuration:
         if not selected_configuration.cost_items.exists():
@@ -143,21 +148,62 @@ def build_estimate_readiness(estimate):
     }
 
 
+def build_customer_commercial_memory(customer):
+    today = timezone.localdate()
+    alert_limit = today + timedelta(days=30)
+    agreements = list(customer.agreements.all()[:5])
+    commercial_documents = list(customer.commercial_documents.all()[:5])
+
+    agreement_alerts = []
+    for agreement in agreements:
+        if agreement.status == CustomerAgreement.Status.ACTIVE:
+            if agreement.ends_on and agreement.ends_on < today:
+                agreement_alerts.append(f"Accordo scaduto: {agreement.name}.")
+            elif agreement.ends_on and agreement.ends_on <= alert_limit:
+                agreement_alerts.append(f"Accordo in scadenza: {agreement.name}.")
+
+    document_alerts = []
+    for document in commercial_documents:
+        active_statuses = [
+            CustomerCommercialDocument.Status.SIGNED,
+            CustomerCommercialDocument.Status.ACTIVE,
+        ]
+        if document.status in active_statuses:
+            if document.expires_on and document.expires_on < today:
+                document_alerts.append(f"Documento scaduto: {document.name}.")
+            elif document.expires_on and document.expires_on <= alert_limit:
+                document_alerts.append(f"Documento in scadenza: {document.name}.")
+
+    return {
+        "agreements": agreements,
+        "commercial_documents": commercial_documents,
+        "alerts": agreement_alerts + document_alerts,
+        "has_memory": bool(agreements or commercial_documents),
+    }
+
+
 def estimate_detail(request, pk):
     estimate = get_object_or_404(
         Estimate.objects.select_related("customer").prefetch_related(
             "configurations__cost_items",
             "generated_documents",
             "jobs",
+            "customer__agreements",
+            "customer__commercial_documents",
         ),
         pk=pk,
     )
+    commercial_memory = build_customer_commercial_memory(estimate.customer)
     return render(
         request,
         "estimates/detail.html",
         {
             "estimate": estimate,
-            "readiness": build_estimate_readiness(estimate),
+            "readiness": build_estimate_readiness(estimate, commercial_memory),
+            "commercial_memory": commercial_memory,
+            "commercial_review_form": CommercialTermsReviewForm(
+                initial={"notes": estimate.commercial_terms_review_notes}
+            ),
             "pricing_form": PricingRuleForm(),
         },
     )
@@ -208,6 +254,27 @@ def update_estimate_status(request, pk, status):
     estimate.status = status
     estimate.save(update_fields=["status", "updated_at"])
     messages.success(request, f"Preventivo aggiornato: {valid_statuses[status]}.")
+    return redirect("estimates:detail", pk=estimate.pk)
+
+
+@require_POST
+def confirm_commercial_terms_review(request, pk):
+    estimate = get_object_or_404(Estimate, pk=pk)
+    form = CommercialTermsReviewForm(request.POST)
+    if not form.is_valid():
+        messages.error(request, "Controlla le note della revisione condizioni cliente.")
+        return redirect("estimates:detail", pk=estimate.pk)
+
+    estimate.commercial_terms_reviewed_at = timezone.now()
+    estimate.commercial_terms_review_notes = form.cleaned_data["notes"]
+    estimate.save(
+        update_fields=[
+            "commercial_terms_reviewed_at",
+            "commercial_terms_review_notes",
+            "updated_at",
+        ]
+    )
+    messages.success(request, "Controllo condizioni cliente registrato.")
     return redirect("estimates:detail", pk=estimate.pk)
 
 

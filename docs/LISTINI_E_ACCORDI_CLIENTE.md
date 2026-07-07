@@ -188,7 +188,14 @@ La decisione finale resta sempre del titolare.
 
 ## Priorita
 
-Per la prima versione il listino completo puo essere rimandato.
+Sprint 04 introduce una prima memoria commerciale nella scheda cliente:
+
+- accordi cliente;
+- documenti commerciali cliente;
+- file allegati;
+- stati e scadenze.
+
+Per la prima versione il listino completo puo ancora essere rimandato.
 
 Pero il modello dati e l'architettura devono lasciare spazio a:
 
@@ -197,3 +204,5 @@ Pero il modello dati e l'architettura devono lasciare spazio a:
 - accordo cliente;
 - regole di sconto;
 - tracciabilita della fonte prezzo.
+
+Gli accordi inseriti in Sprint 04 non vengono applicati automaticamente al preventivo. Servono come promemoria operativo da controllare prima di decidere il prezzo.

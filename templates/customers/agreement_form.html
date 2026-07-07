@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - Gestionale B3D Lab{% endblock %}
+{% block heading %}{{ title }}{% endblock %}
+{% block eyebrow %}{{ customer.name }}{% endblock %}
+
+{% block actions %}
+  <a class="button secondary" href="{% url 'customers:detail' customer.pk %}">Torna alla scheda cliente</a>
+{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <form method="post" class="form-layout">
+      {% csrf_token %}
+      {% include "includes/form_fields.html" %}
+      <div class="form-actions">
+        <button class="button" type="submit">Salva accordo</button>
+      </div>
+    </form>
+  </section>
+{% endblock %}

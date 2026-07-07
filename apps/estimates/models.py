@@ -36,6 +36,8 @@ class Estimate(models.Model):
         choices=DocumentProfile.choices,
         default=DocumentProfile.CONSULTING,
     )
+    commercial_terms_reviewed_at = models.DateTimeField("condizioni cliente controllate il", null=True, blank=True)
+    commercial_terms_review_notes = models.TextField("note revisione condizioni cliente", blank=True)
     general_terms = models.TextField("condizioni generali", blank=True)
     internal_notes = models.TextField("note interne", blank=True)
     created_at = models.DateTimeField("creato il", auto_now_add=True)

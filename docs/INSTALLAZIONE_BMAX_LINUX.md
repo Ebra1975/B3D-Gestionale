@@ -60,6 +60,8 @@ Creare il file `.env` partendo da `.env.example`.
 Valori importanti:
 
 ```text
+COMPOSE_PROJECT_NAME=gestionale-b3d
+
 DJANGO_ENV=prod
 DJANGO_DEBUG=False
 DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,IP_DEL_BMAX
@@ -81,10 +83,10 @@ La password PostgreSQL e `DJANGO_SECRET_KEY` devono essere cambiate prima dell'u
 Costruire e avviare i servizi:
 
 ```bash
-docker compose up --build
+docker compose up -d --build
 ```
 
-In un secondo terminale applicare le migrazioni:
+Applicare le migrazioni:
 
 ```bash
 docker compose exec web python manage.py migrate
@@ -100,6 +102,12 @@ Raccogliere i file statici:
 
 ```bash
 docker compose exec web python manage.py collectstatic --noinput
+```
+
+Controllare che i servizi siano accesi:
+
+```bash
+docker compose ps
 ```
 
 ## Verifica
@@ -125,9 +133,9 @@ Controllare:
 - documenti;
 - generazione PDF tramite LibreOffice.
 
-## Avvio In Background
+## Avvio Ordinario
 
-Quando la configurazione e corretta:
+Per avviare normalmente:
 
 ```bash
 docker compose up -d
@@ -145,17 +153,45 @@ Per riavviare:
 docker compose restart
 ```
 
+## Aggiornamento Da GitHub
+
+Quando una nuova versione e stata inviata su GitHub:
+
+1. creare un backup seguendo `docs/BACKUP_E_RIPRISTINO.md`;
+2. aggiornare il codice;
+3. ricostruire i servizi;
+4. applicare migrazioni;
+5. verificare dal browser.
+
+Comandi:
+
+```bash
+git pull
+docker compose up -d --build
+docker compose exec web python manage.py migrate
+docker compose exec web python manage.py collectstatic --noinput
+docker compose exec web python manage.py check
+```
+
+## Manutenzione
+
+La procedura ordinaria di controllo e aggiornata in:
+
+```text
+docs/PROCEDURA_MANUTENZIONE.md
+```
+
 ## Note Importanti
 
 - La prima installazione resta pensata per rete locale.
 - Accesso remoto solo con soluzione sicura, preferibilmente VPN.
 - Il file `.env` non va caricato su GitHub.
 - Prima dell'uso reale va provato almeno un backup e ripristino.
+- Le password predefinite di `.env.example` non vanno usate in produzione.
 
 ## Da Rifinire Prima Della Produzione Stabile
 
-- Collegamento GitHub definitivo.
 - Dominio o nome locale del BMAX.
-- Procedura backup automatico.
+- Procedura backup automatico dopo prova manuale.
 - Eventuale servizio systemd per riavvio automatico.
 - Verifica LibreOffice PDF direttamente sul BMAX.

@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}{{ customer.name }} - Gestionale B3D Lab{% endblock %}
+{% block heading %}{{ customer.name }}{% endblock %}
+{% block eyebrow %}Scheda cliente{% endblock %}
+
+{% block actions %}
+  <a class="button" href="{% url 'estimates:create' %}">Nuovo preventivo</a>
+  <a class="button secondary" href="{% url 'customers:update' customer.pk %}">Modifica cliente</a>
+  <a class="button secondary" href="{% url 'customers:list' %}">Torna ai clienti</a>
+{% endblock %}
+
+{% block content %}
+  <section class="detail-grid">
+    <article class="panel detail-panel">
+      <div class="panel-header">
+        <h2>Dati cliente</h2>
+      </div>
+      <dl class="definition-list">
+        <div>
+          <dt>Tipo</dt>
+          <dd>{{ customer.get_customer_type_display }}</dd>
+        </div>
+        <div>
+          <dt>Referente</dt>
+          <dd>{{ customer.contact_person|default:"-" }}</dd>
+        </div>
+        <div>
+          <dt>Email</dt>
+          <dd>{{ customer.email|default:"-" }}</dd>
+        </div>
+        <div>
+          <dt>Telefono</dt>
+          <dd>{{ customer.phone|default:"-" }}</dd>
+        </div>
+        <div>
+          <dt>Codice fiscale / Partita IVA</dt>
+          <dd>{{ customer.tax_code|default:"-" }}</dd>
+        </div>
+        <div>
+          <dt>Indirizzo</dt>
+          <dd>{{ customer.address|linebreaksbr|default:"-" }}</dd>
+        </div>
+      </dl>
+    </article>
+
+    <article class="panel detail-panel">
+      <div class="panel-header">
+        <h2>Note</h2>
+      </div>
+      <div class="prose">
+        {% if customer.notes %}
+          {{ customer.notes|linebreaks }}
+        {% else %}
+          <p class="muted-text">Nessuna nota inserita.</p>
+        {% endif %}
+      </div>
+    </article>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header split-header">
+      <div>
+        <h2>Accordi cliente</h2>
+        <p class="muted-text">Condizioni commerciali da ricordare e verificare prima dei nuovi preventivi.</p>
+      </div>
+      <a class="button compact" href="{% url 'customers:agreement_create' customer.pk %}">Nuovo accordo</a>
+    </div>
+    {% if agreements %}
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Listino</th>
+            <th>Validita</th>
+            <th>Stato</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for agreement in agreements %}
+            <tr>
+              <td><a href="{% url 'customers:agreement_update' agreement.pk %}">{{ agreement.name }}</a></td>
+              <td>{{ agreement.price_list_name|default:"-" }}</td>
+              <td>{{ agreement.starts_on|default:"-" }} - {{ agreement.ends_on|default:"-" }}</td>
+              <td><span class="badge">{{ agreement.get_status_display }}</span></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="empty-state">
+        <p>Nessun accordo registrato per questo cliente.</p>
+      </div>
+    {% endif %}
+  </section>
+
+  <section class="panel">
+    <div class="panel-header split-header">
+      <div>
+        <h2>Documenti commerciali</h2>
+        <p class="muted-text">NDA, accordi firmati, listini e altri allegati collegati alla relazione cliente.</p>
+      </div>
+      <a class="button compact" href="{% url 'customers:commercial_document_create' customer.pk %}">Nuovo documento</a>
+    </div>
+    {% if commercial_documents %}
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Stato</th>
+            <th>Scadenza</th>
+            <th>File</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for document in commercial_documents %}
+            <tr>
+              <td><a href="{% url 'customers:commercial_document_update' document.pk %}">{{ document.name }}</a></td>
+              <td>{{ document.get_document_type_display }}</td>
+              <td><span class="badge">{{ document.get_status_display }}</span></td>
+              <td>{{ document.expires_on|default:"-" }}</td>
+              <td>
+                {% if document.file %}
+                  <a href="{{ document.file.url }}">Apri file</a>
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="empty-state">
+        <p>Nessun documento commerciale registrato.</p>
+      </div>
+    {% endif %}
+  </section>
+
+  <section class="detail-grid">
+    <article class="panel detail-panel">
+      <div class="panel-header">
+        <h2>Preventivi recenti</h2>
+      </div>
+      {% if estimates %}
+        <table class="data-table">
+          <tbody>
+            {% for estimate in estimates %}
+              <tr>
+                <td><a href="{% url 'estimates:detail' estimate.pk %}">{{ estimate.number }}</a></td>
+                <td>{{ estimate.subject }}</td>
+                <td><span class="badge">{{ estimate.get_status_display }}</span></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <div class="empty-state">
+          <p>Nessun preventivo collegato.</p>
+        </div>
+      {% endif %}
+    </article>
+
+    <article class="panel detail-panel">
+      <div class="panel-header">
+        <h2>Commesse recenti</h2>
+      </div>
+      {% if jobs %}
+        <table class="data-table">
+          <tbody>
+            {% for job in jobs %}
+              <tr>
+                <td><a href="{% url 'jobs:detail' job.pk %}">{{ job.number }}</a></td>
+                <td>{{ job.estimate.number }}</td>
+                <td><span class="badge">{{ job.get_status_display }}</span></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <div class="empty-state">
+          <p>Nessuna commessa collegata.</p>
+        </div>
+      {% endif %}
+    </article>
+  </section>
+{% endblock %}

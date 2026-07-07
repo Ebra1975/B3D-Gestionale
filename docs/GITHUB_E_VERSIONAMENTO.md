@@ -85,11 +85,17 @@ git clone URL_REPOSITORY_GITHUB gestionale-b3d
 Per aggiornare il BMAX dopo nuove modifiche:
 
 ```bash
+git status
 git pull
 docker compose up -d --build
 docker compose exec web python manage.py migrate
 docker compose exec web python manage.py collectstatic --noinput
+docker compose exec web python manage.py check
 ```
+
+Prima di aggiornare il BMAX creare un backup seguendo `docs/BACKUP_E_RIPRISTINO.md`.
+
+Dopo l'aggiornamento aprire il gestionale da browser e controllare almeno dashboard, clienti, preventivi e documenti.
 
 ## Regola Pratica
 
@@ -111,3 +117,4 @@ Prima di inviare modifiche a GitHub:
 
 - Verificare che il repository resti privato.
 - Usare GitHub come sorgente per il futuro clone sul BMAX.
+- Provare il primo aggiornamento reale sul BMAX solo dopo backup e prova di ripristino.
