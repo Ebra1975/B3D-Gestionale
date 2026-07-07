@@ -44,6 +44,7 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-06 | Interfaccia | La sidebar resta fissa durante lo scorrimento delle pagine lunghe su desktop. | Mantiene la navigazione sempre disponibile, soprattutto nelle pagine preventivo ricche di informazioni. |
 | 2026-07-07 | Manuale operativo | La "wiki" viene intesa come manuale operativo per l'operatore, con procedure passo passo. | Serve a spiegare come usare il gestionale, ad esempio come fare un preventivo, non a documentare il codice. |
 | 2026-07-07 | Dati demo | Viene aggiunto un comando Django per creare un preventivo demo realistico `B3D-2026-001`. | Permette di testare e mostrare il flusso consulenza DOCX/PDF senza usare dati cliente reali. |
+| 2026-07-07 | Manuale operativo | Il manuale viene esposto anche nella sidebar del gestionale con una prima pagina consultabile. | L'operatore deve poter leggere le procedure senza cercare file nella cartella di progetto. |
 
 ## Decisioni Da Prendere
 

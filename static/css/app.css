@@ -529,6 +529,88 @@ h2 {
   padding: 14px 18px;
 }
 
+.manual-layout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.manual-index {
+  position: sticky;
+  top: 28px;
+}
+
+.manual-nav {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+}
+
+.manual-nav a {
+  border-radius: var(--radius);
+  color: var(--color-primary-dark);
+  font-weight: 700;
+  padding: 10px 12px;
+}
+
+.manual-nav a:hover {
+  background: #eef2f7;
+}
+
+.manual-section {
+  scroll-margin-top: 24px;
+}
+
+.manual-body {
+  padding: 18px;
+}
+
+.manual-lead {
+  color: var(--color-muted);
+  font-size: 1.02rem;
+}
+
+.manual-goal {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  background: #f9fbfd;
+  margin-bottom: 18px;
+  padding: 14px;
+}
+
+.manual-goal h3 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+}
+
+.manual-goal p {
+  margin-bottom: 0;
+}
+
+.step-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding-left: 24px;
+}
+
+.step-list li {
+  padding-left: 4px;
+}
+
+.compact-steps {
+  gap: 8px;
+}
+
+.checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding-left: 18px;
+}
+
 @media (max-width: 900px) {
   .app-shell {
     grid-template-columns: 1fr;
@@ -544,10 +626,16 @@ h2 {
 
   .detail-grid,
   .readiness-grid,
+  .manual-layout,
   .price-summary,
   .definition-list.inline,
+  .checklist-grid,
   .form-layout {
     grid-template-columns: 1fr;
+  }
+
+  .manual-index {
+    position: static;
   }
 }
 

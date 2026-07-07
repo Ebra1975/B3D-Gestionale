@@ -17,6 +17,7 @@ Menu iniziale consigliato:
 - Materiali
 - Stampanti
 - Documenti
+- Manuale
 - Impostazioni
 
 La prima versione deve restare semplice. Le voci possono crescere in futuro, ma all'inizio devono coprire il flusso reale di lavoro.
@@ -368,7 +369,7 @@ Spiegare all'operatore come usare il gestionale nelle operazioni quotidiane, con
 
 ### Stato
 
-Prima bozza in `docs/MANUALE_OPERATIVO.md`. In seguito si decidera se renderlo disponibile anche come sezione consultabile dalla sidebar del gestionale.
+Prima bozza in `docs/MANUALE_OPERATIVO.md` e prima schermata consultabile dalla sidebar del gestionale.
 
 ### Contenuti Possibili
 

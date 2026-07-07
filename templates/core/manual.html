@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Manuale operativo - Gestionale B3D Lab{% endblock %}
+{% block heading %}Manuale operativo{% endblock %}
+{% block eyebrow %}Procedure per l'operatore{% endblock %}
+
+{% block content %}
+  <section class="manual-layout">
+    <aside class="panel manual-index">
+      <div class="panel-header">
+        <h2>Procedure</h2>
+      </div>
+      <nav class="manual-nav">
+        <a href="#preventivo-consulenza">Fare un preventivo consulenza</a>
+        <a href="#preventivo-demo">Usare il preventivo demo</a>
+        <a href="#controlli-invio">Controlli prima dell'invio</a>
+      </nav>
+    </aside>
+
+    <div class="manual-content">
+      <article class="panel manual-section" id="preventivo-consulenza">
+        <div class="panel-header">
+          <h2>Fare un preventivo consulenza</h2>
+        </div>
+        <div class="manual-body">
+          <p class="manual-lead">Usa questa procedura quando una richiesta cliente deve diventare una proposta di consulenza tecnica, progettazione, validazione e realizzazione.</p>
+
+          <div class="manual-goal">
+            <h3>Risultato atteso</h3>
+            <p>Preventivo completo con cliente, configurazione tecnica, costi interni, totale coerente e documenti cliente in DOCX/PDF.</p>
+          </div>
+
+          <ol class="step-list">
+            <li>Apri <strong>Clienti</strong> e verifica se il cliente esiste gia.</li>
+            <li>Se il cliente non esiste, crea una nuova scheda cliente.</li>
+            <li>Apri <strong>Preventivi</strong> e crea un nuovo preventivo.</li>
+            <li>Inserisci numero, cliente, oggetto, data, quantita e descrizione della richiesta.</li>
+            <li>Lascia il profilo documento su <strong>Consulenza</strong>, salvo caso diverso.</li>
+            <li>Salva il preventivo e aggiungi una configurazione tecnica.</li>
+            <li>Compila nome, descrizione, materiale, stampante/strumentazione, processo, quantita e dati tecnici disponibili.</li>
+            <li>Marca come scelta la configurazione da proporre al cliente.</li>
+            <li>Genera i costi automatici disponibili: materiale, macchina e setup/progettazione.</li>
+            <li>Completa manualmente eventuali importi mancanti, soprattutto progettazione, post-processing, trattamenti o margine.</li>
+            <li>Torna al dettaglio preventivo e controlla il riquadro <strong>Stato preventivo</strong>.</li>
+            <li>Risolvi gli elementi indicati in <strong>Da fare prima della proposta</strong>.</li>
+            <li>Quando il totale e coerente, genera il <strong>DOCX consulenza</strong>.</li>
+            <li>Scarica e controlla DOCX e PDF.</li>
+            <li>Se il documento e corretto, aggiorna lo stato del preventivo secondo il flusso reale, per esempio <strong>Inviato</strong>.</li>
+          </ol>
+        </div>
+      </article>
+
+      <article class="panel manual-section" id="preventivo-demo">
+        <div class="panel-header">
+          <h2>Usare il preventivo demo</h2>
+        </div>
+        <div class="manual-body">
+          <p>Il preventivo demo serve a provare il flusso senza usare dati reali.</p>
+          <ol class="step-list compact-steps">
+            <li>Apri <strong>Preventivi</strong>.</li>
+            <li>Cerca <strong>B3D-2026-001</strong>.</li>
+            <li>Apri il dettaglio e controlla totale, configurazione scelta e documenti generati.</li>
+            <li>Genera una nuova versione del DOCX consulenza se vuoi provare il flusso documento.</li>
+          </ol>
+        </div>
+      </article>
+
+      <article class="panel manual-section" id="controlli-invio">
+        <div class="panel-header">
+          <h2>Controlli prima dell'invio</h2>
+        </div>
+        <div class="manual-body">
+          <ul class="checklist-grid">
+            <li>Cliente corretto.</li>
+            <li>Oggetto chiaro.</li>
+            <li>Descrizione comprensibile.</li>
+            <li>Configurazione scelta corretta.</li>
+            <li>Totale diverso da zero.</li>
+            <li>Prezzo unitario coerente con la quantita.</li>
+            <li>Dettaglio economico interno non esposto al cliente.</li>
+            <li>Diciture fiscali/commerciali da validare quando necessario.</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+{% endblock %}

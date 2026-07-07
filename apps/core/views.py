@@ -20,3 +20,7 @@ def dashboard(request):
         "latest_estimates": Estimate.objects.select_related("customer").all()[:5],
     }
     return render(request, "core/dashboard.html", context)
+
+
+def manual(request):
+    return render(request, "core/manual.html")
