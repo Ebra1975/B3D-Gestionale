@@ -92,6 +92,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Sprint 19 | Nome locale BMAX `b3d-gestionale.local:8000` | Approvato e verificato su rete locale | Rende piu semplice l'accesso in rete locale senza cambiare architettura; verificato dal browser dopo configurazione hostname, Avahi e `.env`. |
 | Sprint 19 | Verifica PDF reale BMAX con comando dedicato | Approvato e verificato su BMAX | Il comando ha creato il preventivo test `B3D-2026-002` e generato DOCX/PDF cliente, interno e fornitura/artigiano. |
 | Documenti | Storage media esplicito in produzione | Approvato come correzione tecnica | Necessario per generare documenti su BMAX con Django 5 quando `STORAGES` personalizza i file statici. |
+| Backup | Copia ultimo backup fuori dal BMAX | Approvato come prima procedura manuale | Script dedicato copia l'ultimo backup su disco USB o NAS montato e verifica il checksum. |
 
 ## In Revisione
 
@@ -111,7 +112,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Stampanti | Evoluzione calcolo ammortamento completo | Da progettare | Sprint 16 copre costo base, manutenzione, energia e rischio fallimento; costo acquisto, vita stimata e ore gia stampate restano una possibile evoluzione futura. |
 | Documenti | Layout definitivo PDF cliente/interno | Da validare con esempi reali | Sprint 11 migliora i template base, ma grafica, logo e impaginazione definitiva restano da confermare su documenti reali. |
 | Documenti | Guida completa ai segnaposto template DOCX in interfaccia | Da progettare | Sprint 14 aggiunge la guida nel manuale; resta da mostrare direttamente nella pagina caricamento template l'elenco dei segnaposto disponibili e mancanti. |
-| Backup | Copia automatica fuori dal BMAX | Da pianificare | Da decidere tra NAS, disco esterno o altra destinazione sicura dopo la prima prova reale. |
+| Backup | Copia automatica fuori dal BMAX | Da pianificare | La procedura manuale esiste; automatizzare solo dopo aver scelto una destinazione esterna stabile. |
 
 ## Da Validare Con Commercialista
 

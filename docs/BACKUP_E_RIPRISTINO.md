@@ -85,7 +85,7 @@ Lo script salva in un unico archivio `.tar.gz`:
 Prima del primo uso sul BMAX rendere eseguibili gli script:
 
 ```bash
-chmod +x scripts/bmax_backup.sh scripts/bmax_restore_test.sh
+chmod +x scripts/bmax_backup.sh scripts/bmax_restore_test.sh scripts/bmax_copy_latest_backup.sh
 ```
 
 Esecuzione manuale:
@@ -251,6 +251,24 @@ Per uso reale:
 - copia periodica su disco esterno o NAS;
 - almeno una prova di ripristino prima di affidare dati reali al sistema.
 
+## Copia Fuori Dal BMAX
+
+Lo Sprint 19 aggiunge una procedura dedicata:
+
+```text
+docs/COPIA_BACKUP_FUORI_BMAX.md
+```
+
+e uno script per copiare l'ultimo backup verso una destinazione esterna:
+
+```bash
+EXTERNAL_BACKUP_DIR=/mnt/b3d-backup scripts/bmax_copy_latest_backup.sh
+```
+
+La destinazione puo essere un disco USB o un NAS gia montato sul BMAX.
+
+Il comando copia l'ultimo archivio `b3dlab_bmax_*.tar.gz` e verifica il checksum dopo la copia.
+
 ## Da Automatizzare
 
 Completato nello Sprint 18:
@@ -264,5 +282,5 @@ Completato nello Sprint 18:
 Resta da valutare in futuro:
 
 - notifica automatica via email o altro canale;
-- copia automatica fuori dal BMAX, ad esempio su NAS o disco esterno;
+- copia automatica fuori dal BMAX, dopo avere scelto una destinazione stabile;
 - controllo periodico visibile nella dashboard del gestionale.

@@ -75,6 +75,14 @@ Una volta al mese:
 - verificare che GitHub sia aggiornato con l'ultima versione del codice;
 - leggere eventuali note aperte in `docs/APPROVAZIONI.md`.
 
+Copia ultimo backup fuori dal BMAX:
+
+```bash
+EXTERNAL_BACKUP_DIR=/mnt/b3d-backup scripts/bmax_copy_latest_backup.sh
+```
+
+Sostituire `/mnt/b3d-backup` con la destinazione reale del disco USB o NAS.
+
 Prova ripristino:
 
 ```bash
