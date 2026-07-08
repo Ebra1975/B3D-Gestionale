@@ -38,6 +38,35 @@ Sul BMAX impostare il nome macchina:
 sudo hostnamectl set-hostname b3d-gestionale
 ```
 
+Subito dopo, aggiornare anche il file `/etc/hosts`. Questo evita l'avviso:
+
+```text
+sudo: unable to resolve host b3d-gestionale: Name or service not known
+```
+
+Aprire il file:
+
+```bash
+sudo nano /etc/hosts
+```
+
+Controllare che ci siano almeno queste righe:
+
+```text
+127.0.0.1 localhost
+127.0.1.1 b3d-gestionale
+```
+
+Se nella riga `127.0.1.1` c'e ancora il vecchio nome, sostituirlo con `b3d-gestionale`.
+
+Salvare con:
+
+```text
+CTRL+O
+INVIO
+CTRL+X
+```
+
 Controllare:
 
 ```bash
@@ -93,6 +122,13 @@ Controllare almeno:
 - clienti;
 - preventivi;
 - documenti.
+
+Prima verifica reale Sprint 19:
+
+- hostname BMAX impostato a `b3d-gestionale`;
+- Avahi attivo e in registrazione su `b3d-gestionale.local`;
+- file `/etc/hosts` corretto per evitare avvisi `sudo`;
+- gestionale raggiungibile da browser su `http://b3d-gestionale.local:8000`.
 
 ## Se Il Nome Non Si Apre
 
