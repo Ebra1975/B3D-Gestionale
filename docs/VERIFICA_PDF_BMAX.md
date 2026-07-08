@@ -90,6 +90,19 @@ docker compose exec web libreoffice --version
 docker compose logs web
 ```
 
+Se compare un errore simile a:
+
+```text
+Could not find config for 'default' in settings.STORAGES
+```
+
+aggiornare il codice e ricostruire:
+
+```bash
+git pull
+docker compose up -d --build
+```
+
 Se LibreOffice non risponde, ricostruire:
 
 ```bash

@@ -91,6 +91,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Sprint 19 | Avvio automatico BMAX con restart policy Docker | Approvato e verificato su BMAX | I servizi principali usano `restart: unless-stopped`; dopo aggiornamento da GitHub il gestionale e ripartito correttamente sul BMAX. |
 | Sprint 19 | Nome locale BMAX `b3d-gestionale.local:8000` | Approvato e verificato su rete locale | Rende piu semplice l'accesso in rete locale senza cambiare architettura; verificato dal browser dopo configurazione hostname, Avahi e `.env`. |
 | Sprint 19 | Verifica PDF reale BMAX con comando dedicato | Approvato come procedura di test | Crea un preventivo di test e controlla generazione DOCX/PDF cliente, interno e fornitura/artigiano; da eseguire sul BMAX. |
+| Documenti | Storage media esplicito in produzione | Approvato come correzione tecnica | Necessario per generare documenti su BMAX con Django 5 quando `STORAGES` personalizza i file statici. |
 
 ## In Revisione
 

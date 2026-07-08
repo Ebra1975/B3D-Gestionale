@@ -114,6 +114,7 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-08 | Sprint 19 | Il nome locale proposto per il gestionale e `b3d-gestionale.local:8000`. | Rende l'accesso quotidiano piu leggibile senza introdurre proxy o cambiare architettura; la rimozione di `:8000` resta evoluzione futura. |
 | 2026-07-08 | Sprint 19 | Il nome locale `b3d-gestionale.local:8000` viene verificato da browser sulla rete reale. | Conferma che l'accesso quotidiano puo usare un nome leggibile al posto dell'IP `192.168.1.143`. |
 | 2026-07-08 | Sprint 19 | La verifica PDF reale sul BMAX viene resa ripetibile con un comando Django dedicato. | Crea dati di test riconoscibili e controlla che LibreOffice generi PDF per cliente, interno e fornitura/artigiano. |
+| 2026-07-08 | Documenti | In produzione viene configurato anche lo storage `default` per file media e documenti generati. | Django 5 richiede una configurazione esplicita quando si personalizza `STORAGES`; senza questa voce i DOCX/PDF non possono accedere ai file template/media. |
 
 ## Decisioni Da Prendere
 
