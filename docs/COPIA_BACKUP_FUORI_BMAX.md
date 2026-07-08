@@ -23,6 +23,7 @@ Nota importante: un secondo disco interno protegge dal guasto del disco principa
 Esempi di destinazione:
 
 ```text
+/mnt/backup
 /mnt/b3d-backup
 /mnt/b3d-backup-interno
 /media/emanuele/NOME_DISCO
@@ -40,6 +41,16 @@ df -h
 ```
 
 Se e stato installato un secondo HD interno, prima non formattare nulla: controllare con `lsblk -f` come Debian vede il disco e quale partizione appartiene al sistema.
+
+Prima verifica reale Sprint 19:
+
+- secondo disco rilevato come `sda`;
+- partizione utile `sda1`;
+- filesystem `ext4`;
+- etichetta `b3d-backup`;
+- mount point `/mnt/backup`;
+- spazio disponibile circa 103 GB;
+- nessuna formattazione necessaria.
 
 ## Creare Un Backup Manuale
 
@@ -69,10 +80,10 @@ ls -lh backups/bmax
 
 ## Copiare L'ultimo Backup Fuori Dal BMAX
 
-Esempio con destinazione `/mnt/b3d-backup-interno`:
+Esempio con destinazione reale BMAX `/mnt/backup`:
 
 ```bash
-EXTERNAL_BACKUP_DIR=/mnt/b3d-backup-interno scripts/bmax_copy_latest_backup.sh
+EXTERNAL_BACKUP_DIR=/mnt/backup scripts/bmax_copy_latest_backup.sh
 ```
 
 Il comando:

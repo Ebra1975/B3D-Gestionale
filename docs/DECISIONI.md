@@ -117,6 +117,7 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-08 | Documenti | In produzione viene configurato anche lo storage `default` per file media e documenti generati. | Django 5 richiede una configurazione esplicita quando si personalizza `STORAGES`; senza questa voce i DOCX/PDF non possono accedere ai file template/media. |
 | 2026-07-08 | Sprint 19 | La verifica PDF reale sul BMAX viene completata con successo sul preventivo test `B3D-2026-002`. | Conferma che LibreOffice nel container web genera PDF per documento cliente, interno e fornitura/artigiano. |
 | 2026-07-08 | Backup | La copia fuori dal disco principale del BMAX viene gestita con procedura manuale verificabile e script dedicato. | La prima destinazione scelta e un secondo HD interno; protegge dal guasto del disco principale ma non sostituisce una copia esterna al mini PC. |
+| 2026-07-08 | Backup | Il secondo HD interno per backup e gia formattato ext4 e montato in `/mnt/backup`. | Non serve formattare: la partizione `sda1` con etichetta `b3d-backup` ha spazio sufficiente per la prima copia verificata. |
 
 ## Decisioni Da Prendere
 

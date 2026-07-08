@@ -93,6 +93,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Sprint 19 | Verifica PDF reale BMAX con comando dedicato | Approvato e verificato su BMAX | Il comando ha creato il preventivo test `B3D-2026-002` e generato DOCX/PDF cliente, interno e fornitura/artigiano. |
 | Documenti | Storage media esplicito in produzione | Approvato come correzione tecnica | Necessario per generare documenti su BMAX con Django 5 quando `STORAGES` personalizza i file statici. |
 | Backup | Copia ultimo backup fuori dal disco principale BMAX | Approvato come prima procedura manuale | Script dedicato copia l'ultimo backup su secondo HD interno, disco USB o NAS montato e verifica il checksum. |
+| Backup | Secondo HD interno montato in `/mnt/backup` | Approvato come destinazione reale | Disco `sda1`, ext4, etichetta `b3d-backup`, circa 103 GB liberi; non viene formattato. |
 
 ## In Revisione
 
