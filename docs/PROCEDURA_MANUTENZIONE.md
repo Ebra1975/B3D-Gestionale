@@ -28,6 +28,8 @@ Quando il gestionale viene usato, controllare:
 
 Se qualcosa non torna, non fare aggiornamenti: prima creare un backup e segnare cosa e successo.
 
+Il backup automatico giornaliero e pianificato alle 02:30 sul BMAX.
+
 ## Controllo Settimanale
 
 Una volta a settimana:

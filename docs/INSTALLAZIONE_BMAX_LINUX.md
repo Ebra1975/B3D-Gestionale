@@ -14,6 +14,12 @@ A fine installazione il gestionale deve essere raggiungibile da un altro PC dell
 http://IP_DEL_BMAX:8000
 ```
 
+Prima installazione reale Sprint 18:
+
+```text
+http://192.168.1.143:8000
+```
+
 ## Prerequisiti
 
 Sul BMAX servono:
@@ -133,6 +139,15 @@ Controllare:
 - documenti;
 - generazione PDF tramite LibreOffice.
 
+Nella prima installazione reale sul BMAX sono stati verificati:
+
+- dashboard raggiungibile;
+- admin Django raggiungibile;
+- migrazioni PostgreSQL completate;
+- backup manuale creato;
+- prova di ripristino completata;
+- cron backup giornaliero alle 02:30 configurato.
+
 ## Avvio Ordinario
 
 Per avviare normalmente:
@@ -192,6 +207,6 @@ docs/PROCEDURA_MANUTENZIONE.md
 ## Da Rifinire Prima Della Produzione Stabile
 
 - Dominio o nome locale del BMAX.
-- Procedura backup automatico dopo prova manuale.
 - Eventuale servizio systemd per riavvio automatico.
 - Verifica LibreOffice PDF direttamente sul BMAX.
+- Copia automatica dei backup fuori dal BMAX.

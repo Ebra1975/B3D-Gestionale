@@ -126,6 +126,8 @@ Esempio: backup ogni giorno alle 02:30, con log dell'esito:
 
 Sostituire `/percorso/gestionale-b3d` con la cartella reale del progetto sul BMAX.
 
+Sul BMAX B3D Lab la pianificazione giornaliera alle 02:30 e stata configurata dopo la prima prova riuscita.
+
 Il log non sostituisce il controllo umano: una volta a settimana va verificato che nella cartella `backups/bmax/` ci siano archivi recenti.
 
 ### Backup Manuale Di Emergenza
@@ -232,6 +234,14 @@ La prova deve confermare che:
 - il gestionale parte senza errori;
 - l'utente amministratore riesce ad accedere.
 
+Prima prova reale BMAX eseguita nello Sprint 18:
+
+- backup creato correttamente;
+- checksum validi;
+- database ripristinato in ambiente Docker temporaneo;
+- 25 tabelle ripristinate;
+- 0 file media ripristinati, dato atteso per installazione iniziale senza allegati.
+
 ## Frequenza Consigliata
 
 Per uso reale:
@@ -249,6 +259,7 @@ Completato nello Sprint 18:
 - rotazione dei backup vecchi;
 - controllo spazio disco;
 - riepilogo dell'esito su terminale e log cron.
+- pianificazione giornaliera con cron alle 02:30.
 
 Resta da valutare in futuro:
 

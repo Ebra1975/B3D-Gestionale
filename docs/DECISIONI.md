@@ -96,6 +96,16 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-08 | Sprint 16 | Il prossimo sprint proposto e "Archivi guidati materiali e parametri tecnici". | Dopo la numerazione, il prossimo problema pratico e ridurre testo libero ripetuto in materiali, colori, marche e parametri usati nei preventivi. |
 | 2026-07-08 | Sprint 16 | Materiali e stampanti hanno parametri economici espliciti usati dai costi automatici del preventivo. | Riduce costi arbitrari: materiale considera scarto/extra, stampante considera manutenzione, energia e rischio fallimento, mantenendo il dettaglio interno tracciabile. |
 | 2026-07-08 | Sprint 16 | Lo sprint viene chiuso con migrazione locale, test e documentazione allineata. | I parametri economici sono pronti per essere provati su materiali, stampanti e preventivi reali. |
+| 2026-07-08 | Sprint 17 | L'import G-code/3MF compila peso materiale e ore macchina sulla configurazione senza generare automaticamente costi o prezzo. | Riduce errori di inserimento dai dati slicer mantenendo il controllo manuale sul dettaglio economico interno. |
+| 2026-07-08 | Sprint 17 | Il file tecnico originale non viene ancora archiviato; l'import salva una nota interna con nome file e valori letti. | Prima forma utile e semplice; archivio file e preview restano evoluzioni future. |
+| 2026-07-08 | Sprint 17 | Lo sprint viene chiuso con test e documentazione allineata. | L'import tecnico e pronto per prove con file reali esportati dagli slicer usati da B3D Lab. |
+| 2026-07-08 | Sprint 18 | Il backup BMAX viene gestito con script di sistema eseguibile da cron. | Il salvataggio deve funzionare anche se l'interfaccia web non e raggiungibile e deve essere facile da verificare sul server. |
+| 2026-07-08 | Backup | Ogni backup BMAX automatico include database PostgreSQL, media, `.env`, manifesto e checksum in un archivio datato. | Serve a recuperare sia dati applicativi sia documenti/allegati, riducendo il rischio di backup incompleti. |
+| 2026-07-08 | Ripristino | La prova di ripristino usa contenitori e volumi Docker temporanei, senza toccare i dati reali. | Permette di verificare il backup prima dell'uso reale del gestionale sul BMAX. |
+| 2026-07-08 | Sprint 18 | Il gestionale viene avviato sul BMAX in rete locale su `192.168.1.143:8000`. | Conferma che il flusso Docker Compose funziona sul mini PC reale. |
+| 2026-07-08 | Sprint 18 | Backup e prova ripristino sono stati eseguiti con successo sul BMAX. | Conferma che il salvataggio non e solo creato, ma anche recuperabile in ambiente temporaneo. |
+| 2026-07-08 | Backup | Il cron giornaliero alle 02:30 viene configurato sul BMAX. | Rende il backup una routine automatica, da controllare periodicamente tramite log e archivi recenti. |
+| 2026-07-08 | Sprint 18 | Lo sprint viene chiuso con prova reale BMAX, backup verificato e documentazione allineata. | La base operativa minima per proteggere i dati e pronta. |
 
 ## Decisioni Da Prendere
 
@@ -111,6 +121,8 @@ Questo documento registra le decisioni importanti del progetto.
 | Prodotto | Implementazione documenti contrattuali cliente | Fase successiva | NDA, accordi quadro, condizioni particolari e allegati commerciali. |
 | Prodotto | Manuale operativo nel gestionale | Markdown nel repository, pagine Django, soluzione ibrida | Prima bozza in `docs/MANUALE_OPERATIVO.md`; da decidere se esporlo anche nella sidebar. |
 | Infrastruttura | Avvio automatico BMAX | Docker Compose manuale, servizio systemd, altra gestione avvio | Da decidere dopo prova reale sul mini PC. |
+| File tecnici | Archivio originale e preview G-code/3MF | Salvataggio file, preview, riconoscimento slicer avanzato | Sprint 17 copre il primo import dati utile; restano da progettare conservazione file e anteprime. |
+| Backup | Copia fuori dal BMAX | Disco esterno, NAS, cloud privato | Lo Sprint 18 crea backup locali automatici verificati; resta da decidere dove conservarne una copia esterna. |
 
 ## Note
 

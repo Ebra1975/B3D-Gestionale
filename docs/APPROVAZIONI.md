@@ -82,6 +82,11 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Sprint 15 | Chiusura sprint | Approvato | Sprint chiuso dopo test automatici completi, migrazione locale e aggiornamento documentazione. |
 | Sprint 16 | Parametri economici stampanti/materiali | Approvato come prima versione | Materiali e stampanti espongono i parametri economici usati dai costi automatici del preventivo, con note interne di calcolo salvate sulle voci costo. |
 | Sprint 16 | Chiusura sprint | Approvato | Sprint chiuso dopo test automatici, migrazione locale e aggiornamento documentazione. |
+| Sprint 17 | Import dati tecnici G-code/3MF | Approvato come prima versione | Dal dettaglio preventivo si importa un file tecnico per compilare peso materiale e ore macchina della configurazione, lasciando all'operatore la generazione dei costi. |
+| Sprint 17 | Chiusura sprint | Approvato | Sprint chiuso dopo test automatici, controllo Django e aggiornamento documentazione. |
+| Sprint 18 | Backup automatico BMAX con script di sistema | Approvato come prima versione | Script eseguibile manualmente o da cron, con archivio datato, manifesto, checksum e rotazione. |
+| Sprint 18 | Prova ripristino BMAX su ambiente temporaneo | Approvato come prima versione | Usa contenitori e volumi Docker di test per non toccare i dati reali. |
+| Sprint 18 | Installazione reale BMAX e cron backup | Approvato | Gestionale raggiungibile in rete locale, backup verificato, ripristino provato e cron giornaliero alle 02:30 configurato. |
 
 ## In Revisione
 
@@ -89,20 +94,20 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 |---|---|---|---|
 | Interfaccia | Dettaglio grafico schermate | Da definire | Layout, colori, logo, densita delle informazioni. |
 | Documenti | Layout grafico template `.docx` definitivo | Da definire | I template base v3 consulenza e v2 interno sono una rifinitura operativa, non il layout finale di brand. |
-| Backup | Backup automatico BMAX | Da definire | Dopo la procedura manuale serve automatizzare frequenza, rotazione e controllo esito. |
-| Installazione | Rifinitura produzione stabile | Da definire | Verificare direttamente sul BMAX Docker, LibreOffice PDF, IP locale e riavvio automatico. |
+| Installazione | Rifinitura produzione stabile | Da definire | Docker e rete locale verificati sul BMAX; restano LibreOffice PDF su caso reale, nome locale e riavvio automatico. |
 | Manutenzione | Avvio automatico del gestionale dopo riavvio BMAX | Da definire | Valutare dopo la prima installazione reale. |
 | Prodotto | Implementazione listini e accordi | Da pianificare | Dopo flusso preventivo base. |
 | Prodotto | Implementazione documenti contrattuali cliente | Da pianificare | NDA, accordi quadro, condizioni particolari, listini firmati. |
 | Prodotto | Implementazione AI e regole lavorazione | Da pianificare | Prima regole semplici, poi AI generativa. |
 | Prodotto | Applicazione automatica accordi ai preventivi | Da pianificare | Richiede listini strutturati, regole prezzo e tracciabilita della fonte prezzo. |
 | Magazzino | Liste editabili per tipo materiale, marca e colore | Da progettare | Evita testo libero ripetuto e rende piu ordinati materiali e preventivi. |
-| Sprint 16 | Archivi guidati materiali e parametri tecnici | Proposto | Possibile prossimo sprint per ordinare materiali, colori, marche e parametri ricorrenti prima di automatizzare import o listini. |
+| Magazzino | Liste guidate materiali, marche e colori | Da progettare | Dopo Sprint 16 i parametri economici sono presenti; resta da ridurre testo libero ripetuto negli archivi. |
 | Preventivi | Preventivo guidato a step con riepilogo prezzo laterale | Da valutare | Stimalo mostra un flusso chiaro con prezzo finale e breakdown sempre visibili. |
-| File tecnici | Import dati da G-code/3MF | Da progettare | Prima forma di import utile per peso, tempo e piatti senza integrare subito tutto lo slicer. |
+| File tecnici | Archivio originale e preview G-code/3MF | Da progettare | Sprint 17 importa i dati principali; restano da progettare conservazione file, preview e casi avanzati multi-piatto/slicer. |
 | Stampanti | Evoluzione calcolo ammortamento completo | Da progettare | Sprint 16 copre costo base, manutenzione, energia e rischio fallimento; costo acquisto, vita stimata e ore gia stampate restano una possibile evoluzione futura. |
 | Documenti | Layout definitivo PDF cliente/interno | Da validare con esempi reali | Sprint 11 migliora i template base, ma grafica, logo e impaginazione definitiva restano da confermare su documenti reali. |
 | Documenti | Guida completa ai segnaposto template DOCX in interfaccia | Da progettare | Sprint 14 aggiunge la guida nel manuale; resta da mostrare direttamente nella pagina caricamento template l'elenco dei segnaposto disponibili e mancanti. |
+| Backup | Copia automatica fuori dal BMAX | Da pianificare | Da decidere tra NAS, disco esterno o altra destinazione sicura dopo la prima prova reale. |
 
 ## Da Validare Con Commercialista
 
