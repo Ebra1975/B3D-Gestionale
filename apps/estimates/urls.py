@@ -18,6 +18,7 @@ urlpatterns = [
     path("<int:pk>/commessa/crea/", views.create_job, name="create_job"),
     path("<int:pk>/configurazioni/nuova/", views.configuration_create, name="configuration_create"),
     path("configurazioni/<int:pk>/modifica/", views.configuration_update, name="configuration_update"),
+    path("configurazioni/<int:pk>/import-tecnico/", views.import_technical_file, name="import_technical_file"),
     path("configurazioni/<int:pk>/costi/auto/materiale/", views.add_material_cost, name="add_material_cost"),
     path("configurazioni/<int:pk>/costi/auto/macchina/", views.add_machine_time_cost, name="add_machine_time_cost"),
     path("configurazioni/<int:pk>/costi/auto/setup/", views.add_setup_cost, name="add_setup_cost"),

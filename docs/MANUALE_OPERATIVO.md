@@ -20,6 +20,7 @@ Non e documentazione tecnica per sviluppatori: serve all'operatore per sapere co
 | Generare bozza fornitura/artigiano | Bozza preparatoria | Creare un documento futuro di fornitura usando gli stessi dati del preventivo. |
 | Numerazione automatica preventivi | Bozza iniziale | Lasciare al gestionale il prossimo numero progressivo del preventivo. |
 | Aggiornare parametri economici | Bozza iniziale | Tenere aggiornati costi materiali e stampanti usati dai preventivi. |
+| Importare dati tecnici da G-code/3MF | Bozza iniziale | Compilare peso e ore macchina della configurazione partendo dal file esportato dallo slicer. |
 | Applicare prezzo e margine | Bozza iniziale | Generare un totale proposta piu ripetibile partendo dai costi interni. |
 | Fare un backup locale | Bozza iniziale | Salvare dati e documenti durante lo sviluppo. |
 
@@ -176,26 +177,28 @@ Arrivare a un preventivo con:
 12. Aggiungere una configurazione tecnica.
 13. Compilare nome configurazione, descrizione, materiale, stampante/strumentazione, processo, quantita e dati tecnici disponibili.
 14. Se la configurazione e quella da proporre al cliente, marcarla come scelta.
-15. Generare i costi automatici disponibili:
+15. Se disponibile, importare il file G-code/3MF esportato dallo slicer per compilare peso materiale e ore macchina.
+16. Controllare i valori importati nella configurazione.
+17. Generare i costi automatici disponibili:
     - costo materiale;
     - costo macchina;
     - setup/progettazione.
-16. Completare manualmente eventuali importi mancanti, soprattutto setup, progettazione, post-processing, trattamenti o margine.
-17. Applicare la regola prezzo/margine se serve un margine percentuale con arrotondamento.
-18. Tornare al dettaglio preventivo.
-19. Controllare il riquadro **Stato preventivo**.
-20. Controllare il riquadro **Memoria commerciale cliente**.
-21. Se ci sono accordi, listini collegati, NDA o documenti in scadenza, aprire la scheda cliente e verificarli.
-22. Nel riquadro **Memoria commerciale cliente**, usare **Conferma controllo condizioni** e aggiungere una nota interna se serve.
-23. Risolvere gli elementi indicati in **Da fare prima della proposta**.
-24. Controllare gli avvisi in **Da controllare**.
-25. Controllare il blocco **Controlli export PDF/DOCX**.
-26. Se intestazione, contatti, condizioni o note documento non sono corretti, aprire **Documenti** e usare **Modifica dati documento**.
-27. Quando il totale e coerente, usare **Genera cliente**.
-28. Scaricare e controllare DOCX e PDF cliente.
-29. Se serve un controllo economico completo, usare **Genera interno** e conservare il documento solo per uso interno.
-30. Solo per prove o casi futuri, usare **Genera fornitura bozza** e controllare che la dicitura sia ancora da validare con commercialista.
-31. Se il documento cliente e corretto, usare l'azione rapida **Segna inviato** nel dettaglio preventivo.
+18. Completare manualmente eventuali importi mancanti, soprattutto setup, progettazione, post-processing, trattamenti o margine.
+19. Applicare la regola prezzo/margine se serve un margine percentuale con arrotondamento.
+20. Tornare al dettaglio preventivo.
+21. Controllare il riquadro **Stato preventivo**.
+22. Controllare il riquadro **Memoria commerciale cliente**.
+23. Se ci sono accordi, listini collegati, NDA o documenti in scadenza, aprire la scheda cliente e verificarli.
+24. Nel riquadro **Memoria commerciale cliente**, usare **Conferma controllo condizioni** e aggiungere una nota interna se serve.
+25. Risolvere gli elementi indicati in **Da fare prima della proposta**.
+26. Controllare gli avvisi in **Da controllare**.
+27. Controllare il blocco **Controlli export PDF/DOCX**.
+28. Se intestazione, contatti, condizioni o note documento non sono corretti, aprire **Documenti** e usare **Modifica dati documento**.
+29. Quando il totale e coerente, usare **Genera cliente**.
+30. Scaricare e controllare DOCX e PDF cliente.
+31. Se serve un controllo economico completo, usare **Genera interno** e conservare il documento solo per uso interno.
+32. Solo per prove o casi futuri, usare **Genera fornitura bozza** e controllare che la dicitura sia ancora da validare con commercialista.
+33. Se il documento cliente e corretto, usare l'azione rapida **Segna inviato** nel dettaglio preventivo.
 
 ### Controlli Prima Di Inviare
 
@@ -206,6 +209,7 @@ Prima di inviare una proposta al cliente, verificare:
 - l'oggetto descrive bene il lavoro;
 - la descrizione e comprensibile;
 - la configurazione scelta e quella giusta;
+- peso materiale e ore macchina importati o inseriti sono coerenti con il file slicer;
 - il totale non e zero;
 - il prezzo unitario ha senso rispetto alla quantita;
 - accordi cliente e documenti commerciali sono stati controllati;
@@ -501,6 +505,28 @@ Usare questa procedura quando cambia il prezzo di un materiale, si vuole corregg
 ### Nota
 
 I preventivi gia calcolati non vengono modificati da soli. Se si vuole aggiornare un preventivo aperto, rigenerare la voce di costo dalla configurazione tecnica.
+
+## Procedura - Importare Dati Tecnici Da G-code/3MF
+
+### Quando Usarla
+
+Usare questa procedura dopo aver preparato il file nello slicer, prima di generare costo materiale e costo macchina.
+
+### Passi Operativi
+
+1. Aprire il dettaglio preventivo.
+2. Scendere alla configurazione tecnica interessata.
+3. Selezionare il file `.gcode`, `.gco` o `.3mf`.
+4. Usare **Importa G-code/3MF**.
+5. Controllare i campi **Peso per unita** e **Ore per unita** nella configurazione.
+6. Leggere le note interne della configurazione se serve verificare da quale file arrivano i valori.
+7. Usare **Genera costo materiale** e **Genera costo macchina** solo dopo aver controllato materiale, stampante, peso e ore.
+
+### Note
+
+- L'import aggiorna i dati tecnici, non il prezzo finale.
+- Se il file non contiene dati riconosciuti, il gestionale mostra un avviso e non forza valori inventati.
+- Il file originale non viene ancora archiviato nel gestionale.
 
 ## Procedura - Applicare Prezzo E Margine
 

@@ -535,6 +535,19 @@ h2 {
   padding-bottom: 12px;
 }
 
+.cost-actions input[type="file"] {
+  max-width: 220px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
 .pricing-box {
   border-top: 1px solid var(--color-line);
   display: grid;

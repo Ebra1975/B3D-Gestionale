@@ -1,11 +1,16 @@
 from datetime import timedelta
 from decimal import Decimal
+from io import BytesIO
+from zipfile import ZipFile
 
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.utils import timezone
 
 from apps.customers.models import Customer, CustomerAgreement, CustomerCommercialDocument
+from apps.estimates.forms import TechnicalFileImportForm
 from apps.estimates.models import CostItem, Estimate, EstimateConfiguration
+from apps.estimates.services import parse_technical_file
 from apps.estimates.views import build_customer_commercial_memory, build_estimate_readiness
 from apps.inventory.models import Material, Printer
 
@@ -205,3 +210,68 @@ class AutomaticCostTests(TestCase):
         self.assertEqual(cost_item.unit_cost, printer.effective_hourly_cost)
         self.assertEqual(cost_item.total, printer.effective_hourly_cost * 3)
         self.assertIn("rischio fallimento 10.00%", cost_item.notes)
+
+
+class TechnicalFileImportTests(TestCase):
+    def test_parse_gcode_extracts_weight_and_time(self):
+        uploaded_file = SimpleUploadedFile(
+            "pezzo.gcode",
+            b";TIME:5400\n;Filament used [g] = 125.4\n; plate count = 2\n",
+        )
+
+        result = parse_technical_file(uploaded_file)
+
+        self.assertEqual(result.material_weight_kg, Decimal("0.125"))
+        self.assertEqual(result.machine_time_hours, Decimal("1.50"))
+        self.assertEqual(result.plate_count, 2)
+
+    def test_import_technical_file_updates_configuration_fields_and_notes(self):
+        today = timezone.localdate()
+        customer = Customer.objects.create(name="Cliente Import")
+        estimate = Estimate.objects.create(
+            customer=customer,
+            subject="Import G-code",
+            description="Richiesta tecnica.",
+            date=today,
+        )
+        configuration = EstimateConfiguration.objects.create(
+            estimate=estimate,
+            name="Opzione import",
+        )
+        uploaded_file = SimpleUploadedFile(
+            "pezzo.gcode",
+            b";TIME:3600\n;Filament used [g] = 80\n",
+        )
+
+        response = self.client.post(
+            f"/preventivi/configurazioni/{configuration.pk}/import-tecnico/",
+            {"technical_file": uploaded_file},
+        )
+
+        self.assertEqual(response.status_code, 302)
+        configuration.refresh_from_db()
+        self.assertEqual(configuration.material_weight_per_unit, Decimal("0.080"))
+        self.assertEqual(configuration.machine_time_hours_per_unit, Decimal("1.00"))
+        self.assertIn("Import tecnico da pezzo.gcode", configuration.internal_notes)
+
+    def test_parse_3mf_reads_text_metadata_inside_archive(self):
+        buffer = BytesIO()
+        with ZipFile(buffer, "w") as archive:
+            archive.writestr(
+                "Metadata/Slic3r_PE.config",
+                "filament used [g] = 50\nestimated printing time (normal mode) = 1h 30m 0s\n",
+            )
+        uploaded_file = SimpleUploadedFile("piatto.3mf", buffer.getvalue())
+
+        result = parse_technical_file(uploaded_file)
+
+        self.assertEqual(result.material_weight_kg, Decimal("0.050"))
+        self.assertEqual(result.machine_time_hours, Decimal("1.50"))
+
+    def test_technical_import_form_rejects_unsupported_files(self):
+        form = TechnicalFileImportForm(
+            files={"technical_file": SimpleUploadedFile("note.txt", b"test")}
+        )
+
+        self.assertFalse(form.is_valid())
+        self.assertIn("technical_file", form.errors)

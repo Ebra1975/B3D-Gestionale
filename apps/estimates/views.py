@@ -18,8 +18,16 @@ from apps.documents.services import (
 from apps.jobs.models import Job
 from apps.jobs.services import create_job_from_estimate
 
-from .forms import CommercialTermsReviewForm, CostItemForm, EstimateConfigurationForm, EstimateForm, PricingRuleForm
+from .forms import (
+    CommercialTermsReviewForm,
+    CostItemForm,
+    EstimateConfigurationForm,
+    EstimateForm,
+    PricingRuleForm,
+    TechnicalFileImportForm,
+)
 from .models import CostItem, Estimate, EstimateConfiguration
+from .services import parse_technical_file
 
 
 def upsert_cost_item(configuration, category, defaults):
@@ -454,6 +462,42 @@ def add_machine_time_cost(request, pk):
         },
     )
     messages.success(request, "Costo tempo macchina generato." if created else "Costo tempo macchina aggiornato.")
+    return redirect("estimates:detail", pk=configuration.estimate.pk)
+
+
+@transaction.atomic
+@require_POST
+def import_technical_file(request, pk):
+    configuration = get_object_or_404(EstimateConfiguration.objects.select_related("estimate"), pk=pk)
+    form = TechnicalFileImportForm(request.POST, request.FILES)
+    if not form.is_valid():
+        messages.error(request, "Carica un file G-code, GCO o 3MF valido.")
+        return redirect("estimates:detail", pk=configuration.estimate.pk)
+
+    try:
+        result = parse_technical_file(form.cleaned_data["technical_file"])
+    except Exception:
+        messages.error(request, "Il file tecnico non e leggibile. Esporta di nuovo il G-code/3MF dallo slicer e riprova.")
+        return redirect("estimates:detail", pk=configuration.estimate.pk)
+
+    if result.material_weight_kg:
+        configuration.material_weight_per_unit = result.material_weight_kg
+    if result.machine_time_hours:
+        configuration.machine_time_hours_per_unit = result.machine_time_hours
+    if result.machine_time_hours and not configuration.expected_duration:
+        configuration.expected_duration = f"{result.machine_time_hours} h"
+
+    import_note = result.raw_summary
+    if configuration.internal_notes:
+        configuration.internal_notes = f"{configuration.internal_notes}\n{import_note}"
+    else:
+        configuration.internal_notes = import_note
+    configuration.save()
+
+    if result.has_useful_data:
+        messages.success(request, "Dati tecnici importati nella configurazione.")
+    else:
+        messages.warning(request, "File letto, ma non ho trovato peso, tempo o piatti riconoscibili.")
     return redirect("estimates:detail", pk=configuration.estimate.pk)
 
 

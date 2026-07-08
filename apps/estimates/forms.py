@@ -99,6 +99,20 @@ class CommercialTermsReviewForm(forms.Form):
     )
 
 
+class TechnicalFileImportForm(forms.Form):
+    technical_file = forms.FileField(
+        label="File G-code o 3MF",
+        help_text="Usa il file esportato dallo slicer per importare peso materiale, tempo macchina e piatti rilevati.",
+    )
+
+    def clean_technical_file(self):
+        technical_file = self.cleaned_data["technical_file"]
+        allowed_extensions = (".gcode", ".gco", ".3mf")
+        if not technical_file.name.lower().endswith(allowed_extensions):
+            raise forms.ValidationError("Carica un file G-code, GCO o 3MF.")
+        return technical_file
+
+
 class PrototypeForm(forms.ModelForm):
     class Meta:
         model = Prototype

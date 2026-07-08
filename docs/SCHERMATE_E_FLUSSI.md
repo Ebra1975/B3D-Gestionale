@@ -146,6 +146,8 @@ Ogni configurazione deve mostrare:
 - descrizione;
 - durata attesa;
 - materiale;
+- peso materiale per unita;
+- ore macchina per unita;
 - processo;
 - modalita operativa;
 - quantita;
@@ -158,9 +160,12 @@ Azioni:
 - aggiungi configurazione;
 - duplica configurazione;
 - modifica costi interni;
+- importa dati tecnici da G-code/3MF;
 - applica prezzo/margine;
 - genera documento per questa configurazione;
 - marca come configurazione scelta.
+
+L'import G-code/3MF compila i campi tecnici della configurazione quando lo slicer fornisce peso materiale, tempo macchina e numero piatti. Non genera automaticamente costi o prezzo: dopo il controllo dell'operatore restano disponibili i pulsanti per generare costo materiale e costo macchina.
 
 ### Costi Interni
 
@@ -452,18 +457,19 @@ Prima bozza in `docs/MANUALE_OPERATIVO.md` e prima schermata consultabile dalla 
 4. Controllo nel dettaglio preventivo la memoria commerciale del cliente.
 5. Inserisco oggetto, quantita e descrizione tecnica.
 6. Aggiungo una o piu configurazioni.
-7. Inserisco i costi interni per ogni configurazione.
-8. Applico prezzo e margine dopo aver controllato le condizioni cliente.
-9. Confermo nel preventivo la revisione di accordi, listini e documenti commerciali.
-10. Aggiungo eventuale prototipo.
-11. Scelgo profilo documento "consulenza".
-12. Se serve un layout personalizzato, apro **Documenti** e attivo il template `.docx` di consulenza.
-13. Controllo eventuali mancanze nel blocco export PDF/DOCX.
-14. Se i dati documento non sono corretti, apro **Documenti** e uso **Modifica dati documento**.
-15. Genero proposta cliente `.docx` e PDF.
-16. Genero la scheda interna dettagliata se serve controllare costi e margine.
-17. Se serve una prova futura del profilo fornitura/artigiano, genero **fornitura bozza** e la tengo come documento da validare.
-18. Segno il preventivo come inviato.
+7. Importo eventuale G-code/3MF per compilare peso e ore macchina.
+8. Inserisco o genero i costi interni per ogni configurazione.
+9. Applico prezzo e margine dopo aver controllato le condizioni cliente.
+10. Confermo nel preventivo la revisione di accordi, listini e documenti commerciali.
+11. Aggiungo eventuale prototipo.
+12. Scelgo profilo documento "consulenza".
+13. Se serve un layout personalizzato, apro **Documenti** e attivo il template `.docx` di consulenza.
+14. Controllo eventuali mancanze nel blocco export PDF/DOCX.
+15. Se i dati documento non sono corretti, apro **Documenti** e uso **Modifica dati documento**.
+16. Genero proposta cliente `.docx` e PDF.
+17. Genero la scheda interna dettagliata se serve controllare costi e margine.
+18. Se serve una prova futura del profilo fornitura/artigiano, genero **fornitura bozza** e la tengo come documento da validare.
+19. Segno il preventivo come inviato.
 
 ## Flusso 2 - Preventivo Accettato
 

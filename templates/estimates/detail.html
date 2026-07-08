@@ -294,6 +294,8 @@
             <div><dt>Stampante</dt><dd>{{ configuration.printer|default:"-" }}</dd></div>
             <div><dt>Durata</dt><dd>{{ configuration.expected_duration|default:"-" }}</dd></div>
             <div><dt>Quantita</dt><dd>{{ configuration.quantity }}</dd></div>
+            <div><dt>Peso per unita</dt><dd>{{ configuration.material_weight_per_unit|default:"-" }} kg/l</dd></div>
+            <div><dt>Ore per unita</dt><dd>{{ configuration.machine_time_hours_per_unit|default:"-" }} h</dd></div>
             <div><dt>Totale</dt><dd>{{ configuration.total|floatformat:2 }} EUR</dd></div>
             <div><dt>Unitario</dt><dd>{{ configuration.unit_price|floatformat:2 }} EUR</dd></div>
           </dl>
@@ -343,6 +345,12 @@
           </div>
 
           <div class="quick-actions cost-actions">
+            <form method="post" action="{% url 'estimates:import_technical_file' configuration.pk %}" enctype="multipart/form-data">
+              {% csrf_token %}
+              <label class="sr-only" for="technical-file-{{ configuration.pk }}">File G-code o 3MF</label>
+              <input id="technical-file-{{ configuration.pk }}" type="file" name="technical_file" accept=".gcode,.gco,.3mf">
+              <button class="button secondary compact" type="submit">Importa G-code/3MF</button>
+            </form>
             <form method="post" action="{% url 'estimates:add_material_cost' configuration.pk %}">
               {% csrf_token %}
               <button class="button secondary compact" type="submit">Genera costo materiale</button>
