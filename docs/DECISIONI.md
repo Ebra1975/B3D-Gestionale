@@ -110,6 +110,7 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-08 | Sprint 19 | I servizi Docker del gestionale usano `restart: unless-stopped` per il riavvio automatico dopo reboot del BMAX. | Riduce il rischio che il gestionale resti spento dopo mancanza corrente o riavvio del mini PC, senza cambiare stack tecnico. |
 | 2026-07-08 | Infrastruttura | Il servizio systemd resta una procedura opzionale documentata, non obbligatoria per la prima stabilizzazione. | Docker Compose con restart policy copre il bisogno principale; systemd puo essere aggiunto se serve un controllo Linux piu esplicito. |
 | 2026-07-08 | Sprint 19 | La procedura di avvio automatico richiede esplicitamente `git pull` sul BMAX prima del test di reboot. | Evita di provare il riavvio automatico su una configurazione non ancora aggiornata sul server. |
+| 2026-07-08 | Sprint 19 | L'avvio automatico viene verificato sul BMAX dopo aggiornamento da GitHub. | Conferma che la prima stabilizzazione operativa funziona sul mini PC reale; systemd resta solo piano B. |
 
 ## Decisioni Da Prendere
 
@@ -124,7 +125,7 @@ Questo documento registra le decisioni importanti del progetto.
 | Prodotto | Priorita listini/AI | MVP immediato o fase successiva | Da decidere dopo il primo flusso preventivo completo. |
 | Prodotto | Implementazione documenti contrattuali cliente | Fase successiva | NDA, accordi quadro, condizioni particolari e allegati commerciali. |
 | Prodotto | Manuale operativo nel gestionale | Markdown nel repository, pagine Django, soluzione ibrida | Prima bozza in `docs/MANUALE_OPERATIVO.md`; da decidere se esporlo anche nella sidebar. |
-| Infrastruttura | Avvio automatico BMAX | Restart policy Docker Compose, servizio systemd opzionale | Prima stabilizzazione scelta: `restart: unless-stopped`; da confermare con riavvio reale del BMAX. |
+| Infrastruttura | Avvio automatico BMAX | Restart policy Docker Compose, servizio systemd opzionale | Prima stabilizzazione scelta e verificata: `restart: unless-stopped`; systemd resta piano B se emergono problemi futuri. |
 | File tecnici | Archivio originale e preview G-code/3MF | Salvataggio file, preview, riconoscimento slicer avanzato | Sprint 17 copre il primo import dati utile; restano da progettare conservazione file e anteprime. |
 | Backup | Copia fuori dal BMAX | Disco esterno, NAS, cloud privato | Lo Sprint 18 crea backup locali automatici verificati; resta da decidere dove conservarne una copia esterna. |
 

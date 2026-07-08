@@ -88,7 +88,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Sprint 18 | Prova ripristino BMAX su ambiente temporaneo | Approvato come prima versione | Usa contenitori e volumi Docker di test per non toccare i dati reali. |
 | Sprint 18 | Installazione reale BMAX e cron backup | Approvato | Gestionale raggiungibile in rete locale, backup verificato, ripristino provato e cron giornaliero alle 02:30 configurato. |
 | Versionamento | Allineamento 18 sprint su GitHub e BMAX | Approvato | Recuperato lo Sprint 17 mancante su GitHub, pubblicato il commit `9a65339` e aggiornato il BMAX con `git pull`, rebuild Docker, migrazioni, statici e check Django. |
-| Sprint 19 | Avvio automatico BMAX con restart policy Docker | Approvato come prima stabilizzazione | I servizi principali usano `restart: unless-stopped`; systemd resta documentato come opzione aggiuntiva. |
+| Sprint 19 | Avvio automatico BMAX con restart policy Docker | Approvato e verificato su BMAX | I servizi principali usano `restart: unless-stopped`; dopo aggiornamento da GitHub il gestionale e ripartito correttamente sul BMAX. |
 
 ## In Revisione
 
@@ -96,8 +96,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 |---|---|---|---|
 | Interfaccia | Dettaglio grafico schermate | Da definire | Layout, colori, logo, densita delle informazioni. |
 | Documenti | Layout grafico template `.docx` definitivo | Da definire | I template base v3 consulenza e v2 interno sono una rifinitura operativa, non il layout finale di brand. |
-| Installazione | Rifinitura produzione stabile | Da definire | Docker e rete locale verificati sul BMAX; restano LibreOffice PDF su caso reale, nome locale e prova fisica del riavvio automatico. |
-| Manutenzione | Avvio automatico del gestionale dopo riavvio BMAX | In verifica reale | Configurato tramite restart policy Docker; da provare sul BMAX con riavvio completo e controllo browser. |
+| Installazione | Rifinitura produzione stabile | Da definire | Docker, rete locale e riavvio automatico verificati sul BMAX; restano LibreOffice PDF su caso reale e nome locale. |
 | Prodotto | Implementazione listini e accordi | Da pianificare | Dopo flusso preventivo base. |
 | Prodotto | Implementazione documenti contrattuali cliente | Da pianificare | NDA, accordi quadro, condizioni particolari, listini firmati. |
 | Prodotto | Implementazione AI e regole lavorazione | Da pianificare | Prima regole semplici, poi AI generativa. |

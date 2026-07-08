@@ -85,6 +85,13 @@ Controllare almeno:
 - preventivi;
 - documenti.
 
+Prima verifica reale Sprint 19:
+
+- BMAX acceso dopo riavvio;
+- gestionale aggiornato da GitHub;
+- servizi riavviati con Docker Compose;
+- gestionale nuovamente raggiungibile in rete locale.
+
 ## Servizio Systemd Opzionale
 
 La regola `restart: unless-stopped` dovrebbe gia coprire l'avvio automatico nella maggior parte dei casi.
