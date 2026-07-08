@@ -120,6 +120,12 @@ Controllare:
 - dettaglio di un preventivo;
 - generazione documento, se lo sprint aggiornato riguarda i documenti.
 
+Per una prova completa DOCX/PDF sul BMAX usare:
+
+```bash
+docker compose exec web python manage.py verify_pdf_export
+```
+
 ## Riavvio
 
 Il gestionale e configurato per riaccendersi automaticamente dopo il riavvio del BMAX, tramite la regola Docker `restart: unless-stopped`.

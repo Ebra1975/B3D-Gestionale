@@ -90,6 +90,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Versionamento | Allineamento 18 sprint su GitHub e BMAX | Approvato | Recuperato lo Sprint 17 mancante su GitHub, pubblicato il commit `9a65339` e aggiornato il BMAX con `git pull`, rebuild Docker, migrazioni, statici e check Django. |
 | Sprint 19 | Avvio automatico BMAX con restart policy Docker | Approvato e verificato su BMAX | I servizi principali usano `restart: unless-stopped`; dopo aggiornamento da GitHub il gestionale e ripartito correttamente sul BMAX. |
 | Sprint 19 | Nome locale BMAX `b3d-gestionale.local:8000` | Approvato e verificato su rete locale | Rende piu semplice l'accesso in rete locale senza cambiare architettura; verificato dal browser dopo configurazione hostname, Avahi e `.env`. |
+| Sprint 19 | Verifica PDF reale BMAX con comando dedicato | Approvato come procedura di test | Crea un preventivo di test e controlla generazione DOCX/PDF cliente, interno e fornitura/artigiano; da eseguire sul BMAX. |
 
 ## In Revisione
 
@@ -97,7 +98,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 |---|---|---|---|
 | Interfaccia | Dettaglio grafico schermate | Da definire | Layout, colori, logo, densita delle informazioni. |
 | Documenti | Layout grafico template `.docx` definitivo | Da definire | I template base v3 consulenza e v2 interno sono una rifinitura operativa, non il layout finale di brand. |
-| Installazione | Rifinitura produzione stabile | Da definire | Docker, rete locale, riavvio automatico e nome locale verificati sul BMAX; resta LibreOffice PDF su caso reale. |
+| Installazione | Rifinitura produzione stabile | Da definire | Docker, rete locale, riavvio automatico e nome locale verificati sul BMAX; resta esecuzione della verifica PDF reale. |
 | Prodotto | Implementazione listini e accordi | Da pianificare | Dopo flusso preventivo base. |
 | Prodotto | Implementazione documenti contrattuali cliente | Da pianificare | NDA, accordi quadro, condizioni particolari, listini firmati. |
 | Prodotto | Implementazione AI e regole lavorazione | Da pianificare | Prima regole semplici, poi AI generativa. |

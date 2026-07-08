@@ -145,6 +145,12 @@ Controllare:
 - documenti;
 - generazione PDF tramite LibreOffice.
 
+La verifica PDF reale sul BMAX e descritta in:
+
+```text
+docs/VERIFICA_PDF_BMAX.md
+```
+
 Nella prima installazione reale sul BMAX sono stati verificati:
 
 - dashboard raggiungibile;
