@@ -50,7 +50,18 @@ Controllare lo spazio disco:
 df -h
 ```
 
-Creare un backup manuale seguendo `docs/BACKUP_E_RIPRISTINO.md`.
+Controllare che il backup automatico stia creando archivi recenti:
+
+```bash
+ls -lh backups/bmax
+tail -n 30 backups/bmax/backup.log
+```
+
+Se non ci sono backup recenti, creare subito un backup manuale:
+
+```bash
+scripts/bmax_backup.sh
+```
 
 ## Controllo Mensile
 
@@ -58,8 +69,15 @@ Una volta al mese:
 
 - copiare almeno un backup fuori dal BMAX, ad esempio su disco esterno o NAS;
 - aprire un backup recente e controllare che contenga database, media e configurazione;
+- eseguire una prova di ripristino su un backup recente, se non e stata fatta di recente;
 - verificare che GitHub sia aggiornato con l'ultima versione del codice;
 - leggere eventuali note aperte in `docs/APPROVAZIONI.md`.
+
+Prova ripristino:
+
+```bash
+scripts/bmax_restore_test.sh backups/bmax/NOME_BACKUP.tar.gz
+```
 
 ## Aggiornare Il Gestionale Sul BMAX
 

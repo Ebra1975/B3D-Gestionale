@@ -64,6 +64,74 @@ Per ripristinare un backup locale:
 
 Sul BMAX il database previsto e PostgreSQL dentro Docker.
 
+### Backup Automatico Consigliato
+
+Lo Sprint 18 introduce uno script dedicato:
+
+```bash
+scripts/bmax_backup.sh
+```
+
+Il problema pratico che risolve e questo: quando il gestionale contiene dati reali, il backup non deve dipendere dalla memoria dell'operatore. Deve creare sempre un archivio completo e datato, controllando anche lo spazio disponibile.
+
+Lo script salva in un unico archivio `.tar.gz`:
+
+- database PostgreSQL;
+- file caricati e documenti generati nel volume `media`;
+- copia del file `.env`, da conservare con attenzione;
+- manifesto del backup;
+- checksum per controllare che i file non siano corrotti.
+
+Prima del primo uso sul BMAX rendere eseguibili gli script:
+
+```bash
+chmod +x scripts/bmax_backup.sh scripts/bmax_restore_test.sh
+```
+
+Esecuzione manuale:
+
+```bash
+scripts/bmax_backup.sh
+```
+
+Il backup viene creato in:
+
+```text
+backups/bmax/
+```
+
+Per impostazione predefinita lo script mantiene i backup degli ultimi 30 giorni e richiede almeno 1 GB libero nella destinazione.
+
+Valori modificabili al bisogno:
+
+```bash
+BACKUP_DIR=/percorso/backup RETENTION_DAYS=60 MIN_FREE_MB=2048 scripts/bmax_backup.sh
+```
+
+### Pianificazione Automatica
+
+Sul BMAX si puo programmare il backup giornaliero con `cron`.
+
+Aprire la pianificazione:
+
+```bash
+crontab -e
+```
+
+Esempio: backup ogni giorno alle 02:30, con log dell'esito:
+
+```cron
+30 2 * * * cd /percorso/gestionale-b3d && scripts/bmax_backup.sh >> backups/bmax/backup.log 2>&1
+```
+
+Sostituire `/percorso/gestionale-b3d` con la cartella reale del progetto sul BMAX.
+
+Il log non sostituisce il controllo umano: una volta a settimana va verificato che nella cartella `backups/bmax/` ci siano archivi recenti.
+
+### Backup Manuale Di Emergenza
+
+I comandi manuali restano utili se lo script non e disponibile o se si vuole capire cosa succede passo passo.
+
 Creare la cartella backup se non esiste:
 
 ```bash
@@ -142,6 +210,20 @@ Aprire poi il gestionale e controllare clienti, preventivi, commesse, documenti 
 
 Prima di affidare dati reali al gestionale, fare almeno una prova di ripristino su una copia di test.
 
+Lo Sprint 18 introduce uno script per provarlo senza toccare il gestionale reale:
+
+```bash
+scripts/bmax_restore_test.sh backups/bmax/b3dlab_bmax_YYYYMMDD_HHMMSS.tar.gz
+```
+
+La prova crea contenitori e volumi Docker temporanei, ripristina database e media, controlla i checksum se presenti e alla fine pulisce l'ambiente di test.
+
+Se serve ispezionare manualmente l'ambiente prima della pulizia:
+
+```bash
+KEEP_RESTORE_TEST=1 scripts/bmax_restore_test.sh backups/bmax/b3dlab_bmax_YYYYMMDD_HHMMSS.tar.gz
+```
+
 La prova deve confermare che:
 
 - il database ripristinato si apre;
@@ -161,9 +243,15 @@ Per uso reale:
 
 ## Da Automatizzare
 
-In una fase successiva il backup dovra diventare automatico, con:
+Completato nello Sprint 18:
 
 - cartella dedicata sul BMAX;
 - rotazione dei backup vecchi;
 - controllo spazio disco;
-- notifica o riepilogo dell'esito.
+- riepilogo dell'esito su terminale e log cron.
+
+Resta da valutare in futuro:
+
+- notifica automatica via email o altro canale;
+- copia automatica fuori dal BMAX, ad esempio su NAS o disco esterno;
+- controllo periodico visibile nella dashboard del gestionale.
