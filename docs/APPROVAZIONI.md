@@ -89,6 +89,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Sprint 18 | Installazione reale BMAX e cron backup | Approvato | Gestionale raggiungibile in rete locale, backup verificato, ripristino provato e cron giornaliero alle 02:30 configurato. |
 | Versionamento | Allineamento 18 sprint su GitHub e BMAX | Approvato | Recuperato lo Sprint 17 mancante su GitHub, pubblicato il commit `9a65339` e aggiornato il BMAX con `git pull`, rebuild Docker, migrazioni, statici e check Django. |
 | Sprint 19 | Avvio automatico BMAX con restart policy Docker | Approvato e verificato su BMAX | I servizi principali usano `restart: unless-stopped`; dopo aggiornamento da GitHub il gestionale e ripartito correttamente sul BMAX. |
+| Sprint 19 | Nome locale BMAX `b3d-gestionale.local:8000` | Approvato come prima configurazione | Rende piu semplice l'accesso in rete locale senza cambiare architettura; da verificare sulla rete reale. |
 
 ## In Revisione
 
@@ -96,7 +97,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 |---|---|---|---|
 | Interfaccia | Dettaglio grafico schermate | Da definire | Layout, colori, logo, densita delle informazioni. |
 | Documenti | Layout grafico template `.docx` definitivo | Da definire | I template base v3 consulenza e v2 interno sono una rifinitura operativa, non il layout finale di brand. |
-| Installazione | Rifinitura produzione stabile | Da definire | Docker, rete locale e riavvio automatico verificati sul BMAX; restano LibreOffice PDF su caso reale e nome locale. |
+| Installazione | Rifinitura produzione stabile | Da definire | Docker, rete locale e riavvio automatico verificati sul BMAX; restano LibreOffice PDF su caso reale e verifica nome locale. |
 | Prodotto | Implementazione listini e accordi | Da pianificare | Dopo flusso preventivo base. |
 | Prodotto | Implementazione documenti contrattuali cliente | Da pianificare | NDA, accordi quadro, condizioni particolari, listini firmati. |
 | Prodotto | Implementazione AI e regole lavorazione | Da pianificare | Prima regole semplici, poi AI generativa. |

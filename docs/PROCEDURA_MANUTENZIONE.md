@@ -102,7 +102,13 @@ docker compose exec web python manage.py check
 Dopo l'aggiornamento aprire dal browser:
 
 ```text
-http://IP_DEL_BMAX:8000
+http://b3d-gestionale.local:8000
+```
+
+Se il nome locale non risponde, provare anche l'indirizzo IP del BMAX:
+
+```text
+http://192.168.1.143:8000
 ```
 
 Controllare:
@@ -137,6 +143,8 @@ docker compose up -d
 ```
 
 La prova completa di riavvio del mini PC e descritta in `docs/AVVIO_AUTOMATICO_BMAX.md`.
+
+La configurazione del nome locale e descritta in `docs/INDIRIZZO_LOCALE_BMAX.md`.
 
 ## Quando Chiedere Aiuto
 

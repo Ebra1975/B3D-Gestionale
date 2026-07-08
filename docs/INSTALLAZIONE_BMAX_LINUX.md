@@ -14,6 +14,12 @@ A fine installazione il gestionale deve essere raggiungibile da un altro PC dell
 http://IP_DEL_BMAX:8000
 ```
 
+Dopo la configurazione del nome locale, l'indirizzo consigliato diventa:
+
+```text
+http://b3d-gestionale.local:8000
+```
+
 Prima installazione reale Sprint 18:
 
 ```text
@@ -70,7 +76,7 @@ COMPOSE_PROJECT_NAME=gestionale-b3d
 
 DJANGO_ENV=prod
 DJANGO_DEBUG=False
-DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,IP_DEL_BMAX
+DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,IP_DEL_BMAX,b3d-gestionale.local
 
 POSTGRES_DB=b3dlab
 POSTGRES_USER=b3dlab
@@ -204,6 +210,12 @@ La procedura ordinaria di controllo e aggiornata in:
 docs/PROCEDURA_MANUTENZIONE.md
 ```
 
+La configurazione del nome locale e descritta in:
+
+```text
+docs/INDIRIZZO_LOCALE_BMAX.md
+```
+
 ## Note Importanti
 
 - La prima installazione resta pensata per rete locale.
@@ -214,6 +226,6 @@ docs/PROCEDURA_MANUTENZIONE.md
 
 ## Da Rifinire Prima Della Produzione Stabile
 
-- Dominio o nome locale del BMAX.
+- Verifica reale del nome locale `b3d-gestionale.local`.
 - Verifica LibreOffice PDF direttamente sul BMAX.
 - Copia automatica dei backup fuori dal BMAX.
