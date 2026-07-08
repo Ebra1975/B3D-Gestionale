@@ -4,6 +4,12 @@ from .models import CostItem, Estimate, EstimateConfiguration, Prototype
 
 
 class EstimateForm(forms.ModelForm):
+    number = forms.CharField(
+        label="Numero",
+        required=False,
+        help_text="Lascia vuoto per assegnare automaticamente il prossimo numero disponibile.",
+    )
+
     class Meta:
         model = Estimate
         fields = [

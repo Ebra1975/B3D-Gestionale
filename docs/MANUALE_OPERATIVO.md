@@ -18,6 +18,8 @@ Non e documentazione tecnica per sviluppatori: serve all'operatore per sapere co
 | Gestire template DOCX | Bozza iniziale | Caricare o sostituire i modelli Word usati per generare documenti cliente e interni. |
 | Preparare template con variabili | Bozza iniziale | Usare i segnaposto corretti nei modelli Word. |
 | Generare bozza fornitura/artigiano | Bozza preparatoria | Creare un documento futuro di fornitura usando gli stessi dati del preventivo. |
+| Numerazione automatica preventivi | Bozza iniziale | Lasciare al gestionale il prossimo numero progressivo del preventivo. |
+| Aggiornare parametri economici | Bozza iniziale | Tenere aggiornati costi materiali e stampanti usati dai preventivi. |
 | Applicare prezzo e margine | Bozza iniziale | Generare un totale proposta piu ripetibile partendo dai costi interni. |
 | Fare un backup locale | Bozza iniziale | Salvare dati e documenti durante lo sviluppo. |
 
@@ -166,38 +168,41 @@ Arrivare a un preventivo con:
 4. Aprire la sezione **Preventivi**.
 5. Se il cliente ha accordi o documenti commerciali collegati, controllarli nella scheda cliente.
 6. Creare un nuovo preventivo.
-6. Inserire numero, cliente, oggetto, data, quantita e descrizione della richiesta.
-7. Lasciare il profilo documento su **Consulenza**, salvo caso diverso.
-8. Salvare il preventivo.
-9. Aggiungere una configurazione tecnica.
-10. Compilare nome configurazione, descrizione, materiale, stampante/strumentazione, processo, quantita e dati tecnici disponibili.
-11. Se la configurazione e quella da proporre al cliente, marcarla come scelta.
-12. Generare i costi automatici disponibili:
+7. Lasciare vuoto il campo **Numero** per far assegnare al gestionale il prossimo progressivo automatico.
+8. Inserire cliente, oggetto, data, quantita e descrizione della richiesta.
+9. Lasciare il profilo documento su **Consulenza**, salvo caso diverso.
+10. Salvare il preventivo.
+11. Controllare il numero assegnato, ad esempio `B3D-2026-001`.
+12. Aggiungere una configurazione tecnica.
+13. Compilare nome configurazione, descrizione, materiale, stampante/strumentazione, processo, quantita e dati tecnici disponibili.
+14. Se la configurazione e quella da proporre al cliente, marcarla come scelta.
+15. Generare i costi automatici disponibili:
     - costo materiale;
     - costo macchina;
     - setup/progettazione.
-13. Completare manualmente eventuali importi mancanti, soprattutto setup, progettazione, post-processing, trattamenti o margine.
-14. Applicare la regola prezzo/margine se serve un margine percentuale con arrotondamento.
-15. Tornare al dettaglio preventivo.
-16. Controllare il riquadro **Stato preventivo**.
-17. Controllare il riquadro **Memoria commerciale cliente**.
-18. Se ci sono accordi, listini collegati, NDA o documenti in scadenza, aprire la scheda cliente e verificarli.
-19. Nel riquadro **Memoria commerciale cliente**, usare **Conferma controllo condizioni** e aggiungere una nota interna se serve.
-20. Risolvere gli elementi indicati in **Da fare prima della proposta**.
-21. Controllare gli avvisi in **Da controllare**.
-22. Controllare il blocco **Controlli export PDF/DOCX**.
-23. Se intestazione, contatti, condizioni o note documento non sono corretti, aprire **Documenti** e usare **Modifica dati documento**.
-24. Quando il totale e coerente, usare **Genera cliente**.
-25. Scaricare e controllare DOCX e PDF cliente.
-26. Se serve un controllo economico completo, usare **Genera interno** e conservare il documento solo per uso interno.
-27. Solo per prove o casi futuri, usare **Genera fornitura bozza** e controllare che la dicitura sia ancora da validare con commercialista.
-28. Se il documento cliente e corretto, usare l'azione rapida **Segna inviato** nel dettaglio preventivo.
+16. Completare manualmente eventuali importi mancanti, soprattutto setup, progettazione, post-processing, trattamenti o margine.
+17. Applicare la regola prezzo/margine se serve un margine percentuale con arrotondamento.
+18. Tornare al dettaglio preventivo.
+19. Controllare il riquadro **Stato preventivo**.
+20. Controllare il riquadro **Memoria commerciale cliente**.
+21. Se ci sono accordi, listini collegati, NDA o documenti in scadenza, aprire la scheda cliente e verificarli.
+22. Nel riquadro **Memoria commerciale cliente**, usare **Conferma controllo condizioni** e aggiungere una nota interna se serve.
+23. Risolvere gli elementi indicati in **Da fare prima della proposta**.
+24. Controllare gli avvisi in **Da controllare**.
+25. Controllare il blocco **Controlli export PDF/DOCX**.
+26. Se intestazione, contatti, condizioni o note documento non sono corretti, aprire **Documenti** e usare **Modifica dati documento**.
+27. Quando il totale e coerente, usare **Genera cliente**.
+28. Scaricare e controllare DOCX e PDF cliente.
+29. Se serve un controllo economico completo, usare **Genera interno** e conservare il documento solo per uso interno.
+30. Solo per prove o casi futuri, usare **Genera fornitura bozza** e controllare che la dicitura sia ancora da validare con commercialista.
+31. Se il documento cliente e corretto, usare l'azione rapida **Segna inviato** nel dettaglio preventivo.
 
 ### Controlli Prima Di Inviare
 
 Prima di inviare una proposta al cliente, verificare:
 
 - il cliente e corretto;
+- il numero preventivo e presente e segue il formato `B3D-ANNO-NNN`;
 - l'oggetto descrive bene il lavoro;
 - la descrizione e comprensibile;
 - la configurazione scelta e quella giusta;
@@ -475,6 +480,27 @@ Esempio di tabella per fornitura/artigiano:
 | Preventivo fornitura/artigiano | `cliente`, `preventivo`, `configurazione`, `proposta`, `b3d`, `fornitura`, `voci_fornitura` |
 
 Se un template contiene una variabile non presente in questa lista, il gestionale blocca il caricamento per evitare documenti generati male.
+
+## Procedura - Aggiornare Parametri Economici
+
+### Quando Usarla
+
+Usare questa procedura quando cambia il prezzo di un materiale, si vuole correggere lo scarto prudenziale o si aggiorna il costo reale di una stampante.
+
+### Passi Operativi
+
+1. Aprire **Materiali** o **Stampanti**.
+2. Cercare la voce da aggiornare.
+3. Aprire la scheda dal nome.
+4. Per un materiale, aggiornare **Costo base per kg/litro** e **Scarto / extra materiale %**.
+5. Per una stampante, aggiornare **Costo orario base**, **Manutenzione per ora**, **Consumo stimato watt**, **Costo energia kWh** e **Rischio fallimento %**.
+6. Scrivere nelle note economiche il motivo del valore, ad esempio prezzo fornitore, stima prudenziale o controllo bolletta.
+7. Salvare.
+8. Nei nuovi preventivi, usare **Genera costo materiale** o **Genera costo macchina**: la voce costo usera i parametri aggiornati e salvera una nota interna con il riepilogo del calcolo.
+
+### Nota
+
+I preventivi gia calcolati non vengono modificati da soli. Se si vuole aggiornare un preventivo aperto, rigenerare la voce di costo dalla configurazione tecnica.
 
 ## Procedura - Applicare Prezzo E Margine
 

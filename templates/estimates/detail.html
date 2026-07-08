@@ -298,6 +298,20 @@
             <div><dt>Unitario</dt><dd>{{ configuration.unit_price|floatformat:2 }} EUR</dd></div>
           </dl>
 
+          {% if configuration.material or configuration.printer %}
+            <div class="check-block">
+              <h3>Parametri economici usati</h3>
+              <ul class="check-list">
+                {% if configuration.material %}
+                  <li>Materiale: {{ configuration.material.pricing_summary }}</li>
+                {% endif %}
+                {% if configuration.printer %}
+                  <li>Stampante: {{ configuration.printer.pricing_summary }}</li>
+                {% endif %}
+              </ul>
+            </div>
+          {% endif %}
+
           <div class="pricing-box">
             <div class="pricing-summary">
               <div>
@@ -359,7 +373,12 @@
                 {% for item in configuration.cost_items.all %}
                   <tr>
                     <td>{{ item.get_category_display }}</td>
-                    <td>{{ item.description }}</td>
+                    <td>
+                      {{ item.description }}
+                      {% if item.notes %}
+                        <span class="muted-text">{{ item.notes }}</span>
+                      {% endif %}
+                    </td>
                     <td>{{ item.quantity }} {{ item.unit }}</td>
                     <td>{{ item.unit_cost|floatformat:2 }} EUR</td>
                     <td>{{ item.total|floatformat:2 }} EUR</td>

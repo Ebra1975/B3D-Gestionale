@@ -35,7 +35,8 @@
             <th>Proprieta</th>
             <th>Volume</th>
             <th>Camera</th>
-            <th>Costo orario</th>
+            <th>Costo base</th>
+            <th>Costo usato</th>
             <th>Stato</th>
           </tr>
         </thead>
@@ -48,6 +49,7 @@
               <td>{{ printer.build_volume|default:"-" }}</td>
               <td>{{ printer.enclosed_chamber|yesno:"Chiusa,Aperta" }}</td>
               <td>{{ printer.hourly_cost|floatformat:2 }} EUR/h</td>
+              <td>{{ printer.effective_hourly_cost|floatformat:2 }} EUR/h</td>
               <td><span class="badge">{{ printer.active|yesno:"Attiva,Non attiva" }}</span></td>
             </tr>
           {% endfor %}

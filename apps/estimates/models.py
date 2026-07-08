@@ -1,10 +1,32 @@
 from decimal import Decimal
 
+from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models import Sum
+from django.utils import timezone
 
 from apps.customers.models import Customer
 from apps.inventory.models import Material, Printer
+
+
+ESTIMATE_NUMBER_PREFIX = "B3D"
+ESTIMATE_NUMBER_PATTERN = r"^B3D-\d{4}-\d{3,}$"
+
+
+def generate_estimate_number(date=None):
+    estimate_date = date or timezone.localdate()
+    prefix = f"{ESTIMATE_NUMBER_PREFIX}-{estimate_date.year}-"
+    existing_numbers = Estimate.objects.filter(number__startswith=prefix).values_list("number", flat=True)
+    next_sequence = 1
+
+    for number in existing_numbers:
+        try:
+            sequence = int(number.removeprefix(prefix))
+        except ValueError:
+            continue
+        next_sequence = max(next_sequence, sequence + 1)
+
+    return f"{prefix}{next_sequence:03d}"
 
 
 class Estimate(models.Model):
@@ -22,7 +44,18 @@ class Estimate(models.Model):
         CONSULTING = "consulting", "Consulenza"
         SUPPLY = "supply", "Fornitura / artigiano"
 
-    number = models.CharField("numero", max_length=64, unique=True)
+    number = models.CharField(
+        "numero",
+        max_length=64,
+        unique=True,
+        blank=True,
+        validators=[
+            RegexValidator(
+                regex=ESTIMATE_NUMBER_PATTERN,
+                message="Usa il formato B3D-ANNO-NNN, per esempio B3D-2026-001.",
+            )
+        ],
+    )
     customer = models.ForeignKey(Customer, verbose_name="cliente", on_delete=models.PROTECT, related_name="estimates")
     subject = models.CharField("oggetto", max_length=255)
     description = models.TextField("descrizione", blank=True)
@@ -50,6 +83,11 @@ class Estimate(models.Model):
 
     def __str__(self):
         return f"{self.number} - {self.subject}"
+
+    def save(self, *args, **kwargs):
+        if not self.number:
+            self.number = generate_estimate_number(self.date)
+        super().save(*args, **kwargs)
 
 
 class EstimateConfiguration(models.Model):

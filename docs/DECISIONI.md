@@ -91,6 +91,11 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-08 | Sprint 14 | Viene aggiunto un template base preparatorio per preventivo fornitura/artigiano. | Permette di predisporre la vista futura senza cambiare il profilo principale consulenza e senza duplicare i dati economici. |
 | 2026-07-08 | Documenti | Il documento fornitura/artigiano usa le voci di costo marcate come visibili per fornitura e mantiene la dicitura da validare con commercialista. | Prepara un documento cliente piu vicino alla fornitura, ma segnala che l'uso reale richiede validazione fiscale/commerciale. |
 | 2026-07-08 | Documenti | Il manuale operativo include una guida ai segnaposto dei template DOCX. | Permette di modificare i modelli Word partendo da variabili corrette e riduce errori nei template caricati. |
+| 2026-07-08 | Sprint 15 | I preventivi ricevono automaticamente un numero progressivo `B3D-ANNO-NNN` quando il campo numero viene lasciato vuoto. | Evita numeri duplicati o scritti a mano e mantiene un riferimento stabile per clienti, documenti e commesse. |
+| 2026-07-08 | Sprint 15 | Lo sprint viene chiuso con test completi e documentazione allineata. | La numerazione automatica e pronta per l'uso quotidiano nella creazione preventivo. |
+| 2026-07-08 | Sprint 16 | Il prossimo sprint proposto e "Archivi guidati materiali e parametri tecnici". | Dopo la numerazione, il prossimo problema pratico e ridurre testo libero ripetuto in materiali, colori, marche e parametri usati nei preventivi. |
+| 2026-07-08 | Sprint 16 | Materiali e stampanti hanno parametri economici espliciti usati dai costi automatici del preventivo. | Riduce costi arbitrari: materiale considera scarto/extra, stampante considera manutenzione, energia e rischio fallimento, mantenendo il dettaglio interno tracciabile. |
+| 2026-07-08 | Sprint 16 | Lo sprint viene chiuso con migrazione locale, test e documentazione allineata. | I parametri economici sono pronti per essere provati su materiali, stampanti e preventivi reali. |
 
 ## Decisioni Da Prendere
 

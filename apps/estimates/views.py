@@ -416,10 +416,11 @@ def add_material_cost(request, pk):
             "description": f"Materiale {configuration.material}",
             "quantity": quantity,
             "unit": "kg/l",
-            "unit_cost": configuration.material.cost_per_unit,
+            "unit_cost": configuration.material.effective_cost_per_unit,
             "visible_internal": True,
             "visible_consulting": False,
             "visible_supply": True,
+            "notes": configuration.material.pricing_summary,
         },
     )
     messages.success(request, "Costo materiale generato." if created else "Costo materiale aggiornato.")
@@ -445,10 +446,11 @@ def add_machine_time_cost(request, pk):
             "description": f"Tempo macchina {configuration.printer}",
             "quantity": quantity,
             "unit": "h",
-            "unit_cost": configuration.printer.hourly_cost,
+            "unit_cost": configuration.printer.effective_hourly_cost,
             "visible_internal": True,
             "visible_consulting": False,
             "visible_supply": True,
+            "notes": configuration.printer.pricing_summary,
         },
     )
     messages.success(request, "Costo tempo macchina generato." if created else "Costo tempo macchina aggiornato.")

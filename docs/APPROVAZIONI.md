@@ -78,6 +78,10 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Sprint 14 | Template fornitura/artigiano preparatorio | Approvato come predisposizione | Dal dettaglio preventivo si puo generare un DOCX/PDF fornitura bozza, usando gli stessi dati del preventivo e le voci visibili per fornitura. |
 | Sprint 14 | Validazione segnaposto fornitura/artigiano | Approvato come prima versione | I template caricati per fornitura/artigiano vengono controllati come consulenza e interno. |
 | Sprint 14 | Guida variabili template DOCX nel manuale | Approvato come prima versione | Il manuale operativo elenca i campi disponibili e il modo consigliato per preparare tabelle ripetute in Word. |
+| Sprint 15 | Numerazione automatica preventivi | Approvato come prima versione | Se il campo numero resta vuoto, il gestionale assegna il prossimo progressivo `B3D-ANNO-NNN`; il numero resta modificabile manualmente per casi controllati. |
+| Sprint 15 | Chiusura sprint | Approvato | Sprint chiuso dopo test automatici completi, migrazione locale e aggiornamento documentazione. |
+| Sprint 16 | Parametri economici stampanti/materiali | Approvato come prima versione | Materiali e stampanti espongono i parametri economici usati dai costi automatici del preventivo, con note interne di calcolo salvate sulle voci costo. |
+| Sprint 16 | Chiusura sprint | Approvato | Sprint chiuso dopo test automatici, migrazione locale e aggiornamento documentazione. |
 
 ## In Revisione
 
@@ -92,11 +96,11 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Prodotto | Implementazione documenti contrattuali cliente | Da pianificare | NDA, accordi quadro, condizioni particolari, listini firmati. |
 | Prodotto | Implementazione AI e regole lavorazione | Da pianificare | Prima regole semplici, poi AI generativa. |
 | Prodotto | Applicazione automatica accordi ai preventivi | Da pianificare | Richiede listini strutturati, regole prezzo e tracciabilita della fonte prezzo. |
-| Preventivi | Numerazione automatica preventivi | Da progettare | Ipotesi iniziale `B3D-PREV-2026-001`, univoca e modificabile solo con controllo. |
 | Magazzino | Liste editabili per tipo materiale, marca e colore | Da progettare | Evita testo libero ripetuto e rende piu ordinati materiali e preventivi. |
+| Sprint 16 | Archivi guidati materiali e parametri tecnici | Proposto | Possibile prossimo sprint per ordinare materiali, colori, marche e parametri ricorrenti prima di automatizzare import o listini. |
 | Preventivi | Preventivo guidato a step con riepilogo prezzo laterale | Da valutare | Stimalo mostra un flusso chiaro con prezzo finale e breakdown sempre visibili. |
 | File tecnici | Import dati da G-code/3MF | Da progettare | Prima forma di import utile per peso, tempo e piatti senza integrare subito tutto lo slicer. |
-| Stampanti | Parametri economici per costo orario | Da progettare | Costo acquisto, vita stimata, ore gia stampate, manutenzione, fallimento e potenza sono utili per evitare costi arbitrari. |
+| Stampanti | Evoluzione calcolo ammortamento completo | Da progettare | Sprint 16 copre costo base, manutenzione, energia e rischio fallimento; costo acquisto, vita stimata e ore gia stampate restano una possibile evoluzione futura. |
 | Documenti | Layout definitivo PDF cliente/interno | Da validare con esempi reali | Sprint 11 migliora i template base, ma grafica, logo e impaginazione definitiva restano da confermare su documenti reali. |
 | Documenti | Guida completa ai segnaposto template DOCX in interfaccia | Da progettare | Sprint 14 aggiunge la guida nel manuale; resta da mostrare direttamente nella pagina caricamento template l'elenco dei segnaposto disponibili e mancanti. |
 

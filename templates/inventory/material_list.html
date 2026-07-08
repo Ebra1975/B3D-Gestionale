@@ -34,7 +34,8 @@
             <th>Tipo</th>
             <th>Marca</th>
             <th>Colore</th>
-            <th>Costo</th>
+            <th>Costo base</th>
+            <th>Costo usato</th>
             <th>UV</th>
             <th>Stato</th>
           </tr>
@@ -47,6 +48,7 @@
               <td>{{ material.brand|default:"-" }}</td>
               <td>{{ material.color|default:"-" }}</td>
               <td>{{ material.cost_per_unit|floatformat:2 }} EUR</td>
+              <td>{{ material.effective_cost_per_unit|floatformat:2 }} EUR</td>
               <td>{{ material.uv_resistance|default:"-" }}</td>
               <td><span class="badge">{{ material.available|yesno:"Disponibile,Non disponibile" }}</span></td>
             </tr>

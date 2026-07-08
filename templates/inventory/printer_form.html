@@ -10,6 +10,12 @@
 
 {% block content %}
   <section class="panel">
+    <div class="panel-header">
+      <div>
+        <h2>Parametri stampante</h2>
+        <p class="muted-text">Il costo usato nei preventivi somma costo base, manutenzione, energia e una percentuale prudenziale per fallimenti o rilavorazioni.</p>
+      </div>
+    </div>
     <form method="post" class="form-layout">
       {% csrf_token %}
       {% include "includes/form_fields.html" %}
