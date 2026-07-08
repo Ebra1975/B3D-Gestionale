@@ -64,6 +64,20 @@ Esempio di messaggio finale atteso:
 Verifica PDF completata: DOCX e PDF generati correttamente.
 ```
 
+## Prima Verifica Reale Sprint 19
+
+Verifica eseguita sul BMAX dopo aggiornamento al commit `b8917f7`.
+
+Esito:
+
+- LibreOffice trovato nel container web: `/usr/bin/soffice`;
+- controllo Django senza errori;
+- preventivo test creato: `B3D-2026-002`;
+- DOCX e PDF cliente consulenza generati;
+- DOCX e PDF interno dettagliato generati;
+- DOCX e PDF fornitura/artigiano generati;
+- messaggio finale ricevuto: `Verifica PDF completata: DOCX e PDF generati correttamente.`
+
 ## Dove Vedere I File
 
 Dal browser:
@@ -80,6 +94,8 @@ TEST PDF BMAX - verifica conversione LibreOffice
 ```
 
 Questi dati sono di prova e possono essere eliminati piu avanti, quando verra aggiunta una procedura di pulizia ordinata.
+
+Nota: durante la prima prova fallita era stato creato anche un preventivo test parziale `B3D-2026-001`. Puo restare come dato di prova temporaneo finche non viene aggiunta una pulizia ordinata dei test.
 
 ## Se Il PDF Non Viene Generato
 
