@@ -116,6 +116,8 @@ Controllare:
 
 ## Riavvio
 
+Il gestionale e configurato per riaccendersi automaticamente dopo il riavvio del BMAX, tramite la regola Docker `restart: unless-stopped`.
+
 Per riavviare il gestionale:
 
 ```bash
@@ -133,6 +135,8 @@ Per riaccenderlo:
 ```bash
 docker compose up -d
 ```
+
+La prova completa di riavvio del mini PC e descritta in `docs/AVVIO_AUTOMATICO_BMAX.md`.
 
 ## Quando Chiedere Aiuto
 

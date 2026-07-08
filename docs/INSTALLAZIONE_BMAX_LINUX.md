@@ -168,6 +168,14 @@ Per riavviare:
 docker compose restart
 ```
 
+I servizi Docker sono configurati con riavvio automatico `unless-stopped`, quindi dopo un riavvio del BMAX Docker prova a riaccendere automaticamente gestionale, database, Redis e lavorazioni in background.
+
+La procedura dettagliata e in:
+
+```text
+docs/AVVIO_AUTOMATICO_BMAX.md
+```
+
 ## Aggiornamento Da GitHub
 
 Quando una nuova versione e stata inviata su GitHub:
@@ -207,6 +215,5 @@ docs/PROCEDURA_MANUTENZIONE.md
 ## Da Rifinire Prima Della Produzione Stabile
 
 - Dominio o nome locale del BMAX.
-- Eventuale servizio systemd per riavvio automatico.
 - Verifica LibreOffice PDF direttamente sul BMAX.
 - Copia automatica dei backup fuori dal BMAX.

@@ -107,6 +107,9 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-08 | Backup | Il cron giornaliero alle 02:30 viene configurato sul BMAX. | Rende il backup una routine automatica, da controllare periodicamente tramite log e archivi recenti. |
 | 2026-07-08 | Sprint 18 | Lo sprint viene chiuso con prova reale BMAX, backup verificato e documentazione allineata. | La base operativa minima per proteggere i dati e pronta. |
 | 2026-07-08 | Versionamento | Il recupero dello Sprint 17 viene pubblicato su GitHub e aggiornato sul BMAX fino al commit `9a65339`. | Chiude il disallineamento tra documentazione, GitHub e server BMAX: tutti i 18 sprint risultano presenti sulla macchina reale. |
+| 2026-07-08 | Sprint 19 | I servizi Docker del gestionale usano `restart: unless-stopped` per il riavvio automatico dopo reboot del BMAX. | Riduce il rischio che il gestionale resti spento dopo mancanza corrente o riavvio del mini PC, senza cambiare stack tecnico. |
+| 2026-07-08 | Infrastruttura | Il servizio systemd resta una procedura opzionale documentata, non obbligatoria per la prima stabilizzazione. | Docker Compose con restart policy copre il bisogno principale; systemd puo essere aggiunto se serve un controllo Linux piu esplicito. |
+| 2026-07-08 | Sprint 19 | La procedura di avvio automatico richiede esplicitamente `git pull` sul BMAX prima del test di reboot. | Evita di provare il riavvio automatico su una configurazione non ancora aggiornata sul server. |
 
 ## Decisioni Da Prendere
 
@@ -121,7 +124,7 @@ Questo documento registra le decisioni importanti del progetto.
 | Prodotto | Priorita listini/AI | MVP immediato o fase successiva | Da decidere dopo il primo flusso preventivo completo. |
 | Prodotto | Implementazione documenti contrattuali cliente | Fase successiva | NDA, accordi quadro, condizioni particolari e allegati commerciali. |
 | Prodotto | Manuale operativo nel gestionale | Markdown nel repository, pagine Django, soluzione ibrida | Prima bozza in `docs/MANUALE_OPERATIVO.md`; da decidere se esporlo anche nella sidebar. |
-| Infrastruttura | Avvio automatico BMAX | Docker Compose manuale, servizio systemd, altra gestione avvio | Da decidere dopo prova reale sul mini PC. |
+| Infrastruttura | Avvio automatico BMAX | Restart policy Docker Compose, servizio systemd opzionale | Prima stabilizzazione scelta: `restart: unless-stopped`; da confermare con riavvio reale del BMAX. |
 | File tecnici | Archivio originale e preview G-code/3MF | Salvataggio file, preview, riconoscimento slicer avanzato | Sprint 17 copre il primo import dati utile; restano da progettare conservazione file e anteprime. |
 | Backup | Copia fuori dal BMAX | Disco esterno, NAS, cloud privato | Lo Sprint 18 crea backup locali automatici verificati; resta da decidere dove conservarne una copia esterna. |
 
