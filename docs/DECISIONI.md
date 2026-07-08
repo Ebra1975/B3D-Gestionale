@@ -70,6 +70,11 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-07 | Sprint 08 | Lo sprint viene intitolato "Prezzo assistito e condizioni cliente". | La prossima fase deve aiutare la revisione economica del preventivo usando la memoria commerciale, senza automatizzare ancora i prezzi. |
 | 2026-07-07 | Preventivi | La revisione delle condizioni cliente viene confermata manualmente sul preventivo con data e note interne. | Mantiene tracciabile il controllo di accordi, listini e documenti commerciali senza applicare automatismi al prezzo. |
 | 2026-07-07 | Benchmark | Prima di proseguire con prezzi e listini viene avviata una comparazione con Stimalo e PreventiPiraz 3D. | Serve a capire cosa imparare dagli strumenti esistenti senza snaturare il posizionamento consulenziale B3D Lab. |
+| 2026-07-08 | Benchmark | Gli screenshot di PreventiPiraz 3D vengono usati per arricchire la comparazione funzionale. | Aiutano a valutare numerazione automatica, archivi configurabili, riassunto preventivo e flusso produzione prima di implementare. |
+| 2026-07-08 | Benchmark | Gli screenshot di Stimalo vengono usati per arricchire la comparazione funzionale. | Aiutano a valutare preventivo guidato a step, prezzo live, import G-code/3MF, cataloghi e magazzino prima di implementare. |
+| 2026-07-08 | Documenti | Le esportazioni PDF richiederanno dati di riempimento configurabili. | Senza dati azienda, cliente, condizioni standard, logo e note riutilizzabili il PDF rischia di essere generato ma non pronto per il cliente. |
+| 2026-07-08 | Documenti | La comparazione dei PDF conferma la necessita di due esportazioni: cliente sintetica e interna dettagliata. | Permette di usare gli stessi dati economici in viste diverse, mantenendo il dettaglio interno separato dalla proposta cliente. |
+| 2026-07-08 | Sprint 09 | Il prossimo sprint proposto e "Dati documento e PDF cliente/interno". | Le prove reali e il benchmark mostrano che prima di automatizzare altro servono dati di riempimento e controlli affidabili per i documenti. |
 
 ## Decisioni Da Prendere
 

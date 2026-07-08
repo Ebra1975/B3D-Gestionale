@@ -16,6 +16,7 @@ Il problema pratico e aiutare il titolare a controllare condizioni, listini coll
 | Revisione condizioni cliente | Completato come prima versione | Rendere chiaro quali accordi o listini sono solo promemoria e quali sono stati considerati nel preventivo. | Aggiunta conferma manuale nel riquadro memoria commerciale. |
 | Tracciabilita della revisione | Completato come prima versione | Lasciare memoria interna del controllo fatto dal titolare senza cambiare automaticamente i prezzi. | Salvate data e note interne di revisione condizioni cliente sul preventivo. |
 | Documentazione | Completato come prima versione | Mantenere allineati decisioni, approvazioni, manuale e schermate se il flusso cambia. | Aggiornati board, decisioni, approvazioni, manuale operativo e flussi. |
+| Benchmark Stimalo/PreventiPiraz | Completato | Capire cosa imparare da strumenti esistenti prima di progettare listini, PDF e dati tecnici. | Analizzati manuale, screenshot e PDF cliente/interno; emersi requisiti per Sprint 09. |
 
 ## Fuori Ambito Per Ora
 
@@ -35,3 +36,9 @@ Il problema pratico e aiutare il titolare a controllare condizioni, listini coll
 ## Criterio Di Chiusura
 
 Lo sprint e considerato chiuso quando il preventivo aiuta a rivedere condizioni cliente e prezzo finale in modo tracciabile, mantenendo obbligatoria la conferma manuale del titolare.
+
+## Chiusura Definitiva
+
+Sprint 08 chiuso definitivamente il 2026-07-08.
+
+Il prossimo sprint consigliato e **Sprint 09 - Dati documento e PDF cliente/interno**.
