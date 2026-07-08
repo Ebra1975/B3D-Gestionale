@@ -46,8 +46,11 @@ if [ -f "$RESTORE_DIR/checksums.sha256" ]; then
   )
 fi
 
-POSTGRES_DB=b3dlab_restore
-POSTGRES_USER=b3dlab_restore
+BACKUP_POSTGRES_DB=$(awk -F': ' '/^Database:/ {print $2}' "$RESTORE_DIR/manifest.txt" 2>/dev/null || true)
+BACKUP_POSTGRES_USER=$(awk -F': ' '/^Utente database:/ {print $2}' "$RESTORE_DIR/manifest.txt" 2>/dev/null || true)
+
+POSTGRES_DB=${RESTORE_POSTGRES_DB:-${BACKUP_POSTGRES_DB:-b3dlab}}
+POSTGRES_USER=${RESTORE_POSTGRES_USER:-${BACKUP_POSTGRES_USER:-b3dlab}}
 POSTGRES_PASSWORD=b3dlab_restore_test
 
 docker volume create "$DB_VOLUME" >/dev/null
