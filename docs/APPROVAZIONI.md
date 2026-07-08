@@ -75,6 +75,9 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Sprint 13 | Validazione template DOCX | Approvato come prima versione | Il caricamento blocca file DOCX non leggibili e segnaposto principali non riconosciuti per consulenza e interno. |
 | Sprint 13 | Prova documento realistico | Approvato come verifica automatica | Il flusso genera proposta cliente e scheda interna da dati realistici, mantenendo separati documento cliente e dettaglio economico interno. |
 | Sprint 13 | Chiusura sprint | Approvato | Sprint chiuso dopo test automatici, controllo Django e aggiornamento documentazione. |
+| Sprint 14 | Template fornitura/artigiano preparatorio | Approvato come predisposizione | Dal dettaglio preventivo si puo generare un DOCX/PDF fornitura bozza, usando gli stessi dati del preventivo e le voci visibili per fornitura. |
+| Sprint 14 | Validazione segnaposto fornitura/artigiano | Approvato come prima versione | I template caricati per fornitura/artigiano vengono controllati come consulenza e interno. |
+| Sprint 14 | Guida variabili template DOCX nel manuale | Approvato come prima versione | Il manuale operativo elenca i campi disponibili e il modo consigliato per preparare tabelle ripetute in Word. |
 
 ## In Revisione
 
@@ -95,7 +98,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | File tecnici | Import dati da G-code/3MF | Da progettare | Prima forma di import utile per peso, tempo e piatti senza integrare subito tutto lo slicer. |
 | Stampanti | Parametri economici per costo orario | Da progettare | Costo acquisto, vita stimata, ore gia stampate, manutenzione, fallimento e potenza sono utili per evitare costi arbitrari. |
 | Documenti | Layout definitivo PDF cliente/interno | Da validare con esempi reali | Sprint 11 migliora i template base, ma grafica, logo e impaginazione definitiva restano da confermare su documenti reali. |
-| Documenti | Guida completa ai segnaposto template DOCX | Da progettare | Sprint 13 aggiunge un primo controllo automatico; resta da mostrare in interfaccia l'elenco dei segnaposto disponibili e mancanti. |
+| Documenti | Guida completa ai segnaposto template DOCX in interfaccia | Da progettare | Sprint 14 aggiunge la guida nel manuale; resta da mostrare direttamente nella pagina caricamento template l'elenco dei segnaposto disponibili e mancanti. |
 
 ## Da Validare Con Commercialista
 
@@ -105,6 +108,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Fiscalita | Livello di dettaglio in proposta cliente | Da validare | Il dettaglio resta interno. |
 | Fiscalita | Descrizione da usare in fattura | Da validare | Dipende dall'inquadramento. |
 | Fiscalita | Eventuale passaggio futuro ad artigiano | Da validare | Impatta documenti e gestione commerciale. |
+| Fiscalita | Dicitura documento fornitura/artigiano | Da validare | Il template Sprint 14 e preparatorio e non sostituisce la validazione commerciale/fiscale. |
 
 ## Promemoria
 

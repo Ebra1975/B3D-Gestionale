@@ -12,6 +12,7 @@ urlpatterns = [
     path("<int:pk>/modifica/", views.estimate_update, name="update"),
     path("<int:pk>/documenti/consulenza/genera/", views.generate_consulting_document, name="generate_consulting_document"),
     path("<int:pk>/documenti/interno/genera/", views.generate_internal_document, name="generate_internal_document"),
+    path("<int:pk>/documenti/fornitura/genera/", views.generate_supply_document, name="generate_supply_document"),
     path("<int:pk>/stato/<str:status>/", views.update_estimate_status, name="update_status"),
     path("<int:pk>/condizioni-cliente/conferma/", views.confirm_commercial_terms_review, name="confirm_commercial_terms_review"),
     path("<int:pk>/commessa/crea/", views.create_job, name="create_job"),

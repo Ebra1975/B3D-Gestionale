@@ -158,6 +158,8 @@ Il controllo automatico dei segnaposto interni al DOCX puo restare fuori dalla p
 
 Dallo Sprint 13 il sistema controlla anche che il file caricato sia un DOCX realmente leggibile e, per i template consulenza e interno, che i segnaposto principali siano compatibili con i dati disponibili.
 
+Dallo Sprint 14 e disponibile anche un template base preparatorio per fornitura/artigiano. Questo profilo usa gli stessi dati del preventivo e resta da validare commercialmente/fiscalmente prima dell'uso reale verso cliente.
+
 ## Fuori Dalla Prima Versione
 
 Non sono necessari nella prima versione:

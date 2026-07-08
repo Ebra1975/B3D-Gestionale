@@ -229,6 +229,8 @@ Il template interno dettagliato generato dal gestionale e stato rifinito in vers
 
 I template Sprint 11 non sono ancora il layout definitivo di brand, ma sono piu adatti a controllare il flusso reale cliente/interno rispetto ai template provvisori iniziali.
 
+Dal dettaglio preventivo e disponibile anche **Genera fornitura bozza**. Il template fornitura/artigiano base v1 e preparatorio: usa gli stessi dati del preventivo e le voci marcate come visibili per fornitura, ma le diciture commerciali/fiscali restano da validare prima dell'uso reale.
+
 ## Commesse
 
 ### Obiettivo
@@ -403,6 +405,8 @@ Nella prima gestione da interfaccia, un solo template per tipo documento resta a
 
 Dallo Sprint 13, al salvataggio di un template il gestionale controlla che il file sia un DOCX leggibile. Per proposta consulenza e scheda interna controlla anche che i segnaposto principali usati nel Word siano compatibili con quelli disponibili.
 
+Dallo Sprint 14 lo stesso controllo dei segnaposto viene applicato anche ai template fornitura/artigiano.
+
 ## Impostazioni
 
 ### Obiettivo
@@ -458,7 +462,8 @@ Prima bozza in `docs/MANUALE_OPERATIVO.md` e prima schermata consultabile dalla 
 14. Se i dati documento non sono corretti, apro **Documenti** e uso **Modifica dati documento**.
 15. Genero proposta cliente `.docx` e PDF.
 16. Genero la scheda interna dettagliata se serve controllare costi e margine.
-17. Segno il preventivo come inviato.
+17. Se serve una prova futura del profilo fornitura/artigiano, genero **fornitura bozza** e la tengo come documento da validare.
+18. Segno il preventivo come inviato.
 
 ## Flusso 2 - Preventivo Accettato
 
@@ -488,13 +493,14 @@ Priorita alta:
 - PDF consulenza;
 - PDF interno dettagliato.
 - template `.docx` per consulenza e interno dettagliato.
+- template `.docx` preparatorio per fornitura/artigiano.
 
 Priorita media:
 
 - commesse;
 - materiali;
 - stampanti;
-- PDF fornitura/artigiano.
+- rifinitura e validazione reale PDF fornitura/artigiano.
 
 Priorita futura:
 

@@ -7,6 +7,7 @@ from decimal import Decimal
 from pathlib import Path
 
 from django.conf import settings
+from django.db import IntegrityError, transaction
 from django.db.models import Max
 from docxtpl import DocxTemplate
 from docx import Document
@@ -35,6 +36,15 @@ SUPPORTED_TEMPLATE_VARIABLES = {
         "b3d",
         "interno",
         "voci_costo",
+    },
+    DocumentTemplate.DocumentType.SUPPLY_ESTIMATE: {
+        "cliente",
+        "preventivo",
+        "configurazione",
+        "proposta",
+        "b3d",
+        "fornitura",
+        "voci_fornitura",
     },
 }
 
@@ -121,22 +131,26 @@ def convert_docx_to_pdf(docx_path, output_dir):
 
     with tempfile.TemporaryDirectory(prefix="b3dlab_lo_profile_") as profile_dir:
         user_installation = Path(profile_dir).resolve().as_uri()
-        result = subprocess.run(
-            [
-                command,
-                f"-env:UserInstallation={user_installation}",
-                "--headless",
-                "--norestore",
-                "--convert-to",
-                "pdf",
-                "--outdir",
-                str(output_dir),
-                str(docx_path),
-            ],
-            check=False,
-            capture_output=True,
-            text=True,
-        )
+        try:
+            result = subprocess.run(
+                [
+                    command,
+                    f"-env:UserInstallation={user_installation}",
+                    "--headless",
+                    "--norestore",
+                    "--convert-to",
+                    "pdf",
+                    "--outdir",
+                    str(output_dir),
+                    str(docx_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+                timeout=getattr(settings, "LIBREOFFICE_TIMEOUT_SECONDS", 30),
+            )
+        except subprocess.TimeoutExpired:
+            return None
 
     pdf_path = output_dir / f"{docx_path.stem}.pdf"
     if result.returncode != 0 or not pdf_path.exists():
@@ -281,6 +295,40 @@ def build_internal_context(estimate):
             "controlli": checks["warnings"],
         },
         "voci_costo": cost_items,
+    }
+
+
+def build_supply_context(estimate):
+    checks = build_document_export_checks(estimate)
+    configuration = checks["selected_configuration"]
+    profile = checks["profile"]
+    supply_items = []
+    if configuration:
+        supply_items = [
+            {
+                "categoria": item.get_category_display(),
+                "descrizione": item.description,
+                "quantita": f"{item.quantity} {item.unit}".strip(),
+                "unitario": money(item.unit_cost),
+                "totale": money(item.total),
+                "note": item.notes,
+            }
+            for item in configuration.cost_items.filter(visible_supply=True)
+        ]
+
+    return {
+        **build_consulting_context(estimate),
+        "fornitura": {
+            "titolo": "Preventivo fornitura / artigiano",
+            "voce": "Fornitura e lavorazione additiva",
+            "nota_preparatoria": (
+                "Template preparatorio per futura modalita fornitura/artigiano. "
+                "Dicitura commerciale e fiscale da validare con commercialista prima dell'uso reale."
+            ),
+            "condizioni": estimate.general_terms or profile.standard_consulting_terms,
+            "nota_fiscale": profile.fiscal_note,
+        },
+        "voci_fornitura": supply_items,
     }
 
 
@@ -523,19 +571,21 @@ def create_default_internal_template(template_path):
         set_cell_text(cell, value, bold=True)
 
     add_section_title(document, "Voci di costo")
-    table = document.add_table(rows=2, cols=6)
+    table = document.add_table(rows=4, cols=6)
     table.style = "Table Grid"
     labels = ["Categoria", "Descrizione", "Quantita", "Unitario", "Totale", "Note"]
     for cell, label in zip(table.rows[0].cells, labels):
         set_cell_background(cell, "17202A")
         set_cell_text(cell, label, bold=True, color="FFFFFF")
-    cells = table.rows[1].cells
-    cells[0].text = "{% for voce in voci_costo %}{{ voce.categoria }}"
+    table.rows[1].cells[0].text = "{%tr for voce in voci_costo %}"
+    cells = table.rows[2].cells
+    cells[0].text = "{{ voce.categoria }}"
     cells[1].text = "{{ voce.descrizione }}"
     cells[2].text = "{{ voce.quantita }}"
     cells[3].text = "{{ voce.unitario }}"
     cells[4].text = "{{ voce.totale }}"
-    cells[5].text = "{{ voce.note }}{% if not loop.last %}\n{% endif %}{% endfor %}"
+    cells[5].text = "{{ voce.note }}"
+    table.rows[3].cells[0].text = "{%tr endfor %}"
 
     add_section_title(document, "Ipotesi operative")
     operative = document.add_table(rows=4, cols=2)
@@ -562,6 +612,112 @@ def create_default_internal_template(template_path):
     footer = section.footer.paragraphs[0]
     footer.alignment = WD_ALIGN_PARAGRAPH.CENTER
     run = footer.add_run("{{ interno.nota_footer }}")
+    run.font.size = Pt(8)
+    run.font.color.rgb = RGBColor(97, 112, 128)
+
+    document.save(template_path)
+    return template_path
+
+
+def create_default_supply_template(template_path):
+    template_path.parent.mkdir(parents=True, exist_ok=True)
+
+    document = Document()
+    section = document.sections[0]
+    section.top_margin = Cm(1.6)
+    section.bottom_margin = Cm(1.6)
+    section.left_margin = Cm(1.8)
+    section.right_margin = Cm(1.8)
+
+    styles = document.styles
+    styles["Normal"].font.name = "Aptos"
+    styles["Normal"].font.size = Pt(10)
+
+    header = document.add_table(rows=1, cols=2)
+    left, right = header.rows[0].cells
+    set_cell_background(left, "F3F6FA")
+    set_cell_background(right, "3F5F45")
+    set_cell_text(left, "{{ b3d.nome }}", bold=True)
+    add_small_paragraph(left, "{{ b3d.sottotitolo }}", color="617080")
+    add_small_paragraph(left, "{{ b3d.email }} | {{ b3d.telefono }} | {{ b3d.sito }}", color="617080")
+    set_cell_text(right, "PREVENTIVO FORNITURA / ARTIGIANO", bold=True, color="FFFFFF")
+    meta = right.add_paragraph()
+    meta.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+    run = meta.add_run("N. {{ preventivo.numero }} | {{ preventivo.data }}")
+    run.font.size = Pt(8.5)
+    run.font.color.rgb = RGBColor(255, 255, 255)
+
+    add_section_title(document, "Cliente e richiesta")
+    summary = document.add_table(rows=4, cols=2)
+    summary.style = "Table Grid"
+    rows = [
+        ("Cliente", "{{ cliente.nome }}"),
+        ("Referente", "{{ cliente.referente }}"),
+        ("Oggetto", "{{ preventivo.oggetto }}"),
+        ("Quantita", "{{ preventivo.quantita }}"),
+    ]
+    for row, (label, value) in zip(summary.rows, rows):
+        label_cell, value_cell = row.cells
+        set_cell_background(label_cell, "EEF2F7")
+        set_cell_text(label_cell, label, bold=True)
+        set_cell_text(value_cell, value)
+
+    document.add_paragraph("{{ preventivo.descrizione }}")
+
+    add_section_title(document, "Specifiche fornitura")
+    technical = document.add_table(rows=5, cols=2)
+    technical.style = "Table Grid"
+    rows = [
+        ("Configurazione", "{{ configurazione.nome }}"),
+        ("Materiale / tecnologia", "{{ configurazione.materiale }}"),
+        ("Processo", "{{ configurazione.processo }}"),
+        ("Trattamento", "{{ configurazione.trattamento }}"),
+        ("Note operative", "{{ configurazione.note }}"),
+    ]
+    for row, (label, value) in zip(technical.rows, rows):
+        label_cell, value_cell = row.cells
+        set_cell_background(label_cell, "F8FAFC")
+        set_cell_text(label_cell, label, bold=True)
+        set_cell_text(value_cell, value)
+
+    add_section_title(document, "Riepilogo economico")
+    table = document.add_table(rows=4, cols=5)
+    table.style = "Table Grid"
+    labels = ["Voce", "Descrizione", "Quantita", "Unitario", "Totale"]
+    for cell, label in zip(table.rows[0].cells, labels):
+        set_cell_background(cell, "3F5F45")
+        set_cell_text(cell, label, bold=True, color="FFFFFF")
+    table.rows[1].cells[0].text = "{%tr for voce in voci_fornitura %}"
+    cells = table.rows[2].cells
+    cells[0].text = "{{ voce.categoria }}"
+    cells[1].text = "{{ voce.descrizione }}"
+    cells[2].text = "{{ voce.quantita }}"
+    cells[3].text = "{{ voce.unitario }}"
+    cells[4].text = "{{ voce.totale }}"
+    table.rows[3].cells[0].text = "{%tr endfor %}"
+
+    total_row = table.add_row().cells
+    total_row[0].merge(total_row[3])
+    set_cell_background(total_row[0], "EEF2F7")
+    set_cell_background(total_row[4], "EEF2F7")
+    set_cell_text(total_row[0], "Totale fornitura", bold=True)
+    set_cell_text(total_row[4], "{{ proposta.totale }}", bold=True)
+
+    add_section_title(document, "Condizioni")
+    document.add_paragraph("{{ fornitura.condizioni }}")
+    note = document.add_paragraph()
+    note.paragraph_format.space_before = Pt(6)
+    note.add_run("Nota fiscale/commerciale: ").bold = True
+    note.add_run("{{ fornitura.nota_fiscale }}")
+    warning = document.add_paragraph()
+    warning.paragraph_format.space_before = Pt(4)
+    run = warning.add_run("{{ fornitura.nota_preparatoria }}")
+    run.font.size = Pt(8.5)
+    run.font.color.rgb = RGBColor(97, 112, 128)
+
+    footer = section.footer.paragraphs[0]
+    footer.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    run = footer.add_run("B3D Lab - Template preparatorio fornitura/artigiano")
     run.font.size = Pt(8)
     run.font.color.rgb = RGBColor(97, 112, 128)
 
@@ -693,38 +849,105 @@ def get_or_create_default_internal_template():
     )
 
 
+def get_or_create_default_supply_template():
+    custom_template = (
+        DocumentTemplate.objects.filter(
+            document_type=DocumentTemplate.DocumentType.SUPPLY_ESTIMATE,
+            active=True,
+        )
+        .exclude(name__startswith="Preventivo fornitura base")
+        .order_by("-uploaded_at", "-id")
+        .first()
+    )
+    if custom_template:
+        return custom_template
+
+    generated_template = (
+        DocumentTemplate.objects.filter(
+            document_type=DocumentTemplate.DocumentType.SUPPLY_ESTIMATE,
+            active=True,
+            name__startswith="Preventivo fornitura base",
+        )
+        .order_by("-uploaded_at", "-id")
+        .first()
+    )
+    relative_path = Path("templates") / "supply_estimate" / "preventivo_fornitura_base_v1.docx"
+    absolute_path = Path(settings.MEDIA_ROOT) / relative_path
+    create_default_supply_template(absolute_path)
+    if generated_template:
+        generated_template.template_file = str(relative_path).replace("\\", "/")
+        generated_template.template_version = "v1"
+        generated_template.notes = (
+            "Template preparatorio fornitura/artigiano generato nello Sprint 14. "
+            "Da validare commercialmente e fiscalmente prima dell'uso reale."
+        )
+        generated_template.save(update_fields=["template_file", "template_version", "notes"])
+        return generated_template
+
+    template = (
+        DocumentTemplate.objects.filter(
+            document_type=DocumentTemplate.DocumentType.SUPPLY_ESTIMATE,
+            active=True,
+        )
+        .order_by("-uploaded_at", "-id")
+        .first()
+    )
+    if template:
+        return template
+
+    return DocumentTemplate.objects.create(
+        name="Preventivo fornitura base",
+        document_type=DocumentTemplate.DocumentType.SUPPLY_ESTIMATE,
+        profile="supply",
+        template_file=str(relative_path).replace("\\", "/"),
+        template_version="v1",
+        active=True,
+        notes=(
+            "Template preparatorio fornitura/artigiano generato nello Sprint 14. "
+            "Da validare commercialmente e fiscalmente prima dell'uso reale."
+        ),
+    )
+
+
 def generate_estimate_docx(estimate, document_type, template, context, folder, filename_label, notes):
-    latest_version = (
-        GeneratedDocument.objects.filter(
-            estimate=estimate,
-            document_type=document_type,
-        ).aggregate(value=Max("version"))["value"]
-        or 0
-    )
-    version = latest_version + 1
-    filename = f"preventivo_{safe_filename(estimate.number)}_{filename_label}_v{version}.docx"
-    relative_path = Path("generated") / safe_filename(estimate.number) / folder / filename
-    output_path = Path(settings.MEDIA_ROOT) / relative_path
+    for _ in range(3):
+        latest_version = (
+            GeneratedDocument.objects.filter(
+                estimate=estimate,
+                document_type=document_type,
+            ).aggregate(value=Max("version"))["value"]
+            or 0
+        )
+        version = latest_version + 1
+        filename = f"preventivo_{safe_filename(estimate.number)}_{filename_label}_v{version}.docx"
+        relative_path = Path("generated") / safe_filename(estimate.number) / folder / filename
+        output_path = Path(settings.MEDIA_ROOT) / relative_path
 
-    render_docx_template(
-        template.template_file.path,
-        output_path,
-        context,
-    )
-    pdf_path = convert_docx_to_pdf(output_path, output_path.parent)
-    pdf_file = ""
-    if pdf_path:
-        pdf_file = str(relative_path.with_suffix(".pdf")).replace("\\", "/")
+        render_docx_template(
+            template.template_file.path,
+            output_path,
+            context,
+        )
+        pdf_path = convert_docx_to_pdf(output_path, output_path.parent)
+        pdf_file = ""
+        if pdf_path:
+            pdf_file = str(relative_path.with_suffix(".pdf")).replace("\\", "/")
 
-    return GeneratedDocument.objects.create(
-        estimate=estimate,
-        template=template,
-        document_type=document_type,
-        version=version,
-        docx_file=str(relative_path).replace("\\", "/"),
-        pdf_file=pdf_file,
-        notes=notes,
-    )
+        try:
+            with transaction.atomic():
+                return GeneratedDocument.objects.create(
+                    estimate=estimate,
+                    template=template,
+                    document_type=document_type,
+                    version=version,
+                    docx_file=str(relative_path).replace("\\", "/"),
+                    pdf_file=pdf_file,
+                    notes=notes,
+                )
+        except IntegrityError:
+            continue
+
+    raise IntegrityError("Impossibile assegnare una nuova versione al documento generato.")
 
 
 def generate_consulting_estimate_docx(estimate):
@@ -750,4 +973,20 @@ def generate_internal_estimate_docx(estimate):
         folder="internal",
         filename_label="interno",
         notes="Documento interno dettagliato generato dal dettaglio preventivo.",
+    )
+
+
+def generate_supply_estimate_docx(estimate):
+    template = get_or_create_default_supply_template()
+    return generate_estimate_docx(
+        estimate=estimate,
+        document_type=GeneratedDocument.DocumentType.SUPPLY,
+        template=template,
+        context=build_supply_context(estimate),
+        folder="supply",
+        filename_label="fornitura",
+        notes=(
+            "Documento fornitura/artigiano preparatorio generato dal dettaglio preventivo. "
+            "Da validare prima dell'uso reale verso cliente."
+        ),
     )

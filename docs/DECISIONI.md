@@ -88,6 +88,9 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-08 | Sprint 12 | Lo sprint viene chiuso con manuale operativo e documentazione allineati. | La gestione template entra nel flusso documenti e deve essere spiegata all'operatore. |
 | 2026-07-08 | Sprint 13 | Il caricamento template DOCX valida il file reale e i segnaposto principali per consulenza e interno. | Evita di attivare modelli Word non leggibili o incompatibili con la generazione documento. |
 | 2026-07-08 | Sprint 13 | La prova documento realistico diventa verifica automatica del flusso cliente/interno. | Conferma che la proposta cliente resta sintetica e che la scheda interna conserva costi, margine e note. |
+| 2026-07-08 | Sprint 14 | Viene aggiunto un template base preparatorio per preventivo fornitura/artigiano. | Permette di predisporre la vista futura senza cambiare il profilo principale consulenza e senza duplicare i dati economici. |
+| 2026-07-08 | Documenti | Il documento fornitura/artigiano usa le voci di costo marcate come visibili per fornitura e mantiene la dicitura da validare con commercialista. | Prepara un documento cliente piu vicino alla fornitura, ma segnala che l'uso reale richiede validazione fiscale/commerciale. |
+| 2026-07-08 | Documenti | Il manuale operativo include una guida ai segnaposto dei template DOCX. | Permette di modificare i modelli Word partendo da variabili corrette e riduce errori nei template caricati. |
 
 ## Decisioni Da Prendere
 

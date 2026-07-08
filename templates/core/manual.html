@@ -14,6 +14,7 @@
         <a href="#preventivo-consulenza">Fare un preventivo consulenza</a>
         <a href="#preventivo-demo">Usare il preventivo demo</a>
         <a href="#controlli-invio">Controlli prima dell'invio</a>
+        <a href="#variabili-template">Variabili template DOCX</a>
       </nav>
     </aside>
 
@@ -80,6 +81,79 @@
             <li>Dettaglio economico interno non esposto al cliente.</li>
             <li>Diciture fiscali/commerciali da validare quando necessario.</li>
           </ul>
+        </div>
+      </article>
+
+      <article class="panel manual-section" id="variabili-template">
+        <div class="panel-header">
+          <h2>Guida - Campi e variabili template DOCX</h2>
+        </div>
+        <div class="manual-body">
+          <p class="manual-lead">Usa questi segnaposto quando modifichi un modello Word da ricaricare nella sezione Documenti.</p>
+
+          <div class="manual-goal">
+            <h3>Regola base</h3>
+            <p>I campi vanno scritti esattamente tra doppie parentesi graffe, ad esempio <code>&#123;&#123; cliente.nome &#125;&#125;</code>.</p>
+          </div>
+
+          <h3>Azienda</h3>
+          <ul class="checklist-grid">
+            <li><code>&#123;&#123; b3d.nome &#125;&#125;</code></li>
+            <li><code>&#123;&#123; b3d.sottotitolo &#125;&#125;</code></li>
+            <li><code>&#123;&#123; b3d.indirizzo &#125;&#125;</code></li>
+            <li><code>&#123;&#123; b3d.email &#125;&#125;</code></li>
+            <li><code>&#123;&#123; b3d.telefono &#125;&#125;</code></li>
+            <li><code>&#123;&#123; b3d.sito &#125;&#125;</code></li>
+            <li><code>&#123;&#123; b3d.codice_fiscale &#125;&#125;</code></li>
+          </ul>
+
+          <h3>Cliente e preventivo</h3>
+          <ul class="checklist-grid">
+            <li><code>&#123;&#123; cliente.nome &#125;&#125;</code></li>
+            <li><code>&#123;&#123; cliente.referente &#125;&#125;</code></li>
+            <li><code>&#123;&#123; cliente.email &#125;&#125;</code></li>
+            <li><code>&#123;&#123; cliente.indirizzo &#125;&#125;</code></li>
+            <li><code>&#123;&#123; preventivo.numero &#125;&#125;</code></li>
+            <li><code>&#123;&#123; preventivo.oggetto &#125;&#125;</code></li>
+            <li><code>&#123;&#123; preventivo.descrizione &#125;&#125;</code></li>
+            <li><code>&#123;&#123; preventivo.data &#125;&#125;</code></li>
+            <li><code>&#123;&#123; preventivo.validita &#125;&#125;</code></li>
+            <li><code>&#123;&#123; preventivo.quantita &#125;&#125;</code></li>
+            <li><code>&#123;&#123; preventivo.condizioni &#125;&#125;</code></li>
+          </ul>
+
+          <h3>Configurazione e proposta</h3>
+          <ul class="checklist-grid">
+            <li><code>&#123;&#123; configurazione.nome &#125;&#125;</code></li>
+            <li><code>&#123;&#123; configurazione.descrizione &#125;&#125;</code></li>
+            <li><code>&#123;&#123; configurazione.materiale &#125;&#125;</code></li>
+            <li><code>&#123;&#123; configurazione.processo &#125;&#125;</code></li>
+            <li><code>&#123;&#123; configurazione.trattamento &#125;&#125;</code></li>
+            <li><code>&#123;&#123; configurazione.durata &#125;&#125;</code></li>
+            <li><code>&#123;&#123; configurazione.note &#125;&#125;</code></li>
+            <li><code>&#123;&#123; proposta.totale &#125;&#125;</code></li>
+            <li><code>&#123;&#123; proposta.unitario &#125;&#125;</code></li>
+            <li><code>&#123;&#123; proposta.nota_fiscale &#125;&#125;</code></li>
+          </ul>
+
+          <h3>Interno e fornitura</h3>
+          <ul class="checklist-grid">
+            <li><code>&#123;&#123; interno.costo_base &#125;&#125;</code></li>
+            <li><code>&#123;&#123; interno.margine &#125;&#125;</code></li>
+            <li><code>&#123;&#123; interno.margine_percentuale &#125;&#125;</code></li>
+            <li><code>&#123;&#123; fornitura.titolo &#125;&#125;</code></li>
+            <li><code>&#123;&#123; fornitura.voce &#125;&#125;</code></li>
+            <li><code>&#123;&#123; fornitura.condizioni &#125;&#125;</code></li>
+            <li><code>&#123;&#123; fornitura.nota_fiscale &#125;&#125;</code></li>
+            <li><code>&#123;&#123; fornitura.nota_preparatoria &#125;&#125;</code></li>
+          </ul>
+
+          <h3>Tabelle ripetute in Word</h3>
+          <p>Per una tabella economica, usa una riga con apertura ciclo, una riga dati e una riga di chiusura.</p>
+          <pre><code>&#123;%tr for voce in voci_fornitura %&#125;
+&#123;&#123; voce.categoria &#125;&#125; | &#123;&#123; voce.descrizione &#125;&#125; | &#123;&#123; voce.quantita &#125;&#125; | &#123;&#123; voce.unitario &#125;&#125; | &#123;&#123; voce.totale &#125;&#125;
+&#123;%tr endfor %&#125;</code></pre>
+          <p>Per la scheda interna usa lo stesso schema con <code>voci_costo</code> al posto di <code>voci_fornitura</code>.</p>
         </div>
       </article>
     </div>

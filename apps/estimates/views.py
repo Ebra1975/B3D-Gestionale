@@ -13,6 +13,7 @@ from apps.documents.services import (
     build_document_export_checks,
     generate_consulting_estimate_docx,
     generate_internal_estimate_docx,
+    generate_supply_estimate_docx,
 )
 from apps.jobs.models import Job
 from apps.jobs.services import create_job_from_estimate
@@ -271,6 +272,26 @@ def generate_internal_document(request, pk):
 
     document = generate_internal_estimate_docx(estimate)
     messages.success(request, f"Documento interno generato: versione {document.version}.")
+    if not document.pdf_file:
+        messages.warning(request, "DOCX creato, ma il PDF non e stato convertito: verificare LibreOffice.")
+    return redirect("estimates:detail", pk=estimate.pk)
+
+
+@require_POST
+def generate_supply_document(request, pk):
+    estimate = get_object_or_404(
+        Estimate.objects.select_related("customer").prefetch_related("configurations__cost_items"),
+        pk=pk,
+    )
+    checks = build_document_export_checks(estimate)
+    if not checks["can_generate"]:
+        messages.error(request, "Completa i dati obbligatori prima di generare il documento fornitura/artigiano.")
+        for item in checks["missing_items"]:
+            messages.error(request, item)
+        return redirect("estimates:detail", pk=estimate.pk)
+
+    document = generate_supply_estimate_docx(estimate)
+    messages.success(request, f"Documento fornitura/artigiano preparatorio generato: versione {document.version}.")
     if not document.pdf_file:
         messages.warning(request, "DOCX creato, ma il PDF non e stato convertito: verificare LibreOffice.")
     return redirect("estimates:detail", pk=estimate.pk)

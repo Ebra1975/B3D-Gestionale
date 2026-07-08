@@ -16,6 +16,8 @@ Non e documentazione tecnica per sviluppatori: serve all'operatore per sapere co
 | Controllare la dashboard | Bozza iniziale | Vedere ogni giorno preventivi, commesse e scadenze commerciali da seguire. |
 | Aggiornare dati documento | Bozza iniziale | Modificare intestazione, contatti, condizioni e note usate nei DOCX/PDF. |
 | Gestire template DOCX | Bozza iniziale | Caricare o sostituire i modelli Word usati per generare documenti cliente e interni. |
+| Preparare template con variabili | Bozza iniziale | Usare i segnaposto corretti nei modelli Word. |
+| Generare bozza fornitura/artigiano | Bozza preparatoria | Creare un documento futuro di fornitura usando gli stessi dati del preventivo. |
 | Applicare prezzo e margine | Bozza iniziale | Generare un totale proposta piu ripetibile partendo dai costi interni. |
 | Fare un backup locale | Bozza iniziale | Salvare dati e documenti durante lo sviluppo. |
 
@@ -188,7 +190,8 @@ Arrivare a un preventivo con:
 24. Quando il totale e coerente, usare **Genera cliente**.
 25. Scaricare e controllare DOCX e PDF cliente.
 26. Se serve un controllo economico completo, usare **Genera interno** e conservare il documento solo per uso interno.
-27. Se il documento cliente e corretto, usare l'azione rapida **Segna inviato** nel dettaglio preventivo.
+27. Solo per prove o casi futuri, usare **Genera fornitura bozza** e controllare che la dicitura sia ancora da validare con commercialista.
+28. Se il documento cliente e corretto, usare l'azione rapida **Segna inviato** nel dettaglio preventivo.
 
 ### Controlli Prima Di Inviare
 
@@ -242,6 +245,14 @@ La scheda interna non va inviata al cliente.
 
 Il template base resta sostituibile con un modello `.docx` personalizzato.
 
+### Template Fornitura/Artigiano Preparatorio
+
+Dal dettaglio preventivo e disponibile **Genera fornitura bozza**.
+
+Questo documento usa gli stessi dati del preventivo e le voci di costo marcate come visibili per fornitura/artigiano. Serve per preparare il profilo futuro, non per sostituire oggi la proposta consulenza.
+
+Prima di inviarlo a un cliente reale, diciture fiscali, commerciali e livello di dettaglio devono essere validati con commercialista.
+
 ### Risultato Atteso
 
 Alla fine della procedura il gestionale deve contenere un preventivo completo, almeno un documento cliente generato in formato `.docx` e PDF e, quando utile, una scheda interna separata con dettaglio economico.
@@ -289,8 +300,181 @@ Usare questa procedura quando si vuole caricare un modello Word personalizzato, 
 - Per ogni tipo documento resta attivo un solo template alla volta.
 - Il template personalizzato attivo ha priorita sul template base generato dal gestionale.
 - Il caricamento verifica che il file sia un DOCX leggibile.
-- Per i template consulenza e interno, il gestionale blocca i segnaposto principali non riconosciuti.
+- Per i template consulenza, interno e fornitura/artigiano, il gestionale blocca i segnaposto principali non riconosciuti.
 - Dopo ogni modifica importante al template, generare comunque un documento di prova e controllare il layout prima dell'invio al cliente.
+
+## Guida - Campi E Variabili Template DOCX
+
+### Quando Usarla
+
+Usare questa guida quando si modifica un template Word `.docx` o quando si prepara un nuovo modello da caricare nella sezione **Documenti**.
+
+Il template deve contenere segnaposto scritti tra doppie parentesi graffe, ad esempio:
+
+```text
+{{ cliente.nome }}
+```
+
+Il gestionale sostituisce questi segnaposto con i dati del preventivo quando genera il DOCX.
+
+### Regole Pratiche
+
+- Scrivere i segnaposto esattamente come indicati.
+- Non cambiare mai i nomi prima del punto, ad esempio `cliente`, `preventivo`, `configurazione`, `proposta`, `b3d`.
+- Per iniziare, scaricare un template base dalla sezione **Documenti**, modificarlo in Word e ricaricarlo come nuovo template.
+- Dopo il caricamento, generare un documento di prova e controllare sempre il PDF.
+- Se Word spezza graficamente un segnaposto, riscriverlo a mano nello stesso punto del documento.
+
+### Campi Azienda
+
+Questi campi arrivano dai **Dati documento**.
+
+| Segnaposto | Contenuto |
+|---|---|
+| `{{ b3d.nome }}` | Nome azienda |
+| `{{ b3d.sottotitolo }}` | Sottotitolo aziendale |
+| `{{ b3d.indirizzo }}` | Indirizzo |
+| `{{ b3d.email }}` | Email |
+| `{{ b3d.telefono }}` | Telefono |
+| `{{ b3d.sito }}` | Sito web |
+| `{{ b3d.codice_fiscale }}` | Codice fiscale o partita IVA |
+
+### Campi Cliente
+
+| Segnaposto | Contenuto |
+|---|---|
+| `{{ cliente.nome }}` | Nome cliente |
+| `{{ cliente.referente }}` | Referente |
+| `{{ cliente.email }}` | Email cliente |
+| `{{ cliente.indirizzo }}` | Indirizzo cliente |
+| `{{ cliente.codice_fiscale }}` | Codice fiscale o partita IVA cliente |
+
+### Campi Preventivo
+
+| Segnaposto | Contenuto |
+|---|---|
+| `{{ preventivo.numero }}` | Numero preventivo |
+| `{{ preventivo.oggetto }}` | Oggetto |
+| `{{ preventivo.descrizione }}` | Descrizione richiesta |
+| `{{ preventivo.data }}` | Data preventivo |
+| `{{ preventivo.validita }}` | Data validita |
+| `{{ preventivo.quantita }}` | Quantita della configurazione usata |
+| `{{ preventivo.condizioni }}` | Condizioni generali |
+
+### Campi Configurazione Tecnica
+
+| Segnaposto | Contenuto |
+|---|---|
+| `{{ configurazione.nome }}` | Nome configurazione |
+| `{{ configurazione.descrizione }}` | Descrizione configurazione |
+| `{{ configurazione.materiale }}` | Materiale o tecnologia |
+| `{{ configurazione.processo }}` | Processo |
+| `{{ configurazione.trattamento }}` | Trattamento |
+| `{{ configurazione.durata }}` | Durata attesa |
+| `{{ configurazione.modalita }}` | Modalita operativa |
+| `{{ configurazione.note }}` | Note pubbliche |
+| `{{ configurazione.totale }}` | Totale proposta |
+| `{{ configurazione.unitario }}` | Prezzo unitario |
+
+### Campi Proposta Cliente
+
+| Segnaposto | Contenuto |
+|---|---|
+| `{{ proposta.voce }}` | Descrizione sintetica della proposta consulenza |
+| `{{ proposta.totale }}` | Totale proposta |
+| `{{ proposta.unitario }}` | Prezzo unitario |
+| `{{ proposta.nota_fiscale }}` | Nota fiscale/commerciale |
+
+### Campi Solo Scheda Interna
+
+Questi campi vanno usati solo nei template di tipo **Preventivo interno**.
+
+| Segnaposto | Contenuto |
+|---|---|
+| `{{ interno.costo_base }}` | Costo interno senza margine |
+| `{{ interno.margine }}` | Margine commerciale |
+| `{{ interno.margine_percentuale }}` | Percentuale margine |
+| `{{ interno.note_preventivo }}` | Note interne del preventivo |
+| `{{ interno.note_configurazione }}` | Note interne della configurazione |
+| `{{ interno.nota_footer }}` | Nota interna di fondo pagina |
+
+### Campi Fornitura/Artigiano
+
+Questi campi vanno usati nei template di tipo **Preventivo fornitura/artigiano**.
+
+| Segnaposto | Contenuto |
+|---|---|
+| `{{ fornitura.titolo }}` | Titolo documento fornitura/artigiano |
+| `{{ fornitura.voce }}` | Descrizione sintetica fornitura |
+| `{{ fornitura.condizioni }}` | Condizioni del documento |
+| `{{ fornitura.nota_fiscale }}` | Nota fiscale/commerciale |
+| `{{ fornitura.nota_preparatoria }}` | Nota che ricorda la validazione futura |
+
+### Tabelle Con Righe Ripetute
+
+Per mostrare piu voci di costo in una tabella Word, serve una riga ripetuta.
+
+Nei template Word e preferibile usare i marcatori speciali per righe tabella:
+
+- `{%tr for voce in voci_fornitura %}`
+- `{%tr endfor %}`
+
+Questi marcatori dicono al gestionale di ripetere una riga della tabella per ogni voce.
+
+Per il template **interno**, usare `voci_costo`:
+
+```text
+{%tr for voce in voci_costo %}
+{{ voce.categoria }}
+{{ voce.descrizione }}
+{{ voce.quantita }}
+{{ voce.unitario }}
+{{ voce.totale }}
+{{ voce.note }}
+{%tr endfor %}
+```
+
+Per il template **fornitura/artigiano**, usare `voci_fornitura`:
+
+```text
+{%tr for voce in voci_fornitura %}
+{{ voce.categoria }}
+{{ voce.descrizione }}
+{{ voce.quantita }}
+{{ voce.unitario }}
+{{ voce.totale }}
+{{ voce.note }}
+{%tr endfor %}
+```
+
+### Come Impostare La Tabella In Word
+
+Il modo piu stabile e questo:
+
+1. Creare una tabella con una riga intestazione e una riga dati.
+2. Aggiungere una riga subito sotto l'intestazione con solo `{%tr for voce in voci_fornitura %}`.
+3. Aggiungere la riga dati con i campi della voce.
+4. Aggiungere una riga subito sotto con solo `{%tr endfor %}`.
+5. Non mettere righe vuote tra `{%tr for ... %}` e `{%tr endfor %}`.
+6. Generare un documento di prova e controllare sia DOCX sia PDF.
+
+Esempio di tabella per fornitura/artigiano:
+
+| Categoria | Descrizione | Quantita | Unitario | Totale |
+|---|---|---|---|---|
+| `{%tr for voce in voci_fornitura %}` |  |  |  |  |
+| `{{ voce.categoria }}` | `{{ voce.descrizione }}` | `{{ voce.quantita }}` | `{{ voce.unitario }}` | `{{ voce.totale }}` |
+| `{%tr endfor %}` |  |  |  |  |
+
+### Variabili Ammesse Per Tipo Template
+
+| Tipo template | Variabili principali ammesse |
+|---|---|
+| Preventivo consulenza | `cliente`, `preventivo`, `configurazione`, `proposta`, `b3d` |
+| Preventivo interno | `cliente`, `preventivo`, `configurazione`, `proposta`, `b3d`, `interno`, `voci_costo` |
+| Preventivo fornitura/artigiano | `cliente`, `preventivo`, `configurazione`, `proposta`, `b3d`, `fornitura`, `voci_fornitura` |
+
+Se un template contiene una variabile non presente in questa lista, il gestionale blocca il caricamento per evitare documenti generati male.
 
 ## Procedura - Applicare Prezzo E Margine
 

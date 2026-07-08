@@ -17,6 +17,7 @@ from apps.documents.services import (
     build_document_export_checks,
     generate_consulting_estimate_docx,
     generate_internal_estimate_docx,
+    generate_supply_estimate_docx,
     get_or_create_default_consulting_template,
 )
 from apps.estimates.models import CostItem, Estimate, EstimateConfiguration
@@ -280,6 +281,126 @@ class DocumentExportTests(TestCase):
         self.assertIn("Analisi file e preparazione stampa", internal_xml)
         self.assertIn("Documento interno: non inviare al cliente.", internal_xml)
 
+    def test_supply_document_is_generated_as_preparatory_customer_view(self):
+        DocumentProfile.objects.create(
+            name="Profilo fornitura",
+            company_name="B3D Lab",
+            subtitle="Consulenza tecnica e manifattura additiva",
+            email="info@b3dlab.example",
+            phone="3330000000",
+            standard_consulting_terms="Validita 15 giorni. Tempi da confermare dopo accettazione.",
+            fiscal_note="Dicitura fornitura da validare con commercialista.",
+            active=True,
+        )
+        material = Material.objects.create(
+            name="PLA tecnico",
+            brand="Generico",
+            color="Nero",
+            cost_per_unit=Decimal("24.00"),
+        )
+        estimate = Estimate.objects.create(
+            number="B3D-2026-SUPPLY",
+            customer=Customer.objects.create(name="Cliente Fornitura", email="cliente@example.com"),
+            subject="Fornitura staffe prova",
+            description="Produzione di staffe campione per verifica montaggio.",
+            date=timezone.localdate(),
+            valid_until=timezone.localdate(),
+            quantity=4,
+        )
+        configuration = EstimateConfiguration.objects.create(
+            estimate=estimate,
+            name="Staffe PLA",
+            description="Fornitura FDM per campionatura.",
+            material=material,
+            process="FDM",
+            treatment="Rimozione supporti",
+            quantity=4,
+            is_selected=True,
+        )
+        CostItem.objects.create(
+            configuration=configuration,
+            category=CostItem.Category.MATERIAL,
+            description="Materiale PLA",
+            quantity=Decimal("0.20"),
+            unit="kg",
+            unit_cost=Decimal("24.00"),
+            visible_supply=True,
+        )
+        CostItem.objects.create(
+            configuration=configuration,
+            category=CostItem.Category.MACHINE_TIME,
+            description="Tempo macchina",
+            quantity=Decimal("5.00"),
+            unit="h",
+            unit_cost=Decimal("6.00"),
+            visible_supply=True,
+        )
+        CostItem.objects.create(
+            configuration=configuration,
+            category=CostItem.Category.MARGIN,
+            description="Margine commerciale",
+            quantity=Decimal("1.00"),
+            unit="voce",
+            unit_cost=Decimal("20.00"),
+            visible_supply=False,
+        )
+
+        document = generate_supply_estimate_docx(estimate)
+
+        self.assertEqual(document.document_type, GeneratedDocument.DocumentType.SUPPLY)
+        self.assertEqual(document.template.template_version, "v1")
+        self.assertTrue(document.template.template_file.name.endswith("preventivo_fornitura_base_v1.docx"))
+        self.assertTrue(document.docx_file.name.endswith("_fornitura_v1.docx"))
+
+        document_xml = read_docx_word_xml(document.docx_file.path)
+        self.assertIn("PREVENTIVO FORNITURA / ARTIGIANO", document_xml)
+        self.assertIn("Cliente Fornitura", document_xml)
+        self.assertIn("Materiale PLA", document_xml)
+        self.assertIn("Tempo macchina", document_xml)
+        self.assertNotIn("Costo interno", document_xml)
+        self.assertIn("validare con commercialista", document_xml)
+
+    def test_supply_document_generates_next_version_when_repeated(self):
+        DocumentProfile.objects.create(
+            name="Profilo fornitura versioni",
+            company_name="B3D Lab",
+            fiscal_note="Dicitura fornitura da validare con commercialista.",
+            active=True,
+        )
+        material = Material.objects.create(name="PETG", cost_per_unit=Decimal("20.00"))
+        estimate = Estimate.objects.create(
+            number="B3D-2026-SUPPLY-VERSIONS",
+            customer=Customer.objects.create(name="Cliente Versioni", email="cliente@example.com"),
+            subject="Fornitura ripetuta",
+            description="Produzione di componenti campione.",
+            date=timezone.localdate(),
+            valid_until=timezone.localdate(),
+            quantity=2,
+        )
+        configuration = EstimateConfiguration.objects.create(
+            estimate=estimate,
+            name="Configurazione fornitura",
+            description="Fornitura FDM.",
+            material=material,
+            quantity=2,
+            is_selected=True,
+        )
+        CostItem.objects.create(
+            configuration=configuration,
+            category=CostItem.Category.MATERIAL,
+            description="Materiale PETG",
+            quantity=Decimal("1.00"),
+            unit="kg",
+            unit_cost=Decimal("20.00"),
+        )
+
+        first_document = generate_supply_estimate_docx(estimate)
+        second_document = generate_supply_estimate_docx(estimate)
+
+        self.assertEqual(first_document.version, 1)
+        self.assertEqual(second_document.version, 2)
+        self.assertTrue(second_document.docx_file.name.endswith("_fornitura_v2.docx"))
+
 
 class DocumentProfileViewTests(TestCase):
     def test_document_profile_can_be_updated_from_interface(self):
@@ -392,6 +513,22 @@ class DocumentTemplateViewTests(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("client", form.errors["template_file"][0])
         self.assertFalse(DocumentTemplate.objects.filter(name="Template con segnaposto errato").exists())
+
+    def test_supply_template_upload_rejects_unknown_placeholders(self):
+        form = DocumentTemplateForm(
+            {
+                "name": "Template fornitura con segnaposto errato",
+                "document_type": DocumentTemplate.DocumentType.SUPPLY_ESTIMATE,
+                "profile": "supply",
+                "template_version": "v1",
+                "active": "on",
+            },
+            {"template_file": make_template_upload("template_fornitura.docx", ["Cliente {{ cliente.nome }} {{ riga.sconosciuta }}"])},
+        )
+
+        self.assertFalse(form.is_valid())
+        self.assertIn("riga", form.errors["template_file"][0])
+        self.assertFalse(DocumentTemplate.objects.filter(name="Template fornitura con segnaposto errato").exists())
 
     def test_activating_template_deactivates_same_document_type(self):
         first = DocumentTemplate.objects.create(
