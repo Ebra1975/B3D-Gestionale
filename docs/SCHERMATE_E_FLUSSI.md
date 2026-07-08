@@ -372,6 +372,7 @@ La sezione documenti deve permettere di gestire template `.docx`.
 
 Mostrare:
 
+- dati documento attivi: azienda, contatti, condizioni standard e nota fiscale;
 - nome template;
 - tipo documento;
 - profilo;
@@ -439,8 +440,10 @@ Prima bozza in `docs/MANUALE_OPERATIVO.md` e prima schermata consultabile dalla 
 10. Aggiungo eventuale prototipo.
 11. Scelgo profilo documento "consulenza".
 12. Scelgo il template `.docx` di consulenza.
-13. Genero proposta `.docx` e PDF.
-14. Segno il preventivo come inviato.
+13. Controllo eventuali mancanze nel blocco export PDF/DOCX.
+14. Genero proposta cliente `.docx` e PDF.
+15. Genero la scheda interna dettagliata se serve controllare costi e margine.
+16. Segno il preventivo come inviato.
 
 ## Flusso 2 - Preventivo Accettato
 

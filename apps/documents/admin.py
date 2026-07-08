@@ -1,6 +1,13 @@
 from django.contrib import admin
 
-from .models import DocumentTemplate, GeneratedDocument
+from .models import DocumentProfile, DocumentTemplate, GeneratedDocument
+
+
+@admin.register(DocumentProfile)
+class DocumentProfileAdmin(admin.ModelAdmin):
+    list_display = ("name", "company_name", "email", "active", "updated_at")
+    search_fields = ("name", "company_name", "email", "tax_code")
+    list_filter = ("active",)
 
 
 @admin.register(DocumentTemplate)

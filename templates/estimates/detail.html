@@ -9,7 +9,11 @@
   <a class="button" href="{% url 'estimates:configuration_create' estimate.pk %}">Aggiungi configurazione</a>
   <form method="post" action="{% url 'estimates:generate_consulting_document' estimate.pk %}">
     {% csrf_token %}
-    <button class="button" type="submit">Genera DOCX consulenza</button>
+    <button class="button" type="submit">Genera cliente</button>
+  </form>
+  <form method="post" action="{% url 'estimates:generate_internal_document' estimate.pk %}">
+    {% csrf_token %}
+    <button class="button secondary" type="submit">Genera interno</button>
   </form>
 {% endblock %}
 
@@ -19,7 +23,7 @@
       <div class="panel-header split-header">
         <h2>Stato preventivo</h2>
         {% if readiness.can_generate %}
-          <span class="badge success">Pronto per DOCX</span>
+          <span class="badge success">Pronto per documenti</span>
         {% else %}
           <span class="badge warning">Da completare</span>
         {% endif %}
@@ -60,6 +64,20 @@
             <h3>Da controllare</h3>
             <ul class="check-list">
               {% for item in readiness.warnings %}
+                <li>{{ item }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        {% if readiness.document_missing_items or readiness.document_warnings %}
+          <div class="check-block">
+            <h3>Controlli export PDF/DOCX</h3>
+            <ul class="check-list">
+              {% for item in readiness.document_missing_items %}
+                <li class="text-danger">{{ item }}</li>
+              {% endfor %}
+              {% for item in readiness.document_warnings %}
                 <li>{{ item }}</li>
               {% endfor %}
             </ul>
@@ -362,7 +380,7 @@
 
   <section class="panel">
     <div class="panel-header">
-      <h2>Documenti consulenza</h2>
+      <h2>Documenti preventivo</h2>
     </div>
     {% if estimate.generated_documents.all %}
       <table class="data-table">
@@ -376,29 +394,27 @@
         </thead>
         <tbody>
           {% for document in estimate.generated_documents.all %}
-            {% if document.document_type == "consulting" %}
-              <tr>
-                <td>{{ document.get_document_type_display }}</td>
-                <td>v{{ document.version }}</td>
-                <td>{{ document.generated_at }}</td>
-                <td>
-                  {% if document.docx_file %}
-                    <a href="{{ document.docx_file.url }}">Scarica DOCX</a>
-                  {% else %}
-                    -
-                  {% endif %}
-                  {% if document.pdf_file %}
-                    · <a href="{{ document.pdf_file.url }}">PDF</a>
-                  {% endif %}
-                </td>
-              </tr>
-            {% endif %}
+            <tr>
+              <td>{{ document.get_document_type_display }}</td>
+              <td>v{{ document.version }}</td>
+              <td>{{ document.generated_at }}</td>
+              <td>
+                {% if document.docx_file %}
+                  <a href="{{ document.docx_file.url }}">Scarica DOCX</a>
+                {% else %}
+                  -
+                {% endif %}
+                {% if document.pdf_file %}
+                  · <a href="{{ document.pdf_file.url }}">PDF</a>
+                {% endif %}
+              </td>
+            </tr>
           {% endfor %}
         </tbody>
       </table>
     {% else %}
       <div class="empty-state compact-empty">
-        <p>Nessun documento consulenza generato.</p>
+        <p>Nessun documento generato.</p>
       </div>
     {% endif %}
   </section>

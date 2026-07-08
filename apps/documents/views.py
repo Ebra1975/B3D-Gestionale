@@ -1,12 +1,13 @@
 from django.db.models import Q
 from django.shortcuts import render
 
-from .models import DocumentTemplate, GeneratedDocument
+from .models import DocumentProfile, DocumentTemplate, GeneratedDocument
 
 
 def document_list(request):
     query = request.GET.get("q", "").strip()
     templates = DocumentTemplate.objects.all()
+    document_profiles = DocumentProfile.objects.all()
     generated_documents = GeneratedDocument.objects.select_related("estimate", "estimate__customer", "template").all()
     if query:
         templates = templates.filter(
@@ -25,5 +26,10 @@ def document_list(request):
     return render(
         request,
         "documents/list.html",
-        {"templates": templates, "generated_documents": generated_documents, "query": query},
+        {
+            "document_profiles": document_profiles,
+            "templates": templates,
+            "generated_documents": generated_documents,
+            "query": query,
+        },
     )

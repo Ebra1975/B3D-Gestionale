@@ -15,7 +15,7 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Cm, Pt, RGBColor
 
-from .models import DocumentTemplate, GeneratedDocument
+from .models import DocumentProfile, DocumentTemplate, GeneratedDocument
 
 
 def money(value):
@@ -92,8 +92,52 @@ def selected_configuration(estimate):
     return configurations[0] if configurations else None
 
 
-def build_consulting_context(estimate):
+def build_document_export_checks(estimate):
     configuration = selected_configuration(estimate)
+    profile = DocumentProfile.get_active()
+    missing_items = []
+    warnings = []
+
+    if not profile.company_name:
+        missing_items.append("Completare il nome azienda nei dati documento.")
+    if not profile.fiscal_note:
+        missing_items.append("Completare la nota fiscale nei dati documento.")
+    if not estimate.customer.name:
+        missing_items.append("Completare il nome cliente.")
+    if not estimate.subject:
+        missing_items.append("Completare l'oggetto del preventivo.")
+    if not estimate.description:
+        missing_items.append("Inserire una descrizione della richiesta cliente.")
+    if not configuration:
+        missing_items.append("Scegliere o aggiungere una configurazione tecnica.")
+    elif not configuration.cost_items.exists():
+        missing_items.append("Inserire almeno una voce di costo nella configurazione usata.")
+    elif not configuration.total:
+        missing_items.append("Completare gli importi: il totale della configurazione e ancora zero.")
+
+    if not estimate.valid_until:
+        warnings.append("Manca la data di validita della proposta.")
+    if not estimate.customer.email:
+        warnings.append("Manca l'email cliente.")
+    if configuration:
+        if not configuration.description:
+            warnings.append("Manca la descrizione della configurazione usata.")
+        if not configuration.material:
+            warnings.append("Manca il materiale o la tecnologia prevista.")
+
+    return {
+        "profile": profile,
+        "selected_configuration": configuration,
+        "missing_items": missing_items,
+        "warnings": warnings,
+        "can_generate": not missing_items,
+    }
+
+
+def build_consulting_context(estimate):
+    checks = build_document_export_checks(estimate)
+    configuration = checks["selected_configuration"]
+    profile = checks["profile"]
     total = configuration.total if configuration else Decimal("0.00")
     unit_price = configuration.unit_price if configuration else Decimal("0.00")
 
@@ -112,7 +156,7 @@ def build_consulting_context(estimate):
             "data": estimate.date.strftime("%d/%m/%Y"),
             "validita": estimate.valid_until.strftime("%d/%m/%Y") if estimate.valid_until else "",
             "quantita": configuration.quantity if configuration else estimate.quantity,
-            "condizioni": estimate.general_terms or "Condizioni da definire in base alla conferma del cliente.",
+            "condizioni": estimate.general_terms or profile.standard_consulting_terms,
         },
         "configurazione": {
             "nome": configuration.name if configuration else "Configurazione da completare",
@@ -133,14 +177,50 @@ def build_consulting_context(estimate):
             ),
             "totale": money(total),
             "unitario": money(unit_price),
-            "nota_fiscale": (
-                "Dicitura commerciale e fiscale da validare con commercialista."
-            ),
+            "nota_fiscale": profile.fiscal_note,
         },
         "b3d": {
-            "nome": "B3D Lab",
-            "sottotitolo": "Consulenza tecnica e manifattura additiva",
+            "nome": profile.company_name,
+            "sottotitolo": profile.subtitle,
+            "indirizzo": profile.address,
+            "email": profile.email,
+            "telefono": profile.phone,
+            "sito": profile.website,
+            "codice_fiscale": profile.tax_code,
         },
+    }
+
+
+def build_internal_context(estimate):
+    checks = build_document_export_checks(estimate)
+    configuration = checks["selected_configuration"]
+    profile = checks["profile"]
+    cost_items = []
+    if configuration:
+        cost_items = [
+            {
+                "categoria": item.get_category_display(),
+                "descrizione": item.description,
+                "quantita": f"{item.quantity} {item.unit}".strip(),
+                "unitario": money(item.unit_cost),
+                "totale": money(item.total),
+                "note": item.notes,
+            }
+            for item in configuration.cost_items.all()
+        ]
+
+    return {
+        **build_consulting_context(estimate),
+        "interno": {
+            "costo_base": money(configuration.base_cost if configuration else Decimal("0.00")),
+            "margine": money(configuration.margin_total if configuration else Decimal("0.00")),
+            "margine_percentuale": f"{configuration.margin_percentage:.2f}%" if configuration else "0.00%",
+            "note_preventivo": estimate.internal_notes or "",
+            "note_configurazione": configuration.internal_notes if configuration else "",
+            "nota_footer": profile.internal_footer_note,
+            "controlli": checks["warnings"],
+        },
+        "voci_costo": cost_items,
     }
 
 
@@ -295,6 +375,98 @@ def create_default_consulting_template(template_path):
     return template_path
 
 
+def create_default_internal_template(template_path):
+    template_path.parent.mkdir(parents=True, exist_ok=True)
+
+    document = Document()
+    section = document.sections[0]
+    section.top_margin = Cm(1.5)
+    section.bottom_margin = Cm(1.5)
+    section.left_margin = Cm(1.6)
+    section.right_margin = Cm(1.6)
+
+    styles = document.styles
+    styles["Normal"].font.name = "Aptos"
+    styles["Normal"].font.size = Pt(9.5)
+
+    header = document.add_table(rows=1, cols=2)
+    left, right = header.rows[0].cells
+    set_cell_background(left, "F3F6FA")
+    set_cell_background(right, "17202A")
+    set_cell_text(left, "{{ b3d.nome }}", bold=True)
+    paragraph = left.add_paragraph("{{ b3d.sottotitolo }}")
+    paragraph.runs[0].font.size = Pt(8.5)
+    set_cell_text(right, "SCHEDA INTERNA PREVENTIVO", bold=True, color="FFFFFF")
+
+    add_section_title(document, "Riepilogo")
+    summary = document.add_table(rows=6, cols=2)
+    summary.style = "Table Grid"
+    rows = [
+        ("Preventivo", "{{ preventivo.numero }}"),
+        ("Cliente", "{{ cliente.nome }}"),
+        ("Oggetto", "{{ preventivo.oggetto }}"),
+        ("Data", "{{ preventivo.data }}"),
+        ("Configurazione", "{{ configurazione.nome }}"),
+        ("Quantita", "{{ preventivo.quantita }}"),
+    ]
+    for row, (label, value) in zip(summary.rows, rows):
+        label_cell, value_cell = row.cells
+        set_cell_background(label_cell, "EEF2F7")
+        set_cell_text(label_cell, label, bold=True)
+        set_cell_text(value_cell, value)
+
+    add_section_title(document, "Economia interna")
+    totals = document.add_table(rows=4, cols=2)
+    totals.style = "Table Grid"
+    rows = [
+        ("Costo interno", "{{ interno.costo_base }}"),
+        ("Margine", "{{ interno.margine }}"),
+        ("Margine percentuale", "{{ interno.margine_percentuale }}"),
+        ("Totale proposta", "{{ proposta.totale }}"),
+    ]
+    for row, (label, value) in zip(totals.rows, rows):
+        label_cell, value_cell = row.cells
+        set_cell_background(label_cell, "F8FAFC")
+        set_cell_text(label_cell, label, bold=True)
+        set_cell_text(value_cell, value)
+
+    add_section_title(document, "Voci di costo")
+    table = document.add_table(rows=2, cols=5)
+    table.style = "Table Grid"
+    labels = ["Categoria", "Descrizione", "Quantita", "Unitario", "Totale"]
+    for cell, label in zip(table.rows[0].cells, labels):
+        set_cell_background(cell, "17202A")
+        set_cell_text(cell, label, bold=True, color="FFFFFF")
+    cells = table.rows[1].cells
+    cells[0].text = "{% for voce in voci_costo %}{{ voce.categoria }}"
+    cells[1].text = "{{ voce.descrizione }}"
+    cells[2].text = "{{ voce.quantita }}"
+    cells[3].text = "{{ voce.unitario }}"
+    cells[4].text = "{{ voce.totale }}{% if not loop.last %}\n{% endif %}{% endfor %}"
+
+    add_section_title(document, "Ipotesi operative")
+    document.add_paragraph("Materiale / tecnologia: {{ configurazione.materiale }}")
+    document.add_paragraph("Processo: {{ configurazione.processo }}")
+    document.add_paragraph("Durata attesa: {{ configurazione.durata }}")
+    document.add_paragraph("Modalita operativa: {{ configurazione.modalita }}")
+
+    add_section_title(document, "Note interne")
+    document.add_paragraph("Preventivo: {{ interno.note_preventivo }}")
+    document.add_paragraph("Configurazione: {{ interno.note_configurazione }}")
+
+    add_section_title(document, "Controlli documento")
+    document.add_paragraph("{% for controllo in interno.controlli %}{{ controllo }}{% if not loop.last %}\n{% endif %}{% endfor %}")
+
+    footer = section.footer.paragraphs[0]
+    footer.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    run = footer.add_run("{{ interno.nota_footer }}")
+    run.font.size = Pt(8)
+    run.font.color.rgb = RGBColor(97, 112, 128)
+
+    document.save(template_path)
+    return template_path
+
+
 def get_or_create_default_consulting_template():
     generated_template = (
         DocumentTemplate.objects.filter(
@@ -347,24 +519,71 @@ def get_or_create_default_consulting_template():
     )
 
 
-def generate_consulting_estimate_docx(estimate):
-    template = get_or_create_default_consulting_template()
+def get_or_create_default_internal_template():
+    generated_template = (
+        DocumentTemplate.objects.filter(
+            document_type=DocumentTemplate.DocumentType.INTERNAL_ESTIMATE,
+            active=True,
+            name__startswith="Preventivo interno base",
+        )
+        .order_by("-uploaded_at", "-id")
+        .first()
+    )
+    relative_path = Path("templates") / "internal_estimate" / "preventivo_interno_base_v1.docx"
+    absolute_path = Path(settings.MEDIA_ROOT) / relative_path
+    create_default_internal_template(absolute_path)
+    if generated_template:
+        generated_template.template_file = str(relative_path).replace("\\", "/")
+        generated_template.template_version = "v1"
+        generated_template.notes = (
+            "Template interno generato dal gestionale nello Sprint 09. "
+            "Mostra costi, margine, ipotesi operative e controlli."
+        )
+        generated_template.save(update_fields=["template_file", "template_version", "notes"])
+        return generated_template
+
+    template = (
+        DocumentTemplate.objects.filter(
+            document_type=DocumentTemplate.DocumentType.INTERNAL_ESTIMATE,
+            active=True,
+        )
+        .order_by("-uploaded_at", "-id")
+        .first()
+    )
+    if template:
+        return template
+
+    return DocumentTemplate.objects.create(
+        name="Preventivo interno base",
+        document_type=DocumentTemplate.DocumentType.INTERNAL_ESTIMATE,
+        profile="internal",
+        template_file=str(relative_path).replace("\\", "/"),
+        template_version="v1",
+        active=True,
+        notes=(
+            "Template interno generato dal gestionale nello Sprint 09. "
+            "Mostra costi, margine, ipotesi operative e controlli."
+        ),
+    )
+
+
+def generate_estimate_docx(estimate, document_type, template, context, folder, filename_label, notes):
     latest_version = (
         GeneratedDocument.objects.filter(
             estimate=estimate,
-            document_type=GeneratedDocument.DocumentType.CONSULTING,
+            document_type=document_type,
         ).aggregate(value=Max("version"))["value"]
         or 0
     )
     version = latest_version + 1
-    filename = f"preventivo_{safe_filename(estimate.number)}_consulenza_v{version}.docx"
-    relative_path = Path("generated") / safe_filename(estimate.number) / "consulting" / filename
+    filename = f"preventivo_{safe_filename(estimate.number)}_{filename_label}_v{version}.docx"
+    relative_path = Path("generated") / safe_filename(estimate.number) / folder / filename
     output_path = Path(settings.MEDIA_ROOT) / relative_path
 
     render_docx_template(
         template.template_file.path,
         output_path,
-        build_consulting_context(estimate),
+        context,
     )
     pdf_path = convert_docx_to_pdf(output_path, output_path.parent)
     pdf_file = ""
@@ -374,9 +593,35 @@ def generate_consulting_estimate_docx(estimate):
     return GeneratedDocument.objects.create(
         estimate=estimate,
         template=template,
-        document_type=GeneratedDocument.DocumentType.CONSULTING,
+        document_type=document_type,
         version=version,
         docx_file=str(relative_path).replace("\\", "/"),
         pdf_file=pdf_file,
-        notes="Documento consulenza generato dal dettaglio preventivo.",
+        notes=notes,
+    )
+
+
+def generate_consulting_estimate_docx(estimate):
+    template = get_or_create_default_consulting_template()
+    return generate_estimate_docx(
+        estimate=estimate,
+        document_type=GeneratedDocument.DocumentType.CONSULTING,
+        template=template,
+        context=build_consulting_context(estimate),
+        folder="consulting",
+        filename_label="consulenza",
+        notes="Documento cliente consulenza generato dal dettaglio preventivo.",
+    )
+
+
+def generate_internal_estimate_docx(estimate):
+    template = get_or_create_default_internal_template()
+    return generate_estimate_docx(
+        estimate=estimate,
+        document_type=GeneratedDocument.DocumentType.INTERNAL,
+        template=template,
+        context=build_internal_context(estimate),
+        folder="internal",
+        filename_label="interno",
+        notes="Documento interno dettagliato generato dal dettaglio preventivo.",
     )

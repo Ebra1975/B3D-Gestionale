@@ -75,6 +75,9 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-08 | Documenti | Le esportazioni PDF richiederanno dati di riempimento configurabili. | Senza dati azienda, cliente, condizioni standard, logo e note riutilizzabili il PDF rischia di essere generato ma non pronto per il cliente. |
 | 2026-07-08 | Documenti | La comparazione dei PDF conferma la necessita di due esportazioni: cliente sintetica e interna dettagliata. | Permette di usare gli stessi dati economici in viste diverse, mantenendo il dettaglio interno separato dalla proposta cliente. |
 | 2026-07-08 | Sprint 09 | Il prossimo sprint proposto e "Dati documento e PDF cliente/interno". | Le prove reali e il benchmark mostrano che prima di automatizzare altro servono dati di riempimento e controlli affidabili per i documenti. |
+| 2026-07-08 | Sprint 09 | Viene aggiunto un profilo dati documento attivo per intestazione, condizioni standard e note fiscali/commerciali. | Centralizza i testi riutilizzati nei documenti e riduce il rischio di PDF incompleti o incoerenti. |
+| 2026-07-08 | Sprint 09 | Dal dettaglio preventivo si generano due documenti separati: cliente consulenza e interno dettagliato. | Usa gli stessi costi del preventivo ma mantiene distinta la proposta cliente dalla scheda interna con costi e margine. |
+| 2026-07-08 | Sprint 09 | Prima dell'export vengono mostrati controlli bloccanti e avvisi non bloccanti. | Evita documenti senza dati essenziali e lascia visibili le informazioni da ricontrollare prima dell'invio. |
 
 ## Decisioni Da Prendere
 

@@ -9,7 +9,11 @@ from decimal import Decimal, ROUND_CEILING
 
 from apps.customers.models import CustomerAgreement, CustomerCommercialDocument
 from apps.documents.models import GeneratedDocument
-from apps.documents.services import generate_consulting_estimate_docx
+from apps.documents.services import (
+    build_document_export_checks,
+    generate_consulting_estimate_docx,
+    generate_internal_estimate_docx,
+)
 from apps.jobs.models import Job
 from apps.jobs.services import create_job_from_estimate
 
@@ -137,13 +141,17 @@ def build_estimate_readiness(estimate, commercial_memory=None):
     )
     existing_job = estimate.jobs.first()
 
+    document_checks = build_document_export_checks(estimate)
+
     return {
         "selected_configuration": selected_configuration,
         "missing_items": missing_items,
         "warnings": warnings,
+        "document_missing_items": document_checks["missing_items"],
+        "document_warnings": document_checks["warnings"],
         "latest_document": latest_document,
         "existing_job": existing_job,
-        "can_generate": bool(configurations) and not missing_items,
+        "can_generate": document_checks["can_generate"],
         "can_create_job": estimate.status == Estimate.Status.ACCEPTED and existing_job is None,
     }
 
@@ -234,12 +242,37 @@ def generate_consulting_document(request, pk):
         Estimate.objects.select_related("customer").prefetch_related("configurations__cost_items"),
         pk=pk,
     )
-    if not estimate.configurations.exists():
-        messages.error(request, "Aggiungi almeno una configurazione prima di generare il DOCX consulenza.")
+    checks = build_document_export_checks(estimate)
+    if not checks["can_generate"]:
+        messages.error(request, "Completa i dati obbligatori prima di generare il documento cliente.")
+        for item in checks["missing_items"]:
+            messages.error(request, item)
         return redirect("estimates:detail", pk=estimate.pk)
 
     document = generate_consulting_estimate_docx(estimate)
-    messages.success(request, f"DOCX consulenza generato: versione {document.version}.")
+    messages.success(request, f"Documento cliente generato: versione {document.version}.")
+    if not document.pdf_file:
+        messages.warning(request, "DOCX creato, ma il PDF non e stato convertito: verificare LibreOffice.")
+    return redirect("estimates:detail", pk=estimate.pk)
+
+
+@require_POST
+def generate_internal_document(request, pk):
+    estimate = get_object_or_404(
+        Estimate.objects.select_related("customer").prefetch_related("configurations__cost_items"),
+        pk=pk,
+    )
+    checks = build_document_export_checks(estimate)
+    if not checks["can_generate"]:
+        messages.error(request, "Completa i dati obbligatori prima di generare il documento interno.")
+        for item in checks["missing_items"]:
+            messages.error(request, item)
+        return redirect("estimates:detail", pk=estimate.pk)
+
+    document = generate_internal_estimate_docx(estimate)
+    messages.success(request, f"Documento interno generato: versione {document.version}.")
+    if not document.pdf_file:
+        messages.warning(request, "DOCX creato, ma il PDF non e stato convertito: verificare LibreOffice.")
     return redirect("estimates:detail", pk=estimate.pk)
 
 

@@ -11,6 +11,57 @@ def generated_document_path(instance, filename):
     return f"generated/{instance.estimate.number}/{instance.document_type}/{filename}"
 
 
+def logo_upload_path(instance, filename):
+    return f"document_data/{filename}"
+
+
+class DocumentProfile(models.Model):
+    name = models.CharField("nome profilo", max_length=255, default="B3D Lab")
+    company_name = models.CharField("nome azienda", max_length=255, default="B3D Lab")
+    subtitle = models.CharField(
+        "sottotitolo",
+        max_length=255,
+        default="Consulenza tecnica e manifattura additiva",
+    )
+    address = models.TextField("indirizzo", blank=True)
+    email = models.EmailField("email", blank=True)
+    phone = models.CharField("telefono", max_length=64, blank=True)
+    website = models.CharField("sito web", max_length=255, blank=True)
+    tax_code = models.CharField("codice fiscale / partita IVA", max_length=64, blank=True)
+    logo = models.FileField("logo", upload_to=logo_upload_path, blank=True)
+    standard_consulting_terms = models.TextField(
+        "condizioni standard consulenza",
+        blank=True,
+        default="Validita, tempi e modalita operative da confermare in base all'accettazione del cliente.",
+    )
+    fiscal_note = models.TextField(
+        "nota fiscale",
+        default="Dicitura commerciale e fiscale da validare con commercialista.",
+    )
+    internal_footer_note = models.TextField(
+        "nota interna",
+        blank=True,
+        default="Documento interno: non inviare al cliente.",
+    )
+    active = models.BooleanField("attivo", default=True)
+    updated_at = models.DateTimeField("aggiornato il", auto_now=True)
+
+    class Meta:
+        ordering = ["-active", "name"]
+        verbose_name = "dati documento"
+        verbose_name_plural = "dati documento"
+
+    def __str__(self):
+        return self.name
+
+    @classmethod
+    def get_active(cls):
+        profile = cls.objects.filter(active=True).order_by("id").first()
+        if profile:
+            return profile
+        return cls.objects.create()
+
+
 class DocumentTemplate(models.Model):
     class DocumentType(models.TextChoices):
         INTERNAL_ESTIMATE = "internal_estimate", "Preventivo interno"

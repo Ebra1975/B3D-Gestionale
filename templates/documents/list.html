@@ -20,6 +20,46 @@
 
   <section class="panel">
     <div class="panel-header">
+      <h2>Dati documento</h2>
+    </div>
+    {% if document_profiles %}
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Profilo</th>
+            <th>Azienda</th>
+            <th>Contatti</th>
+            <th>Nota fiscale</th>
+            <th>Stato</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for profile in document_profiles %}
+            <tr>
+              <td>{{ profile.name }}</td>
+              <td>
+                <strong>{{ profile.company_name }}</strong>
+                <span class="muted-text">{{ profile.subtitle }}</span>
+              </td>
+              <td>
+                {{ profile.email|default:"-" }}
+                {% if profile.phone %}<span class="muted-text">{{ profile.phone }}</span>{% endif %}
+              </td>
+              <td>{{ profile.fiscal_note }}</td>
+              <td><span class="badge">{{ profile.active|yesno:"Attivo,Non attivo" }}</span></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="empty-state">
+        <p>Nessun dato documento configurato. Il primo profilo viene creato alla generazione del documento.</p>
+      </div>
+    {% endif %}
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
       <h2>Template DOCX</h2>
     </div>
     {% if templates %}

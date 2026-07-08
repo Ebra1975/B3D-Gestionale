@@ -8,7 +8,7 @@ Non e documentazione tecnica per sviluppatori: serve all'operatore per sapere co
 
 | Procedura | Stato | Scopo |
 |---|---|---|
-| Fare un preventivo consulenza | Bozza iniziale | Creare un preventivo completo e generare DOCX/PDF cliente. |
+| Fare un preventivo consulenza | Bozza iniziale | Creare un preventivo completo e generare DOCX/PDF cliente e scheda interna. |
 | Usare il preventivo demo | Bozza iniziale | Provare il flusso senza usare dati reali di clienti. |
 | Creare una commessa da preventivo accettato | Bozza iniziale | Avviare il lavoro operativo dopo accettazione cliente. |
 | Aggiornare una commessa | Bozza iniziale | Seguire stato, date e note del lavoro operativo. |
@@ -51,7 +51,7 @@ Usare questa procedura per provare il gestionale, fare verifiche o mostrare il f
 3. Aprire il dettaglio preventivo.
 4. Controllare il riquadro **Stato preventivo**.
 5. Verificare che siano presenti totale, prezzo unitario e configurazione scelta.
-6. Generare il **DOCX consulenza** se serve una nuova versione del documento.
+6. Generare il documento **cliente** se serve una nuova versione della proposta.
 7. Scaricare DOCX e PDF per verificare il risultato.
 
 ### Nota
@@ -151,7 +151,8 @@ Arrivare a un preventivo con:
 - almeno una configurazione tecnica;
 - costi interni presenti;
 - totale configurazione diverso da zero;
-- proposta cliente generata in `.docx` e PDF.
+- proposta cliente generata in `.docx` e PDF;
+- scheda interna generata in `.docx` e PDF quando serve controllare costi e margine.
 
 ### Passi Operativi
 
@@ -180,10 +181,11 @@ Arrivare a un preventivo con:
 19. Nel riquadro **Memoria commerciale cliente**, usare **Conferma controllo condizioni** e aggiungere una nota interna se serve.
 20. Risolvere gli elementi indicati in **Da fare prima della proposta**.
 21. Controllare gli avvisi in **Da controllare**.
-22. Quando il totale e coerente, generare il **DOCX consulenza**.
-23. Scaricare e controllare il DOCX.
-24. Scaricare e controllare il PDF.
-25. Se il documento e corretto, usare l'azione rapida **Segna inviato** nel dettaglio preventivo.
+22. Controllare il blocco **Controlli export PDF/DOCX**.
+23. Quando il totale e coerente, usare **Genera cliente**.
+24. Scaricare e controllare DOCX e PDF cliente.
+25. Se serve un controllo economico completo, usare **Genera interno** e conservare il documento solo per uso interno.
+26. Se il documento cliente e corretto, usare l'azione rapida **Segna inviato** nel dettaglio preventivo.
 
 ### Controlli Prima Di Inviare
 
@@ -198,6 +200,7 @@ Prima di inviare una proposta al cliente, verificare:
 - accordi cliente e documenti commerciali sono stati controllati;
 - il controllo condizioni cliente e stato confermato nel dettaglio preventivo;
 - il documento cliente non mostra il dettaglio economico interno;
+- la scheda interna, se generata, mostra costi e margine e non va inviata al cliente;
 - eventuali diciture fiscali o commerciali importanti sono da validare con commercialista se non gia confermate.
 - dopo l'invio, lo stato del preventivo e aggiornato a **Inviato**.
 - il layout DOCX/PDF e leggibile e non contiene dettagli economici interni.
@@ -227,7 +230,7 @@ Il template base resta sostituibile con un modello `.docx` personalizzato.
 
 ### Risultato Atteso
 
-Alla fine della procedura il gestionale deve contenere un preventivo completo e almeno un documento cliente generato in formato `.docx` e PDF.
+Alla fine della procedura il gestionale deve contenere un preventivo completo, almeno un documento cliente generato in formato `.docx` e PDF e, quando utile, una scheda interna separata con dettaglio economico.
 
 ## Procedura - Applicare Prezzo E Margine
 

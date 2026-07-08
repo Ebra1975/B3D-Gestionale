@@ -63,6 +63,9 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Benchmark | Comparazione con Stimalo e PreventiPiraz 3D | Approvato come riferimento di analisi | Da usare per orientare i prossimi sprint, non come copia funzionale. |
 | Benchmark | Screenshot PreventiPiraz 3D | Approvato come materiale di analisi | Da usare per progettare numerazione preventivi, archivi materiali e impostazioni operative. |
 | Benchmark | Screenshot Stimalo | Approvato come materiale di analisi | Da usare per progettare flusso preventivo guidato, prezzo live, cataloghi e magazzino. |
+| Sprint 09 | Dati documento configurabili | Approvato come prima versione | Profilo dati documento attivo con intestazione, condizioni standard, nota fiscale e nota interna. |
+| Sprint 09 | Doppia generazione documento cliente/interno | Approvato come prima versione | Dal preventivo si genera il documento cliente consulenza e la scheda interna dettagliata. |
+| Sprint 09 | Controlli prima export | Approvato come prima versione | Mancanze essenziali bloccano l'export; avvisi non bloccanti restano visibili nel dettaglio preventivo. |
 
 ## In Revisione
 
@@ -81,11 +84,9 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Magazzino | Liste editabili per tipo materiale, marca e colore | Da progettare | Evita testo libero ripetuto e rende piu ordinati materiali e preventivi. |
 | Preventivi | Preventivo guidato a step con riepilogo prezzo laterale | Da valutare | Stimalo mostra un flusso chiaro con prezzo finale e breakdown sempre visibili. |
 | File tecnici | Import dati da G-code/3MF | Da progettare | Prima forma di import utile per peso, tempo e piatti senza integrare subito tutto lo slicer. |
-| Documenti | Dati di riempimento per esportazioni PDF | Da progettare | Servono dati azienda, cliente, condizioni standard, logo, note fiscali/commerciali e testi riutilizzabili. |
+| Documenti | Modifica dati documento da interfaccia non amministrativa | Da progettare | La prima versione espone i dati nella sezione Documenti e li rende gestibili da admin; una schermata dedicata resta da rifinire. |
 | Stampanti | Parametri economici per costo orario | Da progettare | Costo acquisto, vita stimata, ore gia stampate, manutenzione, fallimento e potenza sono utili per evitare costi arbitrari. |
-| Documenti | Doppia esportazione PDF cliente/interno | Da progettare | Il PDF cliente deve restare sintetico; il PDF interno deve mostrare costi, margine e ipotesi operative. |
-| Documenti | Controlli prima export PDF | Da progettare | Evitare documenti con dati mancanti, valori a zero o testi placeholder. |
-| Sprint 09 | Dati documento e PDF cliente/interno | Approvato come prossimo sprint | Da avviare nella prossima sessione, partendo da dati di riempimento e controlli prima export. |
+| Documenti | Layout definitivo PDF cliente/interno | Da progettare | I template base sono funzionali; grafica, logo e impaginazione definitiva restano da validare con esempi reali. |
 
 ## Da Validare Con Commercialista
 
