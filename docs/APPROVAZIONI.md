@@ -87,6 +87,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Sprint 18 | Backup automatico BMAX con script di sistema | Approvato come prima versione | Script eseguibile manualmente o da cron, con archivio datato, manifesto, checksum e rotazione. |
 | Sprint 18 | Prova ripristino BMAX su ambiente temporaneo | Approvato come prima versione | Usa contenitori e volumi Docker di test per non toccare i dati reali. |
 | Sprint 18 | Installazione reale BMAX e cron backup | Approvato | Gestionale raggiungibile in rete locale, backup verificato, ripristino provato e cron giornaliero alle 02:30 configurato. |
+| Versionamento | Allineamento 18 sprint su GitHub e BMAX | Approvato | Recuperato lo Sprint 17 mancante su GitHub, pubblicato il commit `9a65339` e aggiornato il BMAX con `git pull`, rebuild Docker, migrazioni, statici e check Django. |
 
 ## In Revisione
 

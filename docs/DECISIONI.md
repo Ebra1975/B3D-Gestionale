@@ -106,6 +106,7 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-08 | Sprint 18 | Backup e prova ripristino sono stati eseguiti con successo sul BMAX. | Conferma che il salvataggio non e solo creato, ma anche recuperabile in ambiente temporaneo. |
 | 2026-07-08 | Backup | Il cron giornaliero alle 02:30 viene configurato sul BMAX. | Rende il backup una routine automatica, da controllare periodicamente tramite log e archivi recenti. |
 | 2026-07-08 | Sprint 18 | Lo sprint viene chiuso con prova reale BMAX, backup verificato e documentazione allineata. | La base operativa minima per proteggere i dati e pronta. |
+| 2026-07-08 | Versionamento | Il recupero dello Sprint 17 viene pubblicato su GitHub e aggiornato sul BMAX fino al commit `9a65339`. | Chiude il disallineamento tra documentazione, GitHub e server BMAX: tutti i 18 sprint risultano presenti sulla macchina reale. |
 
 ## Decisioni Da Prendere
 

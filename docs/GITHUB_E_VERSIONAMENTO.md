@@ -12,6 +12,7 @@ Il repository Git locale contiene il codice e la documentazione. Non deve conten
 - Branch locale: `master`.
 - Remote GitHub: configurato.
 - GitHub CLI: non installata sul PC al momento della verifica Sprint 03.
+- Ultimo allineamento verificato GitHub/BMAX: commit `9a65339`, con recupero completo dello Sprint 17 e tutti i 18 sprint presenti sul BMAX.
 
 Repository GitHub:
 
@@ -113,8 +114,14 @@ Prima di inviare modifiche a GitHub:
 - Eseguito primo push del branch `master`.
 - Il branch locale traccia `origin/master`.
 
+## Verifica Sprint 18
+
+- GitHub e BMAX sono stati controllati dopo il recupero dello Sprint 17.
+- Il BMAX ha eseguito `git pull`, rebuild Docker, migrazioni, raccolta statici e `manage.py check` senza errori.
+- Le pagine dashboard, preventivi e documenti hanno risposto correttamente da browser in rete locale.
+
 ## Da Fare
 
 - Verificare che il repository resti privato.
-- Usare GitHub come sorgente per il futuro clone sul BMAX.
-- Provare il primo aggiornamento reale sul BMAX solo dopo backup e prova di ripristino.
+- Continuare a usare GitHub come sorgente ufficiale per aggiornare il BMAX.
+- Prima di ogni nuovo aggiornamento importante, creare un backup BMAX e poi verificare dashboard, preventivi e documenti.
