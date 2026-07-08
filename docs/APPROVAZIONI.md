@@ -94,6 +94,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Documenti | Storage media esplicito in produzione | Approvato come correzione tecnica | Necessario per generare documenti su BMAX con Django 5 quando `STORAGES` personalizza i file statici. |
 | Backup | Copia ultimo backup fuori dal disco principale BMAX | Approvato come prima procedura manuale | Script dedicato copia l'ultimo backup su secondo HD interno, disco USB o NAS montato e verifica il checksum. |
 | Backup | Secondo HD interno montato in `/mnt/backup` | Approvato come destinazione reale | Disco `sda1`, ext4, etichetta `b3d-backup`, circa 103 GB liberi; non viene formattato. |
+| Backup | Cartella `/mnt/backup/b3d_backups` per copie gestionali | Approvato come organizzazione iniziale | La prima copia `b3dlab_bmax_20260708_213425.tar.gz` e presente sul disco; le prossime copie vanno nella sottocartella dedicata. |
 
 ## In Revisione
 
@@ -101,7 +102,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 |---|---|---|---|
 | Interfaccia | Dettaglio grafico schermate | Da definire | Layout, colori, logo, densita delle informazioni. |
 | Documenti | Layout grafico template `.docx` definitivo | Da definire | I template base v3 consulenza e v2 interno sono una rifinitura operativa, non il layout finale di brand. |
-| Installazione | Rifinitura produzione stabile | Da definire | Docker, rete locale, riavvio automatico, nome locale e PDF reali verificati sul BMAX; resta la copia backup fuori dal BMAX. |
+| Installazione | Rifinitura produzione stabile | Da definire | Docker, rete locale, riavvio automatico, nome locale, PDF reali e prima copia backup su secondo disco verificati sul BMAX. |
 | Prodotto | Implementazione listini e accordi | Da pianificare | Dopo flusso preventivo base. |
 | Prodotto | Implementazione documenti contrattuali cliente | Da pianificare | NDA, accordi quadro, condizioni particolari, listini firmati. |
 | Prodotto | Implementazione AI e regole lavorazione | Da pianificare | Prima regole semplici, poi AI generativa. |

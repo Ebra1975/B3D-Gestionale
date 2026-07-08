@@ -78,10 +78,10 @@ Una volta al mese:
 Copia ultimo backup fuori dal BMAX:
 
 ```bash
-EXTERNAL_BACKUP_DIR=/mnt/backup scripts/bmax_copy_latest_backup.sh
+EXTERNAL_BACKUP_DIR=/mnt/backup/b3d_backups scripts/bmax_copy_latest_backup.sh
 ```
 
-Sul BMAX B3D Lab la prima destinazione reale e `/mnt/backup`, secondo disco interno etichettato `b3d-backup`.
+Sul BMAX B3D Lab la prima destinazione reale e `/mnt/backup/b3d_backups`, sul secondo disco interno etichettato `b3d-backup`.
 
 Prova ripristino:
 

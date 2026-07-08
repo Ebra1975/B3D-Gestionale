@@ -23,7 +23,7 @@ Nota importante: un secondo disco interno protegge dal guasto del disco principa
 Esempi di destinazione:
 
 ```text
-/mnt/backup
+/mnt/backup/b3d_backups
 /mnt/b3d-backup
 /mnt/b3d-backup-interno
 /media/emanuele/NOME_DISCO
@@ -49,8 +49,10 @@ Prima verifica reale Sprint 19:
 - filesystem `ext4`;
 - etichetta `b3d-backup`;
 - mount point `/mnt/backup`;
+- cartella consigliata per i backup gestionali: `/mnt/backup/b3d_backups`;
 - spazio disponibile circa 103 GB;
 - nessuna formattazione necessaria.
+- prima copia presente: `b3dlab_bmax_20260708_213425.tar.gz`.
 
 ## Creare Un Backup Manuale
 
@@ -80,10 +82,10 @@ ls -lh backups/bmax
 
 ## Copiare L'ultimo Backup Fuori Dal BMAX
 
-Esempio con destinazione reale BMAX `/mnt/backup`:
+Esempio con destinazione reale BMAX `/mnt/backup/b3d_backups`:
 
 ```bash
-EXTERNAL_BACKUP_DIR=/mnt/backup scripts/bmax_copy_latest_backup.sh
+EXTERNAL_BACKUP_DIR=/mnt/backup/b3d_backups scripts/bmax_copy_latest_backup.sh
 ```
 
 Il comando:
