@@ -116,7 +116,7 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-08 | Sprint 19 | La verifica PDF reale sul BMAX viene resa ripetibile con un comando Django dedicato. | Crea dati di test riconoscibili e controlla che LibreOffice generi PDF per cliente, interno e fornitura/artigiano. |
 | 2026-07-08 | Documenti | In produzione viene configurato anche lo storage `default` per file media e documenti generati. | Django 5 richiede una configurazione esplicita quando si personalizza `STORAGES`; senza questa voce i DOCX/PDF non possono accedere ai file template/media. |
 | 2026-07-08 | Sprint 19 | La verifica PDF reale sul BMAX viene completata con successo sul preventivo test `B3D-2026-002`. | Conferma che LibreOffice nel container web genera PDF per documento cliente, interno e fornitura/artigiano. |
-| 2026-07-08 | Backup | La copia fuori dal BMAX viene gestita con procedura manuale verificabile e script dedicato. | Prima di automatizzarla serve scegliere una destinazione stabile, ad esempio disco USB o NAS montato. |
+| 2026-07-08 | Backup | La copia fuori dal disco principale del BMAX viene gestita con procedura manuale verificabile e script dedicato. | La prima destinazione scelta e un secondo HD interno; protegge dal guasto del disco principale ma non sostituisce una copia esterna al mini PC. |
 
 ## Decisioni Da Prendere
 

@@ -2,19 +2,21 @@
 
 ## Scopo
 
-Questa procedura serve a conservare una copia dei backup fuori dal mini PC BMAX.
+Questa procedura serve a conservare una copia dei backup fuori dal disco principale del mini PC BMAX.
 
-Il problema pratico e semplice: se il BMAX si guasta, viene rubato o il disco interno si rompe, un backup salvato solo sul BMAX non basta.
+Il problema pratico e semplice: se il disco principale del BMAX si rompe, un backup salvato solo sullo stesso disco non basta.
 
 ## Scelta Prima Versione
 
 Prima soluzione consigliata:
 
 - backup automatico giornaliero sul BMAX;
-- copia periodica dell'ultimo backup su disco USB o NAS;
+- copia periodica dell'ultimo backup su secondo disco interno, disco USB o NAS;
 - verifica checksum dopo la copia.
 
 La copia fuori dal BMAX non sostituisce il backup automatico: lo completa.
+
+Nota importante: un secondo disco interno protegge dal guasto del disco principale, ma non protegge da furto, incendio o danno fisico dell'intero mini PC. Per dati reali importanti resta consigliata anche una copia periodica davvero esterna.
 
 ## Preparare Una Destinazione Esterna
 
@@ -22,6 +24,7 @@ Esempi di destinazione:
 
 ```text
 /mnt/b3d-backup
+/mnt/b3d-backup-interno
 /media/emanuele/NOME_DISCO
 /mnt/nas-b3d-backup
 ```
@@ -32,8 +35,11 @@ Per vedere dischi e mount disponibili:
 
 ```bash
 lsblk
+lsblk -f
 df -h
 ```
+
+Se e stato installato un secondo HD interno, prima non formattare nulla: controllare con `lsblk -f` come Debian vede il disco e quale partizione appartiene al sistema.
 
 ## Creare Un Backup Manuale
 
@@ -63,10 +69,10 @@ ls -lh backups/bmax
 
 ## Copiare L'ultimo Backup Fuori Dal BMAX
 
-Esempio con destinazione `/mnt/b3d-backup`:
+Esempio con destinazione `/mnt/b3d-backup-interno`:
 
 ```bash
-EXTERNAL_BACKUP_DIR=/mnt/b3d-backup scripts/bmax_copy_latest_backup.sh
+EXTERNAL_BACKUP_DIR=/mnt/b3d-backup-interno scripts/bmax_copy_latest_backup.sh
 ```
 
 Il comando:
@@ -90,14 +96,15 @@ Se compare:
 Errore: destinazione esterna non trovata
 ```
 
-controllare che il disco USB o il NAS siano collegati e montati:
+controllare che il secondo disco interno, il disco USB o il NAS siano collegati e montati:
 
 ```bash
 lsblk
+lsblk -f
 df -h
 ```
 
-Non copiare backup in cartelle casuali se non si e sicuri che siano davvero fuori dal BMAX.
+Non copiare backup in cartelle casuali se non si e sicuri che siano davvero fuori dal disco principale.
 
 ## Frequenza Consigliata
 

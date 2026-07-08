@@ -92,7 +92,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Sprint 19 | Nome locale BMAX `b3d-gestionale.local:8000` | Approvato e verificato su rete locale | Rende piu semplice l'accesso in rete locale senza cambiare architettura; verificato dal browser dopo configurazione hostname, Avahi e `.env`. |
 | Sprint 19 | Verifica PDF reale BMAX con comando dedicato | Approvato e verificato su BMAX | Il comando ha creato il preventivo test `B3D-2026-002` e generato DOCX/PDF cliente, interno e fornitura/artigiano. |
 | Documenti | Storage media esplicito in produzione | Approvato come correzione tecnica | Necessario per generare documenti su BMAX con Django 5 quando `STORAGES` personalizza i file statici. |
-| Backup | Copia ultimo backup fuori dal BMAX | Approvato come prima procedura manuale | Script dedicato copia l'ultimo backup su disco USB o NAS montato e verifica il checksum. |
+| Backup | Copia ultimo backup fuori dal disco principale BMAX | Approvato come prima procedura manuale | Script dedicato copia l'ultimo backup su secondo HD interno, disco USB o NAS montato e verifica il checksum. |
 
 ## In Revisione
 

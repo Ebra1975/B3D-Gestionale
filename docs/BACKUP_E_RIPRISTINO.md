@@ -262,12 +262,14 @@ docs/COPIA_BACKUP_FUORI_BMAX.md
 e uno script per copiare l'ultimo backup verso una destinazione esterna:
 
 ```bash
-EXTERNAL_BACKUP_DIR=/mnt/b3d-backup scripts/bmax_copy_latest_backup.sh
+EXTERNAL_BACKUP_DIR=/mnt/b3d-backup-interno scripts/bmax_copy_latest_backup.sh
 ```
 
-La destinazione puo essere un disco USB o un NAS gia montato sul BMAX.
+La destinazione puo essere un secondo disco interno, un disco USB o un NAS gia montato sul BMAX.
 
 Il comando copia l'ultimo archivio `b3dlab_bmax_*.tar.gz` e verifica il checksum dopo la copia.
+
+Un secondo disco interno protegge dal guasto del disco principale, ma non sostituisce una copia periodica fuori dal mini PC.
 
 ## Da Automatizzare
 
