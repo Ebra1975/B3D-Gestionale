@@ -4,6 +4,11 @@
 {% block heading %}Documenti{% endblock %}
 {% block eyebrow %}Template e PDF generati{% endblock %}
 
+{% block actions %}
+  <a class="button" href="{% url 'documents:template_create' %}">Nuovo template DOCX</a>
+  <a class="button" href="{% url 'documents:profile_update' %}">Modifica dati documento</a>
+{% endblock %}
+
 {% block content %}
   <section class="panel filter-panel">
     <form class="filter-form" method="get">
@@ -22,6 +27,11 @@
     <div class="panel-header">
       <h2>Dati documento</h2>
     </div>
+    {% if active_profile %}
+      <div class="prose">
+        <p class="muted-text">Questi dati vengono usati nei prossimi documenti cliente e interni generati dal preventivo.</p>
+      </div>
+    {% endif %}
     {% if document_profiles %}
       <table class="data-table">
         <thead>
@@ -46,7 +56,12 @@
                 {% if profile.phone %}<span class="muted-text">{{ profile.phone }}</span>{% endif %}
               </td>
               <td>{{ profile.fiscal_note }}</td>
-              <td><span class="badge">{{ profile.active|yesno:"Attivo,Non attivo" }}</span></td>
+              <td>
+                <span class="badge">{{ profile.active|yesno:"Attivo,Non attivo" }}</span>
+                {% if profile.active %}
+                  <a class="button compact secondary" href="{% url 'documents:profile_update' %}">Modifica</a>
+                {% endif %}
+              </td>
             </tr>
           {% endfor %}
         </tbody>
@@ -68,8 +83,11 @@
           <tr>
             <th>Nome</th>
             <th>Tipo</th>
+            <th>Profilo</th>
             <th>Versione</th>
             <th>Stato</th>
+            <th>File</th>
+            <th>Azioni</th>
           </tr>
         </thead>
         <tbody>
@@ -77,8 +95,33 @@
             <tr>
               <td>{{ template.name }}</td>
               <td>{{ template.get_document_type_display }}</td>
+              <td>{{ template.profile|default:"-" }}</td>
               <td>{{ template.template_version }}</td>
               <td><span class="badge">{{ template.active|yesno:"Attivo,Non attivo" }}</span></td>
+              <td>
+                {% if template.template_file %}
+                  <a href="{{ template.template_file.url }}">Scarica DOCX</a>
+                {% else %}
+                  -
+                {% endif %}
+                {% if template.notes %}
+                  <span class="muted-text">{{ template.notes }}</span>
+                {% endif %}
+              </td>
+              <td class="table-actions">
+                <a class="button compact secondary" href="{% url 'documents:template_update' template.pk %}">Modifica</a>
+                {% if template.active %}
+                  <form method="post" action="{% url 'documents:template_deactivate' template.pk %}">
+                    {% csrf_token %}
+                    <button class="button compact secondary" type="submit">Disattiva</button>
+                  </form>
+                {% else %}
+                  <form method="post" action="{% url 'documents:template_activate' template.pk %}">
+                    {% csrf_token %}
+                    <button class="button compact" type="submit">Attiva</button>
+                  </form>
+                {% endif %}
+              </td>
             </tr>
           {% endfor %}
         </tbody>

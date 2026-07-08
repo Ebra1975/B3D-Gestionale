@@ -2,6 +2,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+import zipfile
 from decimal import Decimal
 from pathlib import Path
 
@@ -16,6 +17,26 @@ from docx.oxml.ns import qn
 from docx.shared import Cm, Pt, RGBColor
 
 from .models import DocumentProfile, DocumentTemplate, GeneratedDocument
+
+
+SUPPORTED_TEMPLATE_VARIABLES = {
+    DocumentTemplate.DocumentType.CONSULTING_ESTIMATE: {
+        "cliente",
+        "preventivo",
+        "configurazione",
+        "proposta",
+        "b3d",
+    },
+    DocumentTemplate.DocumentType.INTERNAL_ESTIMATE: {
+        "cliente",
+        "preventivo",
+        "configurazione",
+        "proposta",
+        "b3d",
+        "interno",
+        "voci_costo",
+    },
+}
 
 
 def money(value):
@@ -36,6 +57,45 @@ def render_docx_template(template_path, output_path, context):
     document.render(context)
     document.save(output)
     return output
+
+
+def validate_docx_template_file(uploaded_file, document_type):
+    errors = []
+    suffix = Path(uploaded_file.name).suffix or ".docx"
+
+    with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as temporary_file:
+        temporary_path = Path(temporary_file.name)
+        for chunk in uploaded_file.chunks():
+            temporary_file.write(chunk)
+
+    try:
+        if not zipfile.is_zipfile(temporary_path):
+            return ["Il file non e un DOCX valido: aprirlo in Word/LibreOffice e salvarlo di nuovo come .docx."]
+
+        try:
+            document = DocxTemplate(temporary_path)
+        except Exception:
+            return ["Il template DOCX non puo essere letto dal gestionale."]
+
+        if hasattr(document, "get_undeclared_template_variables"):
+            try:
+                variables = set(document.get_undeclared_template_variables())
+            except Exception as exc:
+                return [f"I segnaposto del template non sono leggibili: {exc}"]
+
+            allowed_variables = SUPPORTED_TEMPLATE_VARIABLES.get(document_type)
+            if allowed_variables:
+                unknown_variables = sorted(variables - allowed_variables)
+                if unknown_variables:
+                    errors.append(
+                        "Il template contiene segnaposto non riconosciuti: "
+                        f"{', '.join(unknown_variables)}."
+                    )
+    finally:
+        temporary_path.unlink(missing_ok=True)
+        uploaded_file.seek(0)
+
+    return errors
 
 
 def find_libreoffice_command():
@@ -240,6 +300,17 @@ def set_cell_text(cell, text, bold=False, color=None):
         run.font.color.rgb = RGBColor.from_string(color)
 
 
+def add_small_paragraph(cell, text, bold=False, color=None):
+    paragraph = cell.add_paragraph()
+    paragraph.paragraph_format.space_after = Pt(0)
+    run = paragraph.add_run(text)
+    run.bold = bold
+    run.font.size = Pt(8.5)
+    if color:
+        run.font.color.rgb = RGBColor.from_string(color)
+    return paragraph
+
+
 def add_section_title(document, text):
     paragraph = document.add_paragraph()
     paragraph.paragraph_format.space_before = Pt(12)
@@ -282,6 +353,11 @@ def create_default_consulting_template(template_path):
     run = subtitle.add_run("{{ b3d.sottotitolo }}")
     run.font.size = Pt(9)
     run.font.color.rgb = RGBColor(97, 112, 128)
+    contact = left.add_paragraph()
+    contact.paragraph_format.space_before = Pt(6)
+    run = contact.add_run("{{ b3d.email }} | {{ b3d.telefono }} | {{ b3d.sito }}")
+    run.font.size = Pt(8.5)
+    run.font.color.rgb = RGBColor(97, 112, 128)
 
     doc_type = right.paragraphs[0]
     doc_type.alignment = WD_ALIGN_PARAGRAPH.RIGHT
@@ -294,22 +370,32 @@ def create_default_consulting_template(template_path):
     run = meta.add_run("N. {{ preventivo.numero }} | {{ preventivo.data }}")
     run.font.size = Pt(9)
     run.font.color.rgb = RGBColor(255, 255, 255)
+    validity = right.add_paragraph()
+    validity.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+    run = validity.add_run("Valida fino al {{ preventivo.validita }}")
+    run.font.size = Pt(8.5)
+    run.font.color.rgb = RGBColor(255, 255, 255)
 
     document.add_paragraph()
 
-    summary = document.add_table(rows=4, cols=2)
-    summary.style = "Table Grid"
+    summary = document.add_table(rows=2, cols=3)
     rows = [
         ("Cliente", "{{ cliente.nome }}"),
         ("Referente", "{{ cliente.referente }}"),
-        ("Oggetto", "{{ preventivo.oggetto }}"),
-        ("Validita proposta", "{{ preventivo.validita }}"),
+        ("Quantita", "{{ preventivo.quantita }}"),
     ]
-    for row, (label, value) in zip(summary.rows, rows):
-        label_cell, value_cell = row.cells
-        set_cell_background(label_cell, "EEF2F7")
-        set_cell_text(label_cell, label, bold=True)
-        set_cell_text(value_cell, value)
+    for cell, (label, value) in zip(summary.rows[0].cells, rows):
+        set_cell_background(cell, "EEF2F7")
+        set_cell_text(cell, label, bold=True)
+    for cell, (_, value) in zip(summary.rows[1].cells, rows):
+        set_cell_text(cell, value)
+
+    subject = document.add_paragraph()
+    subject.paragraph_format.space_before = Pt(10)
+    subject.paragraph_format.space_after = Pt(2)
+    run = subject.add_run("Oggetto: ")
+    run.bold = True
+    subject.add_run("{{ preventivo.oggetto }}")
 
     add_section_title(document, "Contesto e richiesta")
     paragraph = document.add_paragraph("{{ preventivo.descrizione }}")
@@ -319,7 +405,7 @@ def create_default_consulting_template(template_path):
     document.add_paragraph("{{ configurazione.nome }}").runs[0].bold = True
     document.add_paragraph("{{ configurazione.descrizione }}")
 
-    technical = document.add_table(rows=5, cols=2)
+    technical = document.add_table(rows=6, cols=2)
     technical.style = "Table Grid"
     rows = [
         ("Materiale / tecnologia", "{{ configurazione.materiale }}"),
@@ -327,6 +413,7 @@ def create_default_consulting_template(template_path):
         ("Trattamento", "{{ configurazione.trattamento }}"),
         ("Durata attesa", "{{ configurazione.durata }}"),
         ("Modalita operativa", "{{ configurazione.modalita }}"),
+        ("Note operative", "{{ configurazione.note }}"),
     ]
     for row, (label, value) in zip(technical.rows, rows):
         label_cell, value_cell = row.cells
@@ -363,7 +450,6 @@ def create_default_consulting_template(template_path):
 
     add_section_title(document, "Condizioni e note")
     document.add_paragraph("{{ preventivo.condizioni }}")
-    document.add_paragraph("{{ configurazione.note }}")
 
     footer = section.footer.paragraphs[0]
     footer.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -394,20 +480,26 @@ def create_default_internal_template(template_path):
     set_cell_background(left, "F3F6FA")
     set_cell_background(right, "17202A")
     set_cell_text(left, "{{ b3d.nome }}", bold=True)
-    paragraph = left.add_paragraph("{{ b3d.sottotitolo }}")
-    paragraph.runs[0].font.size = Pt(8.5)
+    add_small_paragraph(left, "{{ b3d.sottotitolo }}", color="617080")
+    add_small_paragraph(left, "{{ b3d.email }} | {{ b3d.telefono }}", color="617080")
     set_cell_text(right, "SCHEDA INTERNA PREVENTIVO", bold=True, color="FFFFFF")
+    marker = right.add_paragraph()
+    marker.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+    run = marker.add_run("Non inviare al cliente")
+    run.font.size = Pt(8.5)
+    run.font.color.rgb = RGBColor(255, 255, 255)
 
     add_section_title(document, "Riepilogo")
-    summary = document.add_table(rows=6, cols=2)
+    summary = document.add_table(rows=7, cols=2)
     summary.style = "Table Grid"
     rows = [
         ("Preventivo", "{{ preventivo.numero }}"),
         ("Cliente", "{{ cliente.nome }}"),
+        ("Referente / email", "{{ cliente.referente }} | {{ cliente.email }}"),
         ("Oggetto", "{{ preventivo.oggetto }}"),
         ("Data", "{{ preventivo.data }}"),
+        ("Validita", "{{ preventivo.validita }}"),
         ("Configurazione", "{{ configurazione.nome }}"),
-        ("Quantita", "{{ preventivo.quantita }}"),
     ]
     for row, (label, value) in zip(summary.rows, rows):
         label_cell, value_cell = row.cells
@@ -416,24 +508,24 @@ def create_default_internal_template(template_path):
         set_cell_text(value_cell, value)
 
     add_section_title(document, "Economia interna")
-    totals = document.add_table(rows=4, cols=2)
-    totals.style = "Table Grid"
+    totals = document.add_table(rows=2, cols=4)
     rows = [
         ("Costo interno", "{{ interno.costo_base }}"),
         ("Margine", "{{ interno.margine }}"),
         ("Margine percentuale", "{{ interno.margine_percentuale }}"),
         ("Totale proposta", "{{ proposta.totale }}"),
     ]
-    for row, (label, value) in zip(totals.rows, rows):
-        label_cell, value_cell = row.cells
-        set_cell_background(label_cell, "F8FAFC")
-        set_cell_text(label_cell, label, bold=True)
-        set_cell_text(value_cell, value)
+    for cell, (label, value) in zip(totals.rows[0].cells, rows):
+        set_cell_background(cell, "17202A")
+        set_cell_text(cell, label, bold=True, color="FFFFFF")
+    for cell, (_, value) in zip(totals.rows[1].cells, rows):
+        set_cell_background(cell, "F8FAFC")
+        set_cell_text(cell, value, bold=True)
 
     add_section_title(document, "Voci di costo")
-    table = document.add_table(rows=2, cols=5)
+    table = document.add_table(rows=2, cols=6)
     table.style = "Table Grid"
-    labels = ["Categoria", "Descrizione", "Quantita", "Unitario", "Totale"]
+    labels = ["Categoria", "Descrizione", "Quantita", "Unitario", "Totale", "Note"]
     for cell, label in zip(table.rows[0].cells, labels):
         set_cell_background(cell, "17202A")
         set_cell_text(cell, label, bold=True, color="FFFFFF")
@@ -442,13 +534,23 @@ def create_default_internal_template(template_path):
     cells[1].text = "{{ voce.descrizione }}"
     cells[2].text = "{{ voce.quantita }}"
     cells[3].text = "{{ voce.unitario }}"
-    cells[4].text = "{{ voce.totale }}{% if not loop.last %}\n{% endif %}{% endfor %}"
+    cells[4].text = "{{ voce.totale }}"
+    cells[5].text = "{{ voce.note }}{% if not loop.last %}\n{% endif %}{% endfor %}"
 
     add_section_title(document, "Ipotesi operative")
-    document.add_paragraph("Materiale / tecnologia: {{ configurazione.materiale }}")
-    document.add_paragraph("Processo: {{ configurazione.processo }}")
-    document.add_paragraph("Durata attesa: {{ configurazione.durata }}")
-    document.add_paragraph("Modalita operativa: {{ configurazione.modalita }}")
+    operative = document.add_table(rows=4, cols=2)
+    operative.style = "Table Grid"
+    rows = [
+        ("Materiale / tecnologia", "{{ configurazione.materiale }}"),
+        ("Processo", "{{ configurazione.processo }}"),
+        ("Durata attesa", "{{ configurazione.durata }}"),
+        ("Modalita operativa", "{{ configurazione.modalita }}"),
+    ]
+    for row, (label, value) in zip(operative.rows, rows):
+        label_cell, value_cell = row.cells
+        set_cell_background(label_cell, "F8FAFC")
+        set_cell_text(label_cell, label, bold=True)
+        set_cell_text(value_cell, value)
 
     add_section_title(document, "Note interne")
     document.add_paragraph("Preventivo: {{ interno.note_preventivo }}")
@@ -468,6 +570,18 @@ def create_default_internal_template(template_path):
 
 
 def get_or_create_default_consulting_template():
+    custom_template = (
+        DocumentTemplate.objects.filter(
+            document_type=DocumentTemplate.DocumentType.CONSULTING_ESTIMATE,
+            active=True,
+        )
+        .exclude(name__startswith="Preventivo consulenza base")
+        .order_by("-uploaded_at", "-id")
+        .first()
+    )
+    if custom_template:
+        return custom_template
+
     generated_template = (
         DocumentTemplate.objects.filter(
             document_type=DocumentTemplate.DocumentType.CONSULTING_ESTIMATE,
@@ -478,13 +592,13 @@ def get_or_create_default_consulting_template():
         .first()
     )
     if generated_template:
-        relative_path = Path("templates") / "consulting_estimate" / "preventivo_consulenza_base_v2.docx"
+        relative_path = Path("templates") / "consulting_estimate" / "preventivo_consulenza_base_v3.docx"
         absolute_path = Path(settings.MEDIA_ROOT) / relative_path
         create_default_consulting_template(absolute_path)
         generated_template.template_file = str(relative_path).replace("\\", "/")
-        generated_template.template_version = "v2"
+        generated_template.template_version = "v3"
         generated_template.notes = (
-            "Template base generato dal gestionale e rifinito nello Sprint 03. "
+            "Template base generato dal gestionale e rifinito nello Sprint 11. "
             "Resta sostituibile con un template DOCX personalizzato."
         )
         generated_template.save(update_fields=["template_file", "template_version", "notes"])
@@ -501,7 +615,7 @@ def get_or_create_default_consulting_template():
     if template:
         return template
 
-    relative_path = Path("templates") / "consulting_estimate" / "preventivo_consulenza_base_v2.docx"
+    relative_path = Path("templates") / "consulting_estimate" / "preventivo_consulenza_base_v3.docx"
     absolute_path = Path(settings.MEDIA_ROOT) / relative_path
     create_default_consulting_template(absolute_path)
 
@@ -510,16 +624,28 @@ def get_or_create_default_consulting_template():
         document_type=DocumentTemplate.DocumentType.CONSULTING_ESTIMATE,
         profile="consulting",
         template_file=str(relative_path).replace("\\", "/"),
-        template_version="v2",
+        template_version="v3",
         active=True,
         notes=(
-            "Template base generato dal gestionale e rifinito nello Sprint 03. "
+            "Template base generato dal gestionale e rifinito nello Sprint 11. "
             "Resta sostituibile con un template DOCX personalizzato."
         ),
     )
 
 
 def get_or_create_default_internal_template():
+    custom_template = (
+        DocumentTemplate.objects.filter(
+            document_type=DocumentTemplate.DocumentType.INTERNAL_ESTIMATE,
+            active=True,
+        )
+        .exclude(name__startswith="Preventivo interno base")
+        .order_by("-uploaded_at", "-id")
+        .first()
+    )
+    if custom_template:
+        return custom_template
+
     generated_template = (
         DocumentTemplate.objects.filter(
             document_type=DocumentTemplate.DocumentType.INTERNAL_ESTIMATE,
@@ -529,15 +655,15 @@ def get_or_create_default_internal_template():
         .order_by("-uploaded_at", "-id")
         .first()
     )
-    relative_path = Path("templates") / "internal_estimate" / "preventivo_interno_base_v1.docx"
+    relative_path = Path("templates") / "internal_estimate" / "preventivo_interno_base_v2.docx"
     absolute_path = Path(settings.MEDIA_ROOT) / relative_path
     create_default_internal_template(absolute_path)
     if generated_template:
         generated_template.template_file = str(relative_path).replace("\\", "/")
-        generated_template.template_version = "v1"
+        generated_template.template_version = "v2"
         generated_template.notes = (
-            "Template interno generato dal gestionale nello Sprint 09. "
-            "Mostra costi, margine, ipotesi operative e controlli."
+            "Template interno generato dal gestionale e rifinito nello Sprint 11. "
+            "Mostra riepilogo, costi, margine, ipotesi operative, note e controlli."
         )
         generated_template.save(update_fields=["template_file", "template_version", "notes"])
         return generated_template
@@ -558,11 +684,11 @@ def get_or_create_default_internal_template():
         document_type=DocumentTemplate.DocumentType.INTERNAL_ESTIMATE,
         profile="internal",
         template_file=str(relative_path).replace("\\", "/"),
-        template_version="v1",
+        template_version="v2",
         active=True,
         notes=(
-            "Template interno generato dal gestionale nello Sprint 09. "
-            "Mostra costi, margine, ipotesi operative e controlli."
+            "Template interno generato dal gestionale e rifinito nello Sprint 11. "
+            "Mostra riepilogo, costi, margine, ipotesi operative, note e controlli."
         ),
     )
 

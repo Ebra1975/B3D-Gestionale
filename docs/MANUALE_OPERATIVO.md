@@ -14,6 +14,8 @@ Non e documentazione tecnica per sviluppatori: serve all'operatore per sapere co
 | Aggiornare una commessa | Bozza iniziale | Seguire stato, date e note del lavoro operativo. |
 | Gestire memoria commerciale cliente | Bozza iniziale | Conservare accordi, NDA, listini firmati e condizioni particolari nella scheda cliente. |
 | Controllare la dashboard | Bozza iniziale | Vedere ogni giorno preventivi, commesse e scadenze commerciali da seguire. |
+| Aggiornare dati documento | Bozza iniziale | Modificare intestazione, contatti, condizioni e note usate nei DOCX/PDF. |
+| Gestire template DOCX | Bozza iniziale | Caricare o sostituire i modelli Word usati per generare documenti cliente e interni. |
 | Applicare prezzo e margine | Bozza iniziale | Generare un totale proposta piu ripetibile partendo dai costi interni. |
 | Fare un backup locale | Bozza iniziale | Salvare dati e documenti durante lo sviluppo. |
 
@@ -182,10 +184,11 @@ Arrivare a un preventivo con:
 20. Risolvere gli elementi indicati in **Da fare prima della proposta**.
 21. Controllare gli avvisi in **Da controllare**.
 22. Controllare il blocco **Controlli export PDF/DOCX**.
-23. Quando il totale e coerente, usare **Genera cliente**.
-24. Scaricare e controllare DOCX e PDF cliente.
-25. Se serve un controllo economico completo, usare **Genera interno** e conservare il documento solo per uso interno.
-26. Se il documento cliente e corretto, usare l'azione rapida **Segna inviato** nel dettaglio preventivo.
+23. Se intestazione, contatti, condizioni o note documento non sono corretti, aprire **Documenti** e usare **Modifica dati documento**.
+24. Quando il totale e coerente, usare **Genera cliente**.
+25. Scaricare e controllare DOCX e PDF cliente.
+26. Se serve un controllo economico completo, usare **Genera interno** e conservare il documento solo per uso interno.
+27. Se il documento cliente e corretto, usare l'azione rapida **Segna inviato** nel dettaglio preventivo.
 
 ### Controlli Prima Di Inviare
 
@@ -212,25 +215,82 @@ Prima di inviare una proposta al cliente, verificare:
 - Non inviare al cliente la vista interna dettagliata.
 - Non usare il documento consulenza per casistiche di fornitura/artigiano senza revisione del profilo.
 
-### Template Consulenza Base
+### Template Consulenza E Scheda Interna
 
-Il gestionale usa un template consulenza base v2 se non viene caricato un template personalizzato.
+Il gestionale usa un template consulenza base v3 se non viene caricato un template personalizzato.
 
-Il template contiene:
+Il template cliente contiene:
 
 - intestazione B3D Lab;
-- riepilogo cliente e preventivo;
+- contatti azienda;
+- riepilogo compatto di cliente e preventivo;
 - contesto della richiesta;
 - soluzione tecnica proposta;
 - sintesi economica cliente;
 - condizioni e note;
 - nota fiscale/commerciale da validare con commercialista.
 
+La scheda interna usa un template base v2 e contiene:
+
+- riepilogo preventivo e cliente;
+- costo interno, margine e totale proposta;
+- voci di costo con eventuali note;
+- ipotesi operative;
+- note interne e controlli documento.
+
+La scheda interna non va inviata al cliente.
+
 Il template base resta sostituibile con un modello `.docx` personalizzato.
 
 ### Risultato Atteso
 
 Alla fine della procedura il gestionale deve contenere un preventivo completo, almeno un documento cliente generato in formato `.docx` e PDF e, quando utile, una scheda interna separata con dettaglio economico.
+
+## Procedura - Aggiornare Dati Documento
+
+### Quando Usarla
+
+Usare questa procedura prima di generare documenti cliente o interni quando cambiano intestazione azienda, contatti, condizioni standard, nota fiscale/commerciale o nota interna.
+
+### Passi Operativi
+
+1. Aprire la sezione **Documenti**.
+2. Controllare il riquadro **Dati documento**.
+3. Usare **Modifica dati documento**.
+4. Aggiornare solo i campi necessari.
+5. Salvare.
+6. Tornare al preventivo e generare una nuova versione DOCX/PDF.
+
+### Nota
+
+I documenti gia generati non vengono modificati. Le modifiche valgono per le prossime generazioni.
+
+## Procedura - Gestire Template DOCX
+
+### Quando Usarla
+
+Usare questa procedura quando si vuole caricare un modello Word personalizzato, cambiare versione del template o scegliere quale modello usare per i prossimi documenti.
+
+### Passi Operativi
+
+1. Aprire la sezione **Documenti**.
+2. Nel riquadro **Template DOCX**, controllare nome, tipo documento, versione e stato.
+3. Usare **Nuovo template DOCX** per caricare un file Word `.docx`.
+4. Compilare nome, tipo documento, profilo, versione e note.
+5. Lasciare **attivo** se il modello deve essere usato subito.
+6. Salvare.
+7. Per sostituire o correggere un modello esistente, usare **Modifica**.
+8. Per scegliere un modello gia caricato, usare **Attiva**.
+9. Scaricare il DOCX dalla lista quando serve controllare il file originale.
+10. Generare una nuova versione del documento dal preventivo e verificare il risultato.
+
+### Note
+
+- Per ogni tipo documento resta attivo un solo template alla volta.
+- Il template personalizzato attivo ha priorita sul template base generato dal gestionale.
+- Il caricamento verifica che il file sia un DOCX leggibile.
+- Per i template consulenza e interno, il gestionale blocca i segnaposto principali non riconosciuti.
+- Dopo ogni modifica importante al template, generare comunque un documento di prova e controllare il layout prima dell'invio al cliente.
 
 ## Procedura - Applicare Prezzo E Margine
 

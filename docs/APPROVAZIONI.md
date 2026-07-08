@@ -66,13 +66,22 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Sprint 09 | Dati documento configurabili | Approvato come prima versione | Profilo dati documento attivo con intestazione, condizioni standard, nota fiscale e nota interna. |
 | Sprint 09 | Doppia generazione documento cliente/interno | Approvato come prima versione | Dal preventivo si genera il documento cliente consulenza e la scheda interna dettagliata. |
 | Sprint 09 | Controlli prima export | Approvato come prima versione | Mancanze essenziali bloccano l'export; avvisi non bloccanti restano visibili nel dettaglio preventivo. |
+| Sprint 10 | Modifica dati documento da interfaccia | Approvato come prima versione | La sezione Documenti permette di aggiornare il profilo attivo senza entrare nell'admin tecnico. |
+| Sprint 10 | Chiusura sprint | Approvato | Sprint chiuso dopo test, verifica pagina locale e aggiornamento documentazione. |
+| Sprint 11 | Rifinitura template PDF cliente/interno | Approvato come prima versione | Il template consulenza base passa a v3 e quello interno a v2, con layout piu leggibile e separazione confermata tra proposta cliente e dettaglio interno. |
+| Sprint 11 | Chiusura sprint | Approvato | Sprint chiuso dopo test automatici, controllo Django e aggiornamento documentazione, incluso manuale operativo. |
+| Sprint 12 | Gestione template DOCX da interfaccia | Approvato come prima versione | La sezione Documenti permette di caricare, modificare, attivare, disattivare e scaricare template DOCX senza usare l'admin tecnico. |
+| Sprint 12 | Chiusura sprint | Approvato | Sprint chiuso dopo test automatici, controllo Django e aggiornamento documentazione, incluso manuale operativo e requisiti MVP. |
+| Sprint 13 | Validazione template DOCX | Approvato come prima versione | Il caricamento blocca file DOCX non leggibili e segnaposto principali non riconosciuti per consulenza e interno. |
+| Sprint 13 | Prova documento realistico | Approvato come verifica automatica | Il flusso genera proposta cliente e scheda interna da dati realistici, mantenendo separati documento cliente e dettaglio economico interno. |
+| Sprint 13 | Chiusura sprint | Approvato | Sprint chiuso dopo test automatici, controllo Django e aggiornamento documentazione. |
 
 ## In Revisione
 
 | Area | Elemento | Stato | Note |
 |---|---|---|---|
 | Interfaccia | Dettaglio grafico schermate | Da definire | Layout, colori, logo, densita delle informazioni. |
-| Documenti | Layout grafico template `.docx` definitivo | Da definire | Il template base v2 e una prima rifinitura, non il layout finale di brand. |
+| Documenti | Layout grafico template `.docx` definitivo | Da definire | I template base v3 consulenza e v2 interno sono una rifinitura operativa, non il layout finale di brand. |
 | Backup | Backup automatico BMAX | Da definire | Dopo la procedura manuale serve automatizzare frequenza, rotazione e controllo esito. |
 | Installazione | Rifinitura produzione stabile | Da definire | Verificare direttamente sul BMAX Docker, LibreOffice PDF, IP locale e riavvio automatico. |
 | Manutenzione | Avvio automatico del gestionale dopo riavvio BMAX | Da definire | Valutare dopo la prima installazione reale. |
@@ -84,9 +93,9 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Magazzino | Liste editabili per tipo materiale, marca e colore | Da progettare | Evita testo libero ripetuto e rende piu ordinati materiali e preventivi. |
 | Preventivi | Preventivo guidato a step con riepilogo prezzo laterale | Da valutare | Stimalo mostra un flusso chiaro con prezzo finale e breakdown sempre visibili. |
 | File tecnici | Import dati da G-code/3MF | Da progettare | Prima forma di import utile per peso, tempo e piatti senza integrare subito tutto lo slicer. |
-| Documenti | Modifica dati documento da interfaccia non amministrativa | Da progettare | La prima versione espone i dati nella sezione Documenti e li rende gestibili da admin; una schermata dedicata resta da rifinire. |
 | Stampanti | Parametri economici per costo orario | Da progettare | Costo acquisto, vita stimata, ore gia stampate, manutenzione, fallimento e potenza sono utili per evitare costi arbitrari. |
-| Documenti | Layout definitivo PDF cliente/interno | Da progettare | I template base sono funzionali; grafica, logo e impaginazione definitiva restano da validare con esempi reali. |
+| Documenti | Layout definitivo PDF cliente/interno | Da validare con esempi reali | Sprint 11 migliora i template base, ma grafica, logo e impaginazione definitiva restano da confermare su documenti reali. |
+| Documenti | Guida completa ai segnaposto template DOCX | Da progettare | Sprint 13 aggiunge un primo controllo automatico; resta da mostrare in interfaccia l'elenco dei segnaposto disponibili e mancanti. |
 
 ## Da Validare Con Commercialista
 

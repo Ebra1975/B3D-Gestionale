@@ -212,15 +212,22 @@ Da ogni preventivo si deve poter generare:
 
 La scelta del profilo non deve cambiare i dati del preventivo: cambia solo come vengono presentati.
 
-Il template consulenza base generato dal gestionale e stato rifinito in versione v2 con:
+Il template consulenza base generato dal gestionale e stato rifinito in versione v3 con:
 
 - intestazione B3D Lab;
-- riepilogo cliente/preventivo;
+- riepilogo cliente/preventivo piu compatto;
 - sezione tecnica;
 - sintesi economica cliente;
 - nota fiscale/commerciale marcata come da validare.
 
-Il template v2 non e ancora il layout definitivo di brand, ma e piu adatto a controllare il flusso cliente rispetto al template provvisorio iniziale.
+Il template interno dettagliato generato dal gestionale e stato rifinito in versione v2 con:
+
+- riepilogo preventivo e cliente;
+- blocco economia interna con costo, margine e totale;
+- tabella voci di costo con note;
+- ipotesi operative, note interne e controlli documento.
+
+I template Sprint 11 non sono ancora il layout definitivo di brand, ma sono piu adatti a controllare il flusso reale cliente/interno rispetto ai template provvisori iniziali.
 
 ## Commesse
 
@@ -382,12 +389,19 @@ Mostrare:
 
 Azioni:
 
+- modifica dati documento attivi;
 - carica template;
+- modifica template;
+- attiva template;
 - disattiva template;
 - scarica template;
 - genera documento da template;
 - scarica `.docx` generato;
 - scarica PDF generato.
+
+Nella prima gestione da interfaccia, un solo template per tipo documento resta attivo alla volta. Se viene attivato un template personalizzato di consulenza o interno, quel modello viene usato nelle prossime generazioni al posto del template base generato dal gestionale.
+
+Dallo Sprint 13, al salvataggio di un template il gestionale controlla che il file sia un DOCX leggibile. Per proposta consulenza e scheda interna controlla anche che i segnaposto principali usati nel Word siano compatibili con quelli disponibili.
 
 ## Impostazioni
 
@@ -439,11 +453,12 @@ Prima bozza in `docs/MANUALE_OPERATIVO.md` e prima schermata consultabile dalla 
 9. Confermo nel preventivo la revisione di accordi, listini e documenti commerciali.
 10. Aggiungo eventuale prototipo.
 11. Scelgo profilo documento "consulenza".
-12. Scelgo il template `.docx` di consulenza.
+12. Se serve un layout personalizzato, apro **Documenti** e attivo il template `.docx` di consulenza.
 13. Controllo eventuali mancanze nel blocco export PDF/DOCX.
-14. Genero proposta cliente `.docx` e PDF.
-15. Genero la scheda interna dettagliata se serve controllare costi e margine.
-16. Segno il preventivo come inviato.
+14. Se i dati documento non sono corretti, apro **Documenti** e uso **Modifica dati documento**.
+15. Genero proposta cliente `.docx` e PDF.
+16. Genero la scheda interna dettagliata se serve controllare costi e margine.
+17. Segno il preventivo come inviato.
 
 ## Flusso 2 - Preventivo Accettato
 

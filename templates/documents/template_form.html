@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - Gestionale B3D Lab{% endblock %}
+{% block heading %}{{ title }}{% endblock %}
+{% block eyebrow %}Modelli Word usati per DOCX/PDF{% endblock %}
+
+{% block actions %}
+  <a class="button secondary" href="{% url 'documents:list' %}">Torna ai documenti</a>
+{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Template</h2>
+    </div>
+    <div class="prose">
+      <p class="muted-text">Il template attivo per tipo documento verra usato nelle prossime generazioni. I documenti gia creati non vengono modificati.</p>
+      <p class="muted-text">Al salvataggio il gestionale controlla che il file sia un DOCX leggibile e, per consulenza e interno, che i segnaposto principali siano compatibili.</p>
+    </div>
+    <form method="post" enctype="multipart/form-data" class="form-layout">
+      {% csrf_token %}
+      {% include "includes/form_fields.html" %}
+      <div class="form-actions">
+        <button class="button" type="submit">{{ submit_label }}</button>
+      </div>
+    </form>
+  </section>
+{% endblock %}

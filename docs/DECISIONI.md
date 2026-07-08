@@ -78,6 +78,16 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-08 | Sprint 09 | Viene aggiunto un profilo dati documento attivo per intestazione, condizioni standard e note fiscali/commerciali. | Centralizza i testi riutilizzati nei documenti e riduce il rischio di PDF incompleti o incoerenti. |
 | 2026-07-08 | Sprint 09 | Dal dettaglio preventivo si generano due documenti separati: cliente consulenza e interno dettagliato. | Usa gli stessi costi del preventivo ma mantiene distinta la proposta cliente dalla scheda interna con costi e margine. |
 | 2026-07-08 | Sprint 09 | Prima dell'export vengono mostrati controlli bloccanti e avvisi non bloccanti. | Evita documenti senza dati essenziali e lascia visibili le informazioni da ricontrollare prima dell'invio. |
+| 2026-07-08 | Sprint 10 | I dati documento attivi sono modificabili dalla sezione Documenti senza usare l'admin tecnico. | Permette di aggiornare intestazione, contatti, condizioni standard e note prima di generare DOCX/PDF reali. |
+| 2026-07-08 | Sprint 10 | Lo sprint viene chiuso con il prossimo focus su template documenti e layout PDF. | Dopo la modifica dei dati di riempimento, il passo naturale e rifinire template, logo e impaginazione cliente/interna. |
+| 2026-07-08 | Sprint 11 | I template base cliente e interno vengono rifiniti come versioni consulenza v3 e interno v2. | Rende i PDF piu leggibili e usabili nel flusso reale, senza duplicare dati o cambiare il modello economico interno. |
+| 2026-07-08 | Sprint 11 | Lo sprint viene chiuso con manuale operativo e documentazione allineati. | Il flusso d'uso non cambia, ma l'operatore deve sapere cosa aspettarsi dai nuovi documenti generati. |
+| 2026-07-08 | Sprint 12 | I template DOCX sono gestibili dalla sezione Documenti senza usare l'admin tecnico. | Permette di caricare, modificare, attivare, disattivare e scaricare modelli Word dal flusso operativo. |
+| 2026-07-08 | Documenti | Per ogni tipo documento viene mantenuto un solo template attivo alla volta. | Evita ambiguita quando il gestionale genera il prossimo DOCX/PDF. |
+| 2026-07-08 | Documenti | Un template personalizzato attivo ha priorita sul template base generato dal gestionale. | Il caricamento da interfaccia deve influenzare realmente le prossime generazioni documento. |
+| 2026-07-08 | Sprint 12 | Lo sprint viene chiuso con manuale operativo e documentazione allineati. | La gestione template entra nel flusso documenti e deve essere spiegata all'operatore. |
+| 2026-07-08 | Sprint 13 | Il caricamento template DOCX valida il file reale e i segnaposto principali per consulenza e interno. | Evita di attivare modelli Word non leggibili o incompatibili con la generazione documento. |
+| 2026-07-08 | Sprint 13 | La prova documento realistico diventa verifica automatica del flusso cliente/interno. | Conferma che la proposta cliente resta sintetica e che la scheda interna conserva costi, margine e note. |
 
 ## Decisioni Da Prendere
 
@@ -86,7 +96,7 @@ Questo documento registra le decisioni importanti del progetto.
 | Tecnologia | Framework applicazione | Django | Approvato come base ufficiale. |
 | Database | Database principale | PostgreSQL | Approvato come base ufficiale. |
 | Accesso | Solo rete locale o anche remoto | Locale, VPN, esposizione web | Per sicurezza, accesso remoto solo via VPN. |
-| Documenti | Stile template | Sobrio tecnico, piu commerciale, personalizzato | Da definire con esempi reali. |
+| Documenti | Stile template | Sobrio tecnico, piu commerciale, personalizzato | Sprint 12 permette di caricare template personalizzati; layout finale e brand restano da validare con esempi reali. |
 | Fiscalita | Dicitura definitiva documenti | Consulenza tecnica, prestazione, altro | Da validare con commercialista. |
 | Interfaccia | Stile visivo | Sobrio operativo, tecnico, commerciale | Da decidere prima della realizzazione grafica. |
 | Prodotto | Priorita listini/AI | MVP immediato o fase successiva | Da decidere dopo il primo flusso preventivo completo. |

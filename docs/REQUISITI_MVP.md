@@ -131,7 +131,32 @@ I documenti devono avere:
 - totale;
 - condizioni generali.
 
+La proposta cliente deve restare sintetica e non mostrare costi interni o margine.
+
+La scheda interna deve mostrare il dettaglio economico completo, incluse voci di costo, margine e controlli.
+
 Ogni documento generato deve essere versionato e archiviato.
+
+I dati documento riutilizzati nei DOCX/PDF devono essere modificabili da interfaccia operativa, almeno per:
+
+- intestazione azienda;
+- contatti;
+- logo;
+- condizioni standard;
+- nota fiscale/commerciale;
+- nota interna.
+
+I template DOCX devono essere gestibili da interfaccia operativa, almeno per:
+
+- caricare un nuovo file `.docx`;
+- modificare nome, tipo documento, profilo, versione e note;
+- attivare o disattivare un template;
+- scaricare il file template caricato;
+- mantenere un solo template attivo per tipo documento.
+
+Il controllo automatico dei segnaposto interni al DOCX puo restare fuori dalla prima versione, ma il sistema deve almeno impedire il caricamento di file non `.docx`.
+
+Dallo Sprint 13 il sistema controlla anche che il file caricato sia un DOCX realmente leggibile e, per i template consulenza e interno, che i segnaposto principali siano compatibili con i dati disponibili.
 
 ## Fuori Dalla Prima Versione
 

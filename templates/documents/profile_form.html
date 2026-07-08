@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - Gestionale B3D Lab{% endblock %}
+{% block heading %}{{ title }}{% endblock %}
+{% block eyebrow %}Intestazione, condizioni e note per DOCX/PDF{% endblock %}
+
+{% block actions %}
+  <a class="button secondary" href="{% url 'documents:list' %}">Torna ai documenti</a>
+{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Profilo attivo</h2>
+    </div>
+    <div class="prose">
+      <p class="muted-text">Le modifiche salvate qui saranno usate alla prossima generazione dei documenti. I PDF gia generati non vengono cambiati.</p>
+    </div>
+    <form method="post" enctype="multipart/form-data" class="form-layout">
+      {% csrf_token %}
+      {% include "includes/form_fields.html" %}
+      <div class="form-actions">
+        <button class="button" type="submit">Salva dati documento</button>
+      </div>
+    </form>
+  </section>
+{% endblock %}
