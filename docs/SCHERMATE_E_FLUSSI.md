@@ -24,6 +24,8 @@ La prima versione deve restare semplice. Le voci possono crescere in futuro, ma 
 
 Su desktop la sidebar deve restare fissa durante lo scorrimento delle pagine lunghe, cosi la navigazione principale resta sempre disponibile.
 
+Dallo Sprint 21 la sidebar evidenzia anche l'area corrente. Le pagine principali hanno una breve frase di contesto sotto il titolo, utile per capire lo scopo della schermata senza aprire il manuale.
+
 ## Dashboard
 
 ### Obiettivo
@@ -54,6 +56,8 @@ La dashboard non deve sembrare una pagina pubblicitaria. Deve essere uno strumen
 
 La prima versione dello Sprint 06 usa soglie fisse e semplici: 14 giorni per preventivi e commesse, 30 giorni per accordi e documenti commerciali cliente. Le soglie potranno diventare configurabili dopo l'uso reale.
 
+Dallo Sprint 21 la dashboard apre con un focus operativo: segnala se ci sono elementi da seguire, mostra metriche con note brevi e sposta le azioni rapide in un blocco piu chiaro. Lo scopo e guidare la giornata senza aggiungere automatismi decisionali.
+
 ## Clienti
 
 ### Obiettivo
@@ -71,6 +75,8 @@ Mostrare:
 - numero preventivi;
 - numero commesse;
 - ultimo lavoro.
+
+Dallo Sprint 21 la lista clienti mostra ricerca piu leggibile, contatore risultati, badge per tipo cliente e indicazione rapida quando sono presenti note interne.
 
 ### Scheda Cliente
 
@@ -114,6 +120,8 @@ Mostrare:
 - profilo documento scelto.
 
 La lista deve avere una ricerca per numero, cliente e oggetto. I preventivi gia convertiti in commessa devono essere visivamente attenuati e filtrabili separatamente.
+
+Dallo Sprint 21 la lista preventivi mostra contatore risultati, badge stato coerenti e sottotitoli utili come validita della proposta. La tabella e avvolta in un contenitore responsive per evitare sovrapposizioni su schermi piccoli.
 
 Stati:
 

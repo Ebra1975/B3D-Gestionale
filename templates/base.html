@@ -12,17 +12,20 @@
     <aside class="sidebar">
       <div class="brand">
         <span class="brand-mark">B3D</span>
-        <span class="brand-name">Gestionale</span>
+        <span class="brand-copy">
+          <span class="brand-name">Gestionale</span>
+          <span class="brand-subtitle">Uso locale B3D Lab</span>
+        </span>
       </div>
       <nav class="nav">
-        <a href="{% url 'core:dashboard' %}">Dashboard</a>
-        <a href="{% url 'customers:list' %}">Clienti</a>
-        <a href="{% url 'estimates:list' %}">Preventivi</a>
-        <a href="{% url 'jobs:list' %}">Commesse</a>
-        <a href="{% url 'inventory:materials' %}">Materiali</a>
-        <a href="{% url 'inventory:printers' %}">Stampanti</a>
-        <a href="{% url 'documents:list' %}">Documenti</a>
-        <a href="{% url 'core:manual' %}">Manuale</a>
+        <a class="{% if request.resolver_match.app_name == 'core' and request.resolver_match.url_name == 'dashboard' %}is-active{% endif %}" href="{% url 'core:dashboard' %}">Dashboard</a>
+        <a class="{% if request.resolver_match.app_name == 'customers' %}is-active{% endif %}" href="{% url 'customers:list' %}">Clienti</a>
+        <a class="{% if request.resolver_match.app_name == 'estimates' %}is-active{% endif %}" href="{% url 'estimates:list' %}">Preventivi</a>
+        <a class="{% if request.resolver_match.app_name == 'jobs' %}is-active{% endif %}" href="{% url 'jobs:list' %}">Commesse</a>
+        <a class="{% if request.resolver_match.app_name == 'inventory' and 'material' in request.resolver_match.url_name %}is-active{% endif %}" href="{% url 'inventory:materials' %}">Materiali</a>
+        <a class="{% if request.resolver_match.app_name == 'inventory' and 'printer' in request.resolver_match.url_name %}is-active{% endif %}" href="{% url 'inventory:printers' %}">Stampanti</a>
+        <a class="{% if request.resolver_match.app_name == 'documents' %}is-active{% endif %}" href="{% url 'documents:list' %}">Documenti</a>
+        <a class="{% if request.resolver_match.app_name == 'core' and request.resolver_match.url_name == 'manual' %}is-active{% endif %}" href="{% url 'core:manual' %}">Manuale</a>
         <a href="/admin/">Admin</a>
       </nav>
     </aside>
@@ -32,6 +35,7 @@
         <div>
           <p class="eyebrow">{% block eyebrow %}B3D Lab{% endblock %}</p>
           <h1>{% block heading %}Gestionale{% endblock %}</h1>
+          {% block page_intro %}{% endblock %}
         </div>
         <div class="page-actions">
           {% block actions %}{% endblock %}

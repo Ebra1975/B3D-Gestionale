@@ -101,6 +101,9 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Sprint 20 | Pulizia reale protetta da conferma | Approvato e chiuso | La cancellazione richiede `--apply --confirm "PULISCI DATI TEST"` e va eseguita solo dopo backup recente. |
 | Sprint 20 | Ambiente leggibile e delegabile per uso reale | Approvato e chiuso | La procedura mantiene template, dati documento, utenti, backup e configurazioni, rimuovendo solo dati test riconoscibili. |
 | Sprint 20 | Pulizia ambiente locale di sviluppo | Approvato e verificato | Backup locale creato e anteprima finale senza dati test riconosciuti. |
+| Sprint 21 | UX operativa base | Approvato e chiuso | Dashboard, sidebar, lista clienti e lista preventivi sono state rese piu leggibili senza cambiare stack o modello dati. |
+| Sprint 21 | Sidebar con sezione attiva | Approvato e verificato | L'operatore vede subito l'area corrente. |
+| Sprint 21 | Dashboard con focus operativo | Approvato e verificato | Le priorita giornaliere precedono le azioni rapide e le metriche sono piu comprensibili. |
 | Interfaccia | Prototipo Lovable come riferimento UX | Approvato come direzione | Usare layout operativo, badge, stati, memoria commerciale, audit log e gerarchia informativa come ispirazione; non importare codice React/TanStack ne cambiare architettura Django. |
 | Prodotto | Riduzione uomo solo al comando e micro-management | Approvato come criterio guida | Le schermate devono mostrare prossimi passi, responsabilita, conferme tracciate e informazioni utili nel punto di lavoro, cosi il metodo non resta solo nella memoria del titolare. |
 
@@ -108,7 +111,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 
 | Area | Elemento | Stato | Note |
 |---|---|---|---|
-| Interfaccia | Applicazione concreta dello stile Lovable alle schermate Django | Da progettare | La direzione UX e approvata; resta da applicarla gradualmente a dashboard, preventivi, dettaglio preventivo e memoria commerciale senza cambiare stack. |
+| Interfaccia | Applicazione concreta dello stile Lovable alle schermate Django | In corso | Sprint 21 applica la base a dashboard, clienti e preventivi; resta da rifinire dettaglio preventivo e memoria commerciale. |
 | Documenti | Layout grafico template `.docx` definitivo | Da definire | I template base v3 consulenza e v2 interno sono una rifinitura operativa, non il layout finale di brand. |
 | Installazione | Rifinitura produzione stabile | Verificata come base locale | Docker, rete locale, riavvio automatico, nome locale, PDF reali e copia backup su secondo disco verificati sul BMAX. |
 | Prodotto | Implementazione listini e accordi | Da pianificare | Dopo flusso preventivo base. |

@@ -128,6 +128,9 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-09 | Sprint 20 | Lo sprint viene chiuso come "Pulizia dati test e preparazione uso reale". | Il comando, i test e la documentazione rendono l'ambiente piu leggibile prima dell'inserimento di clienti veri. |
 | 2026-07-09 | Interfaccia | Il prototipo Lovable `project-sparkflow-36` viene usato come riferimento UX, non come base tecnica. | La direzione grafica e operativa e utile per dashboard, preventivi, memoria commerciale, badge e stati, ma il gestionale resta Django con frontend modulare e dati reali nei modelli esistenti. |
 | 2026-07-09 | Prodotto | Ogni nuova schermata deve ridurre la dipendenza dall'uomo solo al comando e il micro-management. | Stati, prossimi passi, conferme manuali, audit log, memoria commerciale e checklist devono rendere il metodo di lavoro leggibile anche a collaboratori o sviluppatori esterni. |
+| 2026-07-09 | Sprint 21 | La prima sistemazione UX parte da layout base, dashboard, lista clienti e lista preventivi. | Sono le schermate piu usate per orientarsi e iniziare lavoro reale, quindi danno beneficio prima del dettaglio delle funzioni avanzate. |
+| 2026-07-09 | Interfaccia | La UX resta sobria e operativa, con focus su stati, priorita e azioni principali. | Evita una pagina estetica ma poco utile; il gestionale deve restare denso, leggibile e adatto a lavoro quotidiano. |
+| 2026-07-09 | Sprint 21 | Il dettaglio preventivo diventa il prossimo candidato UX. | E la schermata piu complessa: costi interni, documenti, configurazioni e memoria commerciale richiedono una gerarchia piu guidata. |
 
 ## Decisioni Da Prendere
 

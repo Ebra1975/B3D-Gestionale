@@ -3,6 +3,9 @@
 {% block title %}Clienti - Gestionale B3D Lab{% endblock %}
 {% block heading %}Clienti{% endblock %}
 {% block eyebrow %}Archivio clienti{% endblock %}
+{% block page_intro %}
+  <p class="page-intro">Anagrafiche, referenti e memoria commerciale: il punto di partenza prima di creare un preventivo.</p>
+{% endblock %}
 
 {% block actions %}
   <a class="button" href="{% url 'customers:create' %}">Nuovo cliente</a>
@@ -10,6 +13,14 @@
 
 {% block content %}
   <section class="panel filter-panel">
+    <div class="panel-header compact-header">
+      <h2>Ricerca clienti</h2>
+      {% if query %}
+        <span class="panel-note">Filtro attivo: {{ query }}</span>
+      {% else %}
+        <span class="panel-note">Cerca per cliente, contatto o telefono</span>
+      {% endif %}
+    </div>
     <form class="filter-form" method="get">
       <div class="form-field">
         <label for="customer-search">Cerca</label>
@@ -23,32 +34,40 @@
   </section>
 
   <section class="panel">
-    <div class="panel-header">
+    <div class="panel-header split-header">
       <h2>Elenco clienti</h2>
+      <span class="panel-note">{{ customers|length }} risultati</span>
     </div>
     {% if customers %}
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Tipo</th>
-            <th>Referente</th>
-            <th>Email</th>
-            <th>Telefono</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for customer in customers %}
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
             <tr>
-              <td><a href="{% url 'customers:detail' customer.pk %}">{{ customer.name }}</a></td>
-              <td>{{ customer.get_customer_type_display }}</td>
-              <td>{{ customer.contact_person|default:"-" }}</td>
-              <td>{{ customer.email|default:"-" }}</td>
-              <td>{{ customer.phone|default:"-" }}</td>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>Referente</th>
+              <th>Email</th>
+              <th>Telefono</th>
             </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {% for customer in customers %}
+              <tr>
+                <td>
+                  <a href="{% url 'customers:detail' customer.pk %}">{{ customer.name }}</a>
+                  {% if customer.notes %}
+                    <span class="row-subtitle">Note presenti</span>
+                  {% endif %}
+                </td>
+                <td><span class="badge muted-badge">{{ customer.get_customer_type_display }}</span></td>
+                <td>{{ customer.contact_person|default:"-" }}</td>
+                <td>{{ customer.email|default:"-" }}</td>
+                <td class="nowrap">{{ customer.phone|default:"-" }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     {% else %}
       <div class="empty-state">
         <p>Nessun cliente inserito.</p>

@@ -3,38 +3,62 @@
 {% block title %}Dashboard - Gestionale B3D Lab{% endblock %}
 {% block heading %}Dashboard{% endblock %}
 {% block eyebrow %}Situazione generale{% endblock %}
+{% block page_intro %}
+  <p class="page-intro">Punto di controllo quotidiano: priorita aperte, scadenze vicine e azioni operative.</p>
+{% endblock %}
 
 {% block actions %}
-  <a class="button" href="{% url 'estimates:list' %}">Preventivi</a>
+  <a class="button" href="{% url 'estimates:create' %}">Nuovo preventivo</a>
+  <a class="button secondary" href="{% url 'customers:create' %}">Nuovo cliente</a>
 {% endblock %}
 
 {% block content %}
+  <section class="workbench-strip">
+    <div>
+      <span class="metric-label">Focus operativo</span>
+      {% if estimates_to_follow or jobs_to_follow or agreements_to_follow or commercial_documents_to_follow %}
+        <strong>Ci sono elementi da seguire prima di aprire nuovi lavori.</strong>
+      {% else %}
+        <strong>Nessuna scadenza critica nelle finestre operative.</strong>
+      {% endif %}
+    </div>
+    <div>
+      <span class="metric-label">Archivi clienti</span>
+      <strong>{{ customers_count }} clienti registrati</strong>
+    </div>
+    <div>
+      <span class="metric-label">Documenti</span>
+      <strong>{{ generated_documents_count }} generati</strong>
+    </div>
+  </section>
+
   <section class="metric-grid">
     <article class="metric-card">
       <span class="metric-label">Preventivi aperti</span>
       <strong class="metric-value">{{ open_estimates_count }}</strong>
+      <span class="metric-hint">Da completare, inviare o chiudere</span>
     </article>
     <article class="metric-card">
       <span class="metric-label">Commesse in corso</span>
       <strong class="metric-value">{{ active_jobs_count }}</strong>
+      <span class="metric-hint">Lavori non ancora consegnati</span>
     </article>
     <article class="metric-card">
       <span class="metric-label">Lavori pronti</span>
       <strong class="metric-value">{{ ready_jobs_count }}</strong>
-    </article>
-    <article class="metric-card">
-      <span class="metric-label">Documenti generati</span>
-      <strong class="metric-value">{{ generated_documents_count }}</strong>
+      <span class="metric-hint">Da consegnare o chiudere</span>
     </article>
     <article class="metric-card">
       <span class="metric-label">Prototipi da validare</span>
       <strong class="metric-value">{{ pending_prototypes_count }}</strong>
+      <span class="metric-hint">Da controllare prima di procedere</span>
     </article>
   </section>
 
-  <section class="panel">
-    <div class="panel-header">
+  <section class="panel priority-panel">
+    <div class="panel-header split-header">
       <h2>Da seguire</h2>
+      <span class="panel-note">14 giorni operativi, 30 giorni commerciali</span>
     </div>
     <div class="follow-grid">
       <article class="follow-block">
@@ -50,7 +74,7 @@
             {% endfor %}
           </ul>
         {% else %}
-          <p class="muted-text">Nessun preventivo in scadenza nei prossimi 14 giorni.</p>
+          <p class="empty-note">Nessun preventivo in scadenza.</p>
         {% endif %}
       </article>
 
@@ -67,7 +91,7 @@
             {% endfor %}
           </ul>
         {% else %}
-          <p class="muted-text">Nessuna consegna prevista nei prossimi 14 giorni.</p>
+          <p class="empty-note">Nessuna consegna vicina.</p>
         {% endif %}
       </article>
 
@@ -91,53 +115,63 @@
             {% endfor %}
           </ul>
         {% else %}
-          <p class="muted-text">Nessun accordo o documento commerciale in scadenza nei prossimi 30 giorni.</p>
+          <p class="empty-note">Nessuna scadenza commerciale vicina.</p>
         {% endif %}
       </article>
     </div>
   </section>
 
   <section class="panel">
-    <div class="panel-header">
-      <h2>Azioni rapide</h2>
-    </div>
-    <div class="quick-actions">
-      <a class="button" href="{% url 'customers:create' %}">Nuovo cliente</a>
-      <a class="button" href="{% url 'estimates:create' %}">Nuovo preventivo</a>
-      <a class="button secondary" href="{% url 'inventory:material_create' %}">Nuovo materiale</a>
-      <a class="button secondary" href="{% url 'inventory:printer_create' %}">Nuova stampante</a>
-    </div>
-  </section>
-
-  <section class="panel">
-    <div class="panel-header">
+    <div class="panel-header split-header">
       <h2>Ultimi preventivi</h2>
+      <a class="text-link" href="{% url 'estimates:list' %}">Apri elenco</a>
     </div>
     {% if latest_estimates %}
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Numero</th>
-            <th>Cliente</th>
-            <th>Oggetto</th>
-            <th>Stato</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for estimate in latest_estimates %}
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
             <tr>
-              <td><a href="{% url 'estimates:detail' estimate.pk %}">{{ estimate.number }}</a></td>
-              <td>{{ estimate.customer.name }}</td>
-              <td>{{ estimate.subject }}</td>
-              <td><span class="badge">{{ estimate.get_status_display }}</span></td>
+              <th>Numero</th>
+              <th>Cliente</th>
+              <th>Oggetto</th>
+              <th>Stato</th>
             </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {% for estimate in latest_estimates %}
+              <tr>
+                <td><a href="{% url 'estimates:detail' estimate.pk %}">{{ estimate.number }}</a></td>
+                <td>{{ estimate.customer.name }}</td>
+                <td>{{ estimate.subject }}</td>
+                <td><span class="badge status-{{ estimate.status }}">{{ estimate.get_status_display }}</span></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     {% else %}
       <div class="empty-state">
         <p>Nessun preventivo inserito.</p>
       </div>
     {% endif %}
+  </section>
+
+  <section class="quick-action-grid" aria-label="Azioni rapide">
+    <a class="action-tile primary" href="{% url 'estimates:create' %}">
+      <span>Nuovo preventivo</span>
+      <strong>Avvia proposta cliente</strong>
+    </a>
+    <a class="action-tile" href="{% url 'customers:create' %}">
+      <span>Nuovo cliente</span>
+      <strong>Registra anagrafica</strong>
+    </a>
+    <a class="action-tile" href="{% url 'inventory:material_create' %}">
+      <span>Nuovo materiale</span>
+      <strong>Aggiorna archivio tecnico</strong>
+    </a>
+    <a class="action-tile" href="{% url 'documents:list' %}">
+      <span>Documenti</span>
+      <strong>Template e PDF</strong>
+    </a>
   </section>
 {% endblock %}
