@@ -136,6 +136,20 @@ Per una prova completa DOCX/PDF sul BMAX usare:
 docker compose exec web python manage.py verify_pdf_export
 ```
 
+Il comando PDF crea dati test. Dopo la verifica, e prima dell'uso con clienti reali, usare la procedura documentata in `docs/PULIZIA_DATI_TEST_USO_REALE.md`.
+
+Anteprima dati test:
+
+```bash
+docker compose exec web python manage.py prepare_real_use
+```
+
+Pulizia reale, solo dopo backup:
+
+```bash
+docker compose exec web python manage.py prepare_real_use --apply --confirm "PULISCI DATI TEST"
+```
+
 ## Riavvio
 
 Il gestionale e configurato per riaccendersi automaticamente dopo il riavvio del BMAX, tramite la regola Docker `restart: unless-stopped`.

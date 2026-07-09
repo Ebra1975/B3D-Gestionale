@@ -97,12 +97,18 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Backup | Cartella `/mnt/backup/b3d_backups` per copie gestionali | Approvato come organizzazione iniziale | La prima copia `b3dlab_bmax_20260708_213425.tar.gz` e presente sul disco; le prossime copie vanno nella sottocartella dedicata. |
 | Backup | Copia verificata su secondo disco del 2026-07-09 | Approvato e verificato | Il backup `b3dlab_bmax_20260709_075642.tar.gz` e stato copiato in `/mnt/backup/b3d_backups` con checksum verificato. |
 | Sprint 19 | Chiusura stabilizzazione BMAX | Approvato e chiuso | Avvio automatico, nome locale, PDF reali e copia backup su secondo disco sono verificati sul BMAX. |
+| Sprint 20 | Pulizia dati test con anteprima | Approvato e chiuso | Il comando `prepare_real_use` mostra i dati test riconosciuti senza cancellare nulla. |
+| Sprint 20 | Pulizia reale protetta da conferma | Approvato e chiuso | La cancellazione richiede `--apply --confirm "PULISCI DATI TEST"` e va eseguita solo dopo backup recente. |
+| Sprint 20 | Ambiente leggibile e delegabile per uso reale | Approvato e chiuso | La procedura mantiene template, dati documento, utenti, backup e configurazioni, rimuovendo solo dati test riconoscibili. |
+| Sprint 20 | Pulizia ambiente locale di sviluppo | Approvato e verificato | Backup locale creato e anteprima finale senza dati test riconosciuti. |
+| Interfaccia | Prototipo Lovable come riferimento UX | Approvato come direzione | Usare layout operativo, badge, stati, memoria commerciale, audit log e gerarchia informativa come ispirazione; non importare codice React/TanStack ne cambiare architettura Django. |
+| Prodotto | Riduzione uomo solo al comando e micro-management | Approvato come criterio guida | Le schermate devono mostrare prossimi passi, responsabilita, conferme tracciate e informazioni utili nel punto di lavoro, cosi il metodo non resta solo nella memoria del titolare. |
 
 ## In Revisione
 
 | Area | Elemento | Stato | Note |
 |---|---|---|---|
-| Interfaccia | Dettaglio grafico schermate | Da definire | Layout, colori, logo, densita delle informazioni. |
+| Interfaccia | Applicazione concreta dello stile Lovable alle schermate Django | Da progettare | La direzione UX e approvata; resta da applicarla gradualmente a dashboard, preventivi, dettaglio preventivo e memoria commerciale senza cambiare stack. |
 | Documenti | Layout grafico template `.docx` definitivo | Da definire | I template base v3 consulenza e v2 interno sono una rifinitura operativa, non il layout finale di brand. |
 | Installazione | Rifinitura produzione stabile | Verificata come base locale | Docker, rete locale, riavvio automatico, nome locale, PDF reali e copia backup su secondo disco verificati sul BMAX. |
 | Prodotto | Implementazione listini e accordi | Da pianificare | Dopo flusso preventivo base. |
@@ -117,7 +123,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Documenti | Layout definitivo PDF cliente/interno | Da validare con esempi reali | Sprint 11 migliora i template base, ma grafica, logo e impaginazione definitiva restano da confermare su documenti reali. |
 | Documenti | Guida completa ai segnaposto template DOCX in interfaccia | Da progettare | Sprint 14 aggiunge la guida nel manuale; resta da mostrare direttamente nella pagina caricamento template l'elenco dei segnaposto disponibili e mancanti. |
 | Backup | Copia automatica fuori dal BMAX | Da pianificare | La copia manuale su secondo disco e verificata; automatizzare solo dopo un periodo di uso reale della destinazione `/mnt/backup/b3d_backups`. |
-| Dati test | Pulizia prove BMAX | Da pianificare | Sono presenti dati test PDF/backup creati durante le verifiche; non cancellare manualmente prima di una procedura ordinata. |
+| Dati test | Pulizia prove BMAX eseguita con procedura | Superata da Sprint 20 | La procedura ordinata esiste: usare `prepare_real_use` in anteprima e poi con conferma dopo backup. |
 
 ## Da Validare Con Commercialista
 

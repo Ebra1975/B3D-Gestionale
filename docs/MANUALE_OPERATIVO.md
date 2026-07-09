@@ -10,6 +10,7 @@ Non e documentazione tecnica per sviluppatori: serve all'operatore per sapere co
 |---|---|---|
 | Fare un preventivo consulenza | Bozza iniziale | Creare un preventivo completo e generare DOCX/PDF cliente e scheda interna. |
 | Usare il preventivo demo | Bozza iniziale | Provare il flusso senza usare dati reali di clienti. |
+| Pulire dati test prima dell'uso reale | Bozza iniziale | Rimuovere demo e verifiche BMAX in modo controllato, dopo backup e anteprima. |
 | Creare una commessa da preventivo accettato | Bozza iniziale | Avviare il lavoro operativo dopo accettazione cliente. |
 | Aggiornare una commessa | Bozza iniziale | Seguire stato, date e note del lavoro operativo. |
 | Gestire memoria commerciale cliente | Bozza iniziale | Conservare accordi, NDA, listini firmati e condizioni particolari nella scheda cliente. |
@@ -64,6 +65,38 @@ Usare questa procedura per provare il gestionale, fare verifiche o mostrare il f
 ### Nota
 
 Il preventivo demo non rappresenta un cliente reale. Serve solo a testare il flusso operativo.
+
+## Procedura - Pulire Dati Test Prima Dell'Uso Reale
+
+### Quando Usarla
+
+Usare questa procedura dopo le prove tecniche e prima di iniziare a inserire clienti veri.
+
+### Passi Operativi
+
+1. Creare o verificare un backup recente.
+2. Eseguire l'anteprima:
+
+```bash
+python manage.py prepare_real_use
+```
+
+3. Leggere l'elenco mostrato dal comando.
+4. Se l'elenco contiene solo dati test, eseguire la pulizia:
+
+```bash
+python manage.py prepare_real_use --apply --confirm "PULISCI DATI TEST"
+```
+
+5. Aprire dashboard, clienti, preventivi, commesse e documenti dal browser.
+
+### Risultato Atteso
+
+Le liste operative non mostrano piu demo e prove PDF. Restano invece template, dati documento, utenti e configurazioni utili per lavorare.
+
+### Nota
+
+La procedura completa per il BMAX e in `docs/PULIZIA_DATI_TEST_USO_REALE.md`.
 
 ## Procedura - Creare Una Commessa Da Preventivo Accettato
 
@@ -606,7 +639,21 @@ docker compose exec web python manage.py check
 docker compose exec web python manage.py verify_pdf_export
 ```
 
-Il comando crea dati test riconoscibili. Non cancellarli manualmente finche non esiste una procedura di pulizia ordinata.
+Il comando crea dati test riconoscibili. Per rimuoverli usare la procedura `prepare_real_use`, sempre dopo aver controllato un backup recente.
+
+### Pulizia Dati Test
+
+Anteprima:
+
+```bash
+docker compose exec web python manage.py prepare_real_use
+```
+
+Pulizia reale:
+
+```bash
+docker compose exec web python manage.py prepare_real_use --apply --confirm "PULISCI DATI TEST"
+```
 
 ### Backup E Copia Su Secondo Disco
 

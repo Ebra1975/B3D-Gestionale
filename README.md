@@ -98,6 +98,7 @@ Le prime procedure operative sono in:
 - `docs/INDIRIZZO_LOCALE_BMAX.md`
 - `docs/VERIFICA_PDF_BMAX.md`
 - `docs/COPIA_BACKUP_FUORI_BMAX.md`
+- `docs/PULIZIA_DATI_TEST_USO_REALE.md`
 
 In sviluppo locale e disponibile il comando:
 
@@ -113,3 +114,11 @@ Sul BMAX reale lo Sprint 19 ha verificato:
 - riavvio automatico dei servizi Docker;
 - generazione DOCX/PDF tramite LibreOffice;
 - backup copiato e verificato sul secondo disco interno.
+
+Per preparare l'ambiente all'uso reale dopo le prove:
+
+```bash
+python manage.py prepare_real_use
+```
+
+Il comando mostra un'anteprima dei dati test riconosciuti. La pulizia reale richiede conferma esplicita ed e documentata in `docs/PULIZIA_DATI_TEST_USO_REALE.md`.

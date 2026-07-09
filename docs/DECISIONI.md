@@ -122,6 +122,12 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-09 | Backup | La copia manuale su secondo disco viene verificata con il backup `b3dlab_bmax_20260709_075642.tar.gz`. | Conferma che la procedura crea un backup, lo copia in `/mnt/backup/b3d_backups` e verifica il checksum. |
 | 2026-07-09 | Sprint 19 | Lo sprint viene chiuso come "Stabilizzazione uso reale BMAX". | Avvio automatico, nome locale, PDF reali e copia backup su secondo disco sono verificati sul mini PC reale. |
 | 2026-07-09 | Sprint 20 | Il prossimo sprint proposto e "Pulizia dati test e preparazione uso reale". | Dopo le prove BMAX restano dati test riconoscibili; prima di inserire dati veri serve una procedura ordinata per rimuoverli o archiviarli. |
+| 2026-07-09 | Sprint 20 | La pulizia dati test viene gestita con anteprima obbligatoria e conferma esplicita. | Evita cancellazioni involontarie e rende il passaggio all'uso reale piu delegabile. |
+| 2026-07-09 | Dati test | La pulizia non e un reset totale del gestionale. | Template, dati documento, utenti, backup e configurazioni restano disponibili; vengono rimossi solo dati test riconoscibili. |
+| 2026-07-09 | Sprint 20 | La pulizia dati test viene eseguita sull'ambiente locale dopo backup `b3dlab_backup_locale_20260709_111739.zip`. | Conferma la procedura sul database di sviluppo prima di ripeterla eventualmente sul BMAX. |
+| 2026-07-09 | Sprint 20 | Lo sprint viene chiuso come "Pulizia dati test e preparazione uso reale". | Il comando, i test e la documentazione rendono l'ambiente piu leggibile prima dell'inserimento di clienti veri. |
+| 2026-07-09 | Interfaccia | Il prototipo Lovable `project-sparkflow-36` viene usato come riferimento UX, non come base tecnica. | La direzione grafica e operativa e utile per dashboard, preventivi, memoria commerciale, badge e stati, ma il gestionale resta Django con frontend modulare e dati reali nei modelli esistenti. |
+| 2026-07-09 | Prodotto | Ogni nuova schermata deve ridurre la dipendenza dall'uomo solo al comando e il micro-management. | Stati, prossimi passi, conferme manuali, audit log, memoria commerciale e checklist devono rendere il metodo di lavoro leggibile anche a collaboratori o sviluppatori esterni. |
 
 ## Decisioni Da Prendere
 
@@ -132,7 +138,7 @@ Questo documento registra le decisioni importanti del progetto.
 | Accesso | Solo rete locale o anche remoto | Locale, VPN, esposizione web | Per sicurezza, accesso remoto solo via VPN. |
 | Documenti | Stile template | Sobrio tecnico, piu commerciale, personalizzato | Sprint 12 permette di caricare template personalizzati; layout finale e brand restano da validare con esempi reali. |
 | Fiscalita | Dicitura definitiva documenti | Consulenza tecnica, prestazione, altro | Da validare con commercialista. |
-| Interfaccia | Stile visivo | Sobrio operativo, tecnico, commerciale | Da decidere prima della realizzazione grafica. |
+| Interfaccia | Stile visivo | Sobrio operativo con riferimento Lovable | Approvato come direzione UX: usare layout, badge, stati e gerarchia informativa, senza importare stack React/TanStack o codice generato. |
 | Prodotto | Priorita listini/AI | MVP immediato o fase successiva | Da decidere dopo il primo flusso preventivo completo. |
 | Prodotto | Implementazione documenti contrattuali cliente | Fase successiva | NDA, accordi quadro, condizioni particolari e allegati commerciali. |
 | Prodotto | Manuale operativo nel gestionale | Markdown nel repository, pagine Django, soluzione ibrida | Prima bozza in `docs/MANUALE_OPERATIVO.md`; da decidere se esporlo anche nella sidebar. |
