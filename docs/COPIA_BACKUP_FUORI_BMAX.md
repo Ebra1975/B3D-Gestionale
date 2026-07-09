@@ -54,6 +54,13 @@ Prima verifica reale Sprint 19:
 - nessuna formattazione necessaria.
 - prima copia presente: `b3dlab_bmax_20260708_213425.tar.gz`.
 
+Verifica successiva del 2026-07-09:
+
+- backup creato: `b3dlab_bmax_20260709_075642.tar.gz`;
+- copia completata in `/mnt/backup/b3d_backups`;
+- checksum verificato dallo script;
+- cartella dedicata controllata con `ls -lh /mnt/backup/b3d_backups`.
+
 ## Creare Un Backup Manuale
 
 Entrare nella cartella del gestionale:

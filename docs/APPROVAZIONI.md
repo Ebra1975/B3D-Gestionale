@@ -95,6 +95,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Backup | Copia ultimo backup fuori dal disco principale BMAX | Approvato come prima procedura manuale | Script dedicato copia l'ultimo backup su secondo HD interno, disco USB o NAS montato e verifica il checksum. |
 | Backup | Secondo HD interno montato in `/mnt/backup` | Approvato come destinazione reale | Disco `sda1`, ext4, etichetta `b3d-backup`, circa 103 GB liberi; non viene formattato. |
 | Backup | Cartella `/mnt/backup/b3d_backups` per copie gestionali | Approvato come organizzazione iniziale | La prima copia `b3dlab_bmax_20260708_213425.tar.gz` e presente sul disco; le prossime copie vanno nella sottocartella dedicata. |
+| Backup | Copia verificata su secondo disco del 2026-07-09 | Approvato e verificato | Il backup `b3dlab_bmax_20260709_075642.tar.gz` e stato copiato in `/mnt/backup/b3d_backups` con checksum verificato. |
 
 ## In Revisione
 
@@ -114,7 +115,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Stampanti | Evoluzione calcolo ammortamento completo | Da progettare | Sprint 16 copre costo base, manutenzione, energia e rischio fallimento; costo acquisto, vita stimata e ore gia stampate restano una possibile evoluzione futura. |
 | Documenti | Layout definitivo PDF cliente/interno | Da validare con esempi reali | Sprint 11 migliora i template base, ma grafica, logo e impaginazione definitiva restano da confermare su documenti reali. |
 | Documenti | Guida completa ai segnaposto template DOCX in interfaccia | Da progettare | Sprint 14 aggiunge la guida nel manuale; resta da mostrare direttamente nella pagina caricamento template l'elenco dei segnaposto disponibili e mancanti. |
-| Backup | Copia automatica fuori dal BMAX | Da pianificare | La procedura manuale esiste; automatizzare solo dopo aver scelto una destinazione esterna stabile. |
+| Backup | Copia automatica fuori dal BMAX | Da pianificare | La copia manuale su secondo disco e verificata; automatizzare solo dopo un periodo di uso reale della destinazione `/mnt/backup/b3d_backups`. |
 
 ## Da Validare Con Commercialista
 

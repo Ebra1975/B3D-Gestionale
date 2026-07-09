@@ -119,6 +119,7 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-08 | Backup | La copia fuori dal disco principale del BMAX viene gestita con procedura manuale verificabile e script dedicato. | La prima destinazione scelta e un secondo HD interno; protegge dal guasto del disco principale ma non sostituisce una copia esterna al mini PC. |
 | 2026-07-08 | Backup | Il secondo HD interno per backup e gia formattato ext4 e montato in `/mnt/backup`. | Non serve formattare: la partizione `sda1` con etichetta `b3d-backup` ha spazio sufficiente per la prima copia verificata. |
 | 2026-07-08 | Backup | Le copie del gestionale sul secondo disco vengono ordinate nella cartella `/mnt/backup/b3d_backups`. | Evita di mischiare gli archivi B3D Lab con file Duplicati e altre cartelle presenti nella radice del disco backup. |
+| 2026-07-09 | Backup | La copia manuale su secondo disco viene verificata con il backup `b3dlab_bmax_20260709_075642.tar.gz`. | Conferma che la procedura crea un backup, lo copia in `/mnt/backup/b3d_backups` e verifica il checksum. |
 
 ## Decisioni Da Prendere
 
