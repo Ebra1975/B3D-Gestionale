@@ -232,6 +232,15 @@ docs/INDIRIZZO_LOCALE_BMAX.md
 
 ## Da Rifinire Prima Della Produzione Stabile
 
-- Verifica reale del nome locale `b3d-gestionale.local`.
-- Verifica LibreOffice PDF direttamente sul BMAX.
-- Copia automatica dei backup fuori dal BMAX.
+Completato nello Sprint 19:
+
+- avvio automatico dopo riavvio BMAX;
+- nome locale `b3d-gestionale.local:8000`;
+- generazione DOCX/PDF reale tramite LibreOffice;
+- copia backup verificata sul secondo disco interno in `/mnt/backup/b3d_backups`.
+
+Resta da valutare dopo l'uso reale:
+
+- copia periodica fuori dal mini PC fisico;
+- pulizia ordinata dei dati test;
+- eventuale rimozione di `:8000` con proxy locale.

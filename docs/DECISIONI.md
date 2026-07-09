@@ -120,6 +120,8 @@ Questo documento registra le decisioni importanti del progetto.
 | 2026-07-08 | Backup | Il secondo HD interno per backup e gia formattato ext4 e montato in `/mnt/backup`. | Non serve formattare: la partizione `sda1` con etichetta `b3d-backup` ha spazio sufficiente per la prima copia verificata. |
 | 2026-07-08 | Backup | Le copie del gestionale sul secondo disco vengono ordinate nella cartella `/mnt/backup/b3d_backups`. | Evita di mischiare gli archivi B3D Lab con file Duplicati e altre cartelle presenti nella radice del disco backup. |
 | 2026-07-09 | Backup | La copia manuale su secondo disco viene verificata con il backup `b3dlab_bmax_20260709_075642.tar.gz`. | Conferma che la procedura crea un backup, lo copia in `/mnt/backup/b3d_backups` e verifica il checksum. |
+| 2026-07-09 | Sprint 19 | Lo sprint viene chiuso come "Stabilizzazione uso reale BMAX". | Avvio automatico, nome locale, PDF reali e copia backup su secondo disco sono verificati sul mini PC reale. |
+| 2026-07-09 | Sprint 20 | Il prossimo sprint proposto e "Pulizia dati test e preparazione uso reale". | Dopo le prove BMAX restano dati test riconoscibili; prima di inserire dati veri serve una procedura ordinata per rimuoverli o archiviarli. |
 
 ## Decisioni Da Prendere
 
@@ -137,7 +139,7 @@ Questo documento registra le decisioni importanti del progetto.
 | Infrastruttura | Avvio automatico BMAX | Restart policy Docker Compose, servizio systemd opzionale | Prima stabilizzazione scelta e verificata: `restart: unless-stopped`; systemd resta piano B se emergono problemi futuri. |
 | Infrastruttura | Nome locale BMAX | `b3d-gestionale.local:8000` | Prima scelta operativa verificata sulla rete reale tramite Avahi/mDNS. |
 | File tecnici | Archivio originale e preview G-code/3MF | Salvataggio file, preview, riconoscimento slicer avanzato | Sprint 17 copre il primo import dati utile; restano da progettare conservazione file e anteprime. |
-| Backup | Copia fuori dal BMAX | Disco esterno, NAS, cloud privato | Lo Sprint 18 crea backup locali automatici verificati; resta da decidere dove conservarne una copia esterna. |
+| Backup | Copia davvero esterna al mini PC | Disco esterno scollegabile, NAS, cloud privato | Il secondo disco interno protegge dal guasto del disco principale; resta da decidere una copia periodica fuori dal BMAX fisico. |
 
 ## Note
 

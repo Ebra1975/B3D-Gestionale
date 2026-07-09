@@ -96,6 +96,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Backup | Secondo HD interno montato in `/mnt/backup` | Approvato come destinazione reale | Disco `sda1`, ext4, etichetta `b3d-backup`, circa 103 GB liberi; non viene formattato. |
 | Backup | Cartella `/mnt/backup/b3d_backups` per copie gestionali | Approvato come organizzazione iniziale | La prima copia `b3dlab_bmax_20260708_213425.tar.gz` e presente sul disco; le prossime copie vanno nella sottocartella dedicata. |
 | Backup | Copia verificata su secondo disco del 2026-07-09 | Approvato e verificato | Il backup `b3dlab_bmax_20260709_075642.tar.gz` e stato copiato in `/mnt/backup/b3d_backups` con checksum verificato. |
+| Sprint 19 | Chiusura stabilizzazione BMAX | Approvato e chiuso | Avvio automatico, nome locale, PDF reali e copia backup su secondo disco sono verificati sul BMAX. |
 
 ## In Revisione
 
@@ -103,7 +104,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 |---|---|---|---|
 | Interfaccia | Dettaglio grafico schermate | Da definire | Layout, colori, logo, densita delle informazioni. |
 | Documenti | Layout grafico template `.docx` definitivo | Da definire | I template base v3 consulenza e v2 interno sono una rifinitura operativa, non il layout finale di brand. |
-| Installazione | Rifinitura produzione stabile | Da definire | Docker, rete locale, riavvio automatico, nome locale, PDF reali e prima copia backup su secondo disco verificati sul BMAX. |
+| Installazione | Rifinitura produzione stabile | Verificata come base locale | Docker, rete locale, riavvio automatico, nome locale, PDF reali e copia backup su secondo disco verificati sul BMAX. |
 | Prodotto | Implementazione listini e accordi | Da pianificare | Dopo flusso preventivo base. |
 | Prodotto | Implementazione documenti contrattuali cliente | Da pianificare | NDA, accordi quadro, condizioni particolari, listini firmati. |
 | Prodotto | Implementazione AI e regole lavorazione | Da pianificare | Prima regole semplici, poi AI generativa. |
@@ -116,6 +117,7 @@ Questo documento tiene traccia di cosa e approvato, cosa e in revisione e cosa r
 | Documenti | Layout definitivo PDF cliente/interno | Da validare con esempi reali | Sprint 11 migliora i template base, ma grafica, logo e impaginazione definitiva restano da confermare su documenti reali. |
 | Documenti | Guida completa ai segnaposto template DOCX in interfaccia | Da progettare | Sprint 14 aggiunge la guida nel manuale; resta da mostrare direttamente nella pagina caricamento template l'elenco dei segnaposto disponibili e mancanti. |
 | Backup | Copia automatica fuori dal BMAX | Da pianificare | La copia manuale su secondo disco e verificata; automatizzare solo dopo un periodo di uso reale della destinazione `/mnt/backup/b3d_backups`. |
+| Dati test | Pulizia prove BMAX | Da pianificare | Sono presenti dati test PDF/backup creati durante le verifiche; non cancellare manualmente prima di una procedura ordinata. |
 
 ## Da Validare Con Commercialista
 

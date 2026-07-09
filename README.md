@@ -94,6 +94,10 @@ Le prime procedure operative sono in:
 - `docs/INSTALLAZIONE_BMAX_LINUX.md`
 - `docs/GITHUB_E_VERSIONAMENTO.md`
 - `docs/PROCEDURA_MANUTENZIONE.md`
+- `docs/AVVIO_AUTOMATICO_BMAX.md`
+- `docs/INDIRIZZO_LOCALE_BMAX.md`
+- `docs/VERIFICA_PDF_BMAX.md`
+- `docs/COPIA_BACKUP_FUORI_BMAX.md`
 
 In sviluppo locale e disponibile il comando:
 
@@ -102,3 +106,10 @@ python manage.py backup_local
 ```
 
 Il comando crea uno zip in `backups/` con database SQLite, file media e documentazione.
+
+Sul BMAX reale lo Sprint 19 ha verificato:
+
+- accesso da `http://b3d-gestionale.local:8000`;
+- riavvio automatico dei servizi Docker;
+- generazione DOCX/PDF tramite LibreOffice;
+- backup copiato e verificato sul secondo disco interno.

@@ -69,7 +69,7 @@ scripts/bmax_backup.sh
 
 Una volta al mese:
 
-- copiare almeno un backup fuori dal BMAX, ad esempio su disco esterno o NAS;
+- copiare almeno un backup fuori dal disco principale del BMAX;
 - aprire un backup recente e controllare che contenga database, media e configurazione;
 - eseguire una prova di ripristino su un backup recente, se non e stata fatta di recente;
 - verificare che GitHub sia aggiornato con l'ultima versione del codice;
@@ -82,6 +82,8 @@ EXTERNAL_BACKUP_DIR=/mnt/backup/b3d_backups scripts/bmax_copy_latest_backup.sh
 ```
 
 Sul BMAX B3D Lab la prima destinazione reale e `/mnt/backup/b3d_backups`, sul secondo disco interno etichettato `b3d-backup`.
+
+Nota: il secondo disco interno protegge dal guasto del disco principale. Per dati reali importanti resta consigliata anche una copia periodica fuori dal mini PC fisico.
 
 Prova ripristino:
 

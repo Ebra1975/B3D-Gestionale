@@ -571,3 +571,53 @@ python manage.py backup_local
 ### Risultato Atteso
 
 Il backup contiene database locale, file generati/caricati e documentazione.
+
+## Procedura - Uso Quotidiano BMAX
+
+### Accesso
+
+Aprire il gestionale da browser:
+
+```text
+http://b3d-gestionale.local:8000
+```
+
+Accesso admin:
+
+```text
+http://b3d-gestionale.local:8000/admin/
+```
+
+Le credenziali admin del BMAX sono separate da quelle dello sviluppo Windows locale.
+
+### Controllo Rapido Server
+
+Sul BMAX:
+
+```bash
+cd ~/gestionale-b3d
+docker compose ps
+docker compose exec web python manage.py check
+```
+
+### Prova PDF
+
+```bash
+docker compose exec web python manage.py verify_pdf_export
+```
+
+Il comando crea dati test riconoscibili. Non cancellarli manualmente finche non esiste una procedura di pulizia ordinata.
+
+### Backup E Copia Su Secondo Disco
+
+```bash
+scripts/bmax_backup.sh
+EXTERNAL_BACKUP_DIR=/mnt/backup/b3d_backups scripts/bmax_copy_latest_backup.sh
+ls -lh /mnt/backup/b3d_backups
+```
+
+Il messaggio atteso e:
+
+```text
+Copia completata e verificata:
+```

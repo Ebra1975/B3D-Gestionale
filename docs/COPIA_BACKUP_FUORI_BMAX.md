@@ -60,6 +60,7 @@ Verifica successiva del 2026-07-09:
 - copia completata in `/mnt/backup/b3d_backups`;
 - checksum verificato dallo script;
 - cartella dedicata controllata con `ls -lh /mnt/backup/b3d_backups`.
+- Sprint 19 chiuso con copia su secondo disco verificata.
 
 ## Creare Un Backup Manuale
 
